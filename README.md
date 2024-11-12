@@ -3,7 +3,7 @@ This repository are used for capstone project from grup id C242-PS362
 
 | Nama          | Student ID | Path              | LinkedIn                                      |
 |---------------|------------|-------------------|-----------------------------------------------|
-| Daniel Cahya Kurniawan      | C233B4KY0988  | Cloud Computing  | [Daniel Cahya Kurniawan]() |
+| Daniel Cahya Kurniawan      | C233B4KY0988  | Cloud Computing  | [Daniel Cahya Kurniawan](https://www.linkedin.com/in/daniel-cahya-kurniawan/) |
 | Septian Ade Hidayat         | C007B4KY4104  | Cloud Computing  | [Septian Ade Hidayat](https://www.linkedin.com/in/septianadehidayat/) |
 | Irendra Lintang Keksi             | M283B4KX1998 | Machine Learning   | [Irendra Lintang Keksi](https://www.linkedin.com/in/irendra-lintang)          |
 | Luthfiyyah Wahyu Nurfarida        | M283B4KX2311 | Machine Learning   | [Luthfiyyah Wahyu Nurfarida]()                                                |
