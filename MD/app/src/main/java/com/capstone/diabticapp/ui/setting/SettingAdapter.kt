@@ -1,4 +1,4 @@
-package com.capstone.diabeticapp.ui.setting
+package com.capstone.diabticapp.ui.setting
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.diabticapp.R
-import com.capstone.diabticapp.ui.setting.SettingItem
 
 class SettingAdapter(
     private val items: List<SettingItem>,
@@ -21,17 +20,14 @@ class SettingAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    // Corrected parameter type to SettingViewHolder
     override fun onBindViewHolder(holder: SettingViewHolder, position: Int) {
-        holder.bind(items[position]) // Call the bind function correctly
+        holder.bind(items[position])
     }
 
-    // Inner ViewHolder class
     inner class SettingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val icon: ImageView = itemView.findViewById(R.id.ivIcon)
         private val title: TextView = itemView.findViewById(R.id.tvTitle)
 
-        // Bind data to views
         fun bind(item: SettingItem) {
             icon.setImageResource(item.iconRes)
             title.text = item.title

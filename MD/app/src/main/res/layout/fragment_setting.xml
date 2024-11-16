@@ -6,7 +6,6 @@
     android:fitsSystemWindows="true"
     >
 
-    <!-- Title -->
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
@@ -20,7 +19,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Profile Section -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clProfile"
         android:layout_width="0dp"
@@ -30,7 +28,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="24dp">
 
-        <!-- Profile Picture -->
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ivProfilePicture"
             android:layout_width="80dp"
@@ -40,7 +37,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- User Name -->
         <TextView
             android:id="@+id/tvUserName"
             android:layout_width="wrap_content"
@@ -54,7 +50,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="8dp" />
 
-        <!-- User Email -->
         <TextView
             android:id="@+id/tvUserEmail"
             android:layout_width="wrap_content"
@@ -68,7 +63,6 @@
             android:layout_marginTop="4dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Menu Items -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMenu"
         android:layout_width="0dp"

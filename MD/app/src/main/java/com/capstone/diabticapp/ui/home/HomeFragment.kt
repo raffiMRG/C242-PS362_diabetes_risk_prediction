@@ -47,5 +47,4 @@ class HomeFragment : Fragment() {
     private fun navigateToMedicalHistory() {
 
     }
-
 }
