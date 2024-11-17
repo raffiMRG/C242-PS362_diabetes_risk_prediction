@@ -26,6 +26,8 @@ class HomeFragment : Fragment() {
 
         val homeCards = listOf(
             HomeCardItem(R.drawable.ic_stomatch, "Diabets Calculator"),
+            HomeCardItem(R.drawable.ic_bloodrop, "Medical History"),
+            HomeCardItem(R.drawable.ic_stomatch, "Diabets Calculator"),
             HomeCardItem(R.drawable.ic_bloodrop, "Medical History")
         )
 
@@ -36,6 +38,7 @@ class HomeFragment : Fragment() {
             }
         }
 
+        binding.rvHomeCards.isNestedScrollingEnabled = false
         binding.rvHomeCards.layoutManager = LinearLayoutManager(requireContext())
         binding.rvHomeCards.adapter = adapter
     }
