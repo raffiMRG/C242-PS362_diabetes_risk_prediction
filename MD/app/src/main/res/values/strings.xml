@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Diabtic App</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_setting">Setting</string>
+    <string name="user_name">Julia Mario</string>
+    <string name="user_email">juliamario@gmail.com</string>
+    <string name="account">Account</string>
+    <string name="diabets_calculator">Diabets Calculator</string>
+    <string name="hi_user">👋 Hi Julia!</string>
+</resources>
