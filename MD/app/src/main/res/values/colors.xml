@@ -10,4 +10,5 @@
     <color name="gray">#5d615e</color>
     <color name="purple">#432C81</color>
     <color name="light_gray">#EDECF4</color>
+    <color name="transparant">#00FFFFFF</color>
 </resources>

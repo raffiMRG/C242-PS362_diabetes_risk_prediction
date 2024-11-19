@@ -8,29 +8,38 @@
     tools:context=".ui.calculate.CalculateActivity"
     android:paddingHorizontal="16dp">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
+    <com.capstone.diabticapp.ui.custom.MyAppBar
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Prediction"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/purple"
+        app:toolbarTitle="Prediction"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"/>
+
+    <ImageView
+        android:id="@+id/img_icon"
+        android:layout_width="198dp"
+        android:layout_height="169dp"
+        android:src="@drawable/ic_predic"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@id/appbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
         android:id="@+id/gender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Jenis Kelamin"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="32dp"
         android:layout_marginBottom="20dp"
         android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="@color/purple"
-        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@id/img_icon"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <RadioButton

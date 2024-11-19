@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardCornerRadius="16dp"
-    app:cardElevation="20dp">
+    app:cardElevation="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -29,11 +29,12 @@
             android:layout_height="wrap_content"
             android:text="Tips Sederhana Darius Sinathrya Donna Agnesia Lindungi Keluarga dari Diabetes"
             android:textStyle="bold"
-            android:textSize="17sp"
+            android:textSize="16sp"
             android:ellipsize="end"
             android:maxLines="4"
             android:padding="10dp"
             android:textColor="@color/black"
+            android:fontFamily="@font/inter_bold"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/img_thumbnail"
             app:layout_constraintEnd_toEndOf="parent"/>
