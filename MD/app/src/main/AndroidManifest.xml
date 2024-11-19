@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,6 +14,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DiabticApp"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.detail_news.DetailNewsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.news.NewsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.history.HistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.calculate.CalculateActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.register.RegisterActivity"
             android:exported="false" />
@@ -27,9 +41,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            android:label="@string/app_name">
-
-        </activity>
+            android:label="@string/app_name" />
     </application>
 
 </manifest>

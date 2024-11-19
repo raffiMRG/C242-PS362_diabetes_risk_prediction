@@ -1,12 +1,16 @@
 package com.capstone.diabticapp.ui.home
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.diabticapp.R
+import java.security.PrivateKey
 
 class HomeAdapter(
     private val items: List<HomeCardItem>,
