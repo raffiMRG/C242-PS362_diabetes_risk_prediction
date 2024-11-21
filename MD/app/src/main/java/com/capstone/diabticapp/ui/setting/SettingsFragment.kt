@@ -1,5 +1,6 @@
 package com.capstone.diabticapp.ui.setting
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.diabticapp.R
 import com.capstone.diabticapp.databinding.FragmentSettingBinding
+import com.capstone.diabticapp.ui.account.AccountActivity
 
 class SettingsFragment : Fragment() {
 
@@ -27,14 +29,14 @@ class SettingsFragment : Fragment() {
         val settingItems = listOf(
             SettingItem(R.drawable.ic_account, "Account"),
             SettingItem(R.drawable.ic_appearance, "Appearance"),
-            SettingItem(R.drawable.ic_privacy, "Privacy & Security")
+            SettingItem(R.drawable.ic_logout, "Logout")
         )
 
         val adapter = SettingAdapter(settingItems) { settingItem ->
             when (settingItem.title) {
                 "Account" -> navigateToAccount()
                 "Appearance" -> navigateToAppearance()
-                "Privacy & Security" -> navigateToPrivacy()
+                "Logout" -> navigateToLogout()
             }
         }
         binding.rvMenu.adapter = adapter
@@ -42,12 +44,14 @@ class SettingsFragment : Fragment() {
     }
 
     private fun navigateToAccount() {
+        val intent = Intent(this.context, AccountActivity::class.java)
+        this.context?.startActivity(intent)
     }
 
     private fun navigateToAppearance() {
     }
 
-    private fun navigateToPrivacy() {
+    private fun navigateToLogout() {
 
     }
 }

@@ -19,43 +19,47 @@ class MyAppBar @JvmOverloads constructor(
 
     init {
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-//        setPadding(40, 24, 20, 24) // Padding di sekitar toolbar
 
-        // Menambahkan tombol kembali
+        // Back button
         val backButton = ImageView(context).apply {
             id = generateViewId()
-            setImageResource(R.drawable.baseline_arrow_back_ios_24)  // Ganti dengan ikon yang diinginkan
+            setImageResource(R.drawable.baseline_arrow_back_ios_24)
             layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
-                // Menambahkan constraint
                 topToTop = LayoutParams.PARENT_ID
                 startToStart = LayoutParams.PARENT_ID
-                setMargins(0, 20, 0, 0) // Margin atas
+                setMargins(0, 20, 0, 0)
             }
-            setOnClickListener { (context as? AppCompatActivity)?.onBackPressed() }
+            setOnClickListener {
+                val activity = context as? AppCompatActivity
+                val fragmentManager = activity?.supportFragmentManager
+                if (fragmentManager != null && fragmentManager.backStackEntryCount > 0) {
+                    fragmentManager.popBackStack() // Handle fragment back navigation
+                } else {
+                    activity?.onBackPressed() // Default back navigation
+                }
+            }
         }
 
-        // Menambahkan judul
+        // Title text
         val titleText = TextView(context).apply {
             id = generateViewId()
             text = "Default Title"
             textSize = 24f
-//            typeface = Typeface.DEFAULT_BOLD
             typeface = ResourcesCompat.getFont(context, R.font.raleway_bold)
             setTextColor(ContextCompat.getColor(context, R.color.purple))
             layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
-                // Menambahkan constraint
-                topToTop = backButton.id  // Menggunakan ID dari backButton
+                topToTop = backButton.id
                 bottomToBottom = backButton.id
                 startToEnd = backButton.id
                 setMargins(16, 0, 0, 0)
             }
         }
 
-        // Menambahkan elemen-elemen ke dalam toolbar
+        // Add views to layout
         addView(backButton)
         addView(titleText)
 
-        // Memungkinkan untuk menggunakan atribut XML (jika diperlukan)
+        // Handle XML attributes
         attrs?.let {
             val typedArray = context.obtainStyledAttributes(it, R.styleable.CustomToolbar)
             val title = typedArray.getString(R.styleable.CustomToolbar_toolbarTitle) ?: "Default Title"

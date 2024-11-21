@@ -15,6 +15,9 @@
         android:theme="@style/Theme.DiabticApp"
         tools:targetApi="31">
         <activity
+            android:name=".ui.account.AccountActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.detail_news.DetailNewsActivity"
             android:exported="false" />
         <activity
