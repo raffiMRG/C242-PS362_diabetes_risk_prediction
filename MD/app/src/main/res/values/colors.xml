@@ -13,4 +13,5 @@
     <color name="transparant">#00FFFFFF</color>
     <color name="text_gray">#82799D</color>
     <color name="title_purple">#432C81</color>
+    <color name="red">#cc0a0a</color>
 </resources>

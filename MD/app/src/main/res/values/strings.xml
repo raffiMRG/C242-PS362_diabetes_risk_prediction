@@ -16,4 +16,10 @@
     <string name="next">Next</string>
     <string name="desc_no_diabetes_detected">Lakukan olahraga teratur, konsumsi makanan sehat, dan pastikan tidur yang cukup untuk menjaga kesehatan tubuh.</string>
     <string name="title_no_diabetes_detected">Selamat Kamu Tidak Terdeteksi Diabetes</string>
+    <string name="simpan">Simpan</string>
+    <string name="no_telp">No.Telp</string>
+    <string name="Ubah_notelp">Ubah Nomor Telepon</string>
+    <string name="Ubah_nama">Ubah Nama</string>
+    <string name="Ubah_pw">Ubah Password</string>
+    <string name="hapus_akun">Hapus Akun</string>
 </resources>
