@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -22,9 +24,19 @@ class CalculateActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-//        myAppBar.setOnBackPressedListener{
-//            onBackPressed()
-//        }
+        val radioGroup = findViewById<RadioGroup>(R.id.btn_gender)
+
+        radioGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.btn_male -> {
+                    Toast.makeText(this, "Option 1 selected", Toast.LENGTH_SHORT).show()
+                }
+
+                R.id.btn_female -> {
+                    Toast.makeText(this, "Option 2 selected", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     // TODO: Gunakan fungsi ini untuk menampilkan layout user yang terkena Diabetes

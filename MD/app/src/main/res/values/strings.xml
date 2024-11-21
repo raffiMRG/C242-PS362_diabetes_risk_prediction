@@ -10,7 +10,8 @@
     <string name="hi_user">👋 Hi Julia!</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="status_diabets">\"Stay healthy, stay safe\"</string>
+    <string name="status_diabets_negative">\"Stay healthy, stay safe\"</string>
+    <string name="status_diabets_positive">\"Stay active, stay positive\"</string>
     <string name="desc_diabetes_detected">Jaga pola makan seimbang, rutin berolahraga, dan pantau kadar gula darah secara berkala untuk mengelola diabetes dengan baik.</string>
     <string name="title_diabetes_detected">Wah.. Kamu Terdeteksi Diabetes!</string>
     <string name="next">Next</string>

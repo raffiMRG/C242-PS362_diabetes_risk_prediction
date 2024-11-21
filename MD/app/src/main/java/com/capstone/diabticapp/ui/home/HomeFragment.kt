@@ -6,16 +6,19 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.diabticapp.R
 import com.capstone.diabticapp.databinding.FragmentHomeBinding
 import com.capstone.diabticapp.ui.calculate.CalculateActivity
+import com.capstone.diabticapp.ui.history.HistoryActivity
 import com.capstone.diabticapp.ui.news.NewsActivity
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
+    private var isDiabetets: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +45,15 @@ class HomeFragment : Fragment() {
             }
         }
 
+        if (isDiabetets){
+            binding.profileBackgroud.background = ContextCompat.getDrawable(requireContext(), R.drawable.background_image_green)
+            binding.diabetsStatus.text = getString(R.string.status_diabets_negative)
+        }else{
+            binding.profileBackgroud.background = ContextCompat.getDrawable(requireContext(), R.drawable.background_image_red)
+            binding.diabetsStatus.text = getString(R.string.status_diabets_positive)
+        }
+
+
         binding.rvHomeCards.isNestedScrollingEnabled = false
         binding.rvHomeCards.layoutManager = LinearLayoutManager(requireContext())
         binding.rvHomeCards.adapter = adapter
@@ -53,7 +65,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToMedicalHistory() {
-
+        val intent = Intent(this.context, HistoryActivity::class.java)
+        this.context?.startActivity(intent)
     }
 
     private fun navigateToRelatedNews(){
