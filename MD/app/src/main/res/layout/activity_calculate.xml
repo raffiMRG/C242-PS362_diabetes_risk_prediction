@@ -42,45 +42,31 @@
         app:layout_constraintTop_toBottomOf="@id/img_icon"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <RadioButton
-        android:id="@+id/btn_male"
+    <RadioGroup
+        android:id="@+id/btn_gender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/gender"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="16dp"/>
+        app:layout_constraintStart_toStartOf="parent">
 
-    <TextView
-        android:id="@+id/lable_male"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pria"
-        android:textSize="16sp"
-        android:textColor="@color/purple"
-        app:layout_constraintTop_toTopOf="@id/btn_male"
-        app:layout_constraintBottom_toBottomOf="@id/btn_male"
-        app:layout_constraintStart_toEndOf="@id/btn_male"/>
+        <RadioButton
+            android:id="@+id/btn_male"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/gender"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Pria"/>
 
-
-    <RadioButton
-        android:id="@+id/btn_female"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/btn_male"
-        app:layout_constraintBottom_toBottomOf="@id/btn_male"
-        app:layout_constraintEnd_toStartOf="@id/lable_female" />
-
-    <TextView
-        android:id="@+id/lable_female"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Wanita"
-        android:textSize="16sp"
-        android:textColor="@color/purple"
-        app:layout_constraintTop_toTopOf="@id/btn_female"
-        app:layout_constraintBottom_toBottomOf="@id/btn_female"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="28dp"/>
+        <RadioButton
+            android:id="@+id/btn_female"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/btn_male"
+            app:layout_constraintBottom_toBottomOf="@id/btn_male"
+            android:layout_marginStart="100dp"
+            android:text="Wanita" />
+    </RadioGroup>
 
 
     <TextView
@@ -93,7 +79,7 @@
         android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="@color/purple"
-        app:layout_constraintTop_toBottomOf="@id/btn_male"
+        app:layout_constraintTop_toBottomOf="@id/btn_gender"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <EditText

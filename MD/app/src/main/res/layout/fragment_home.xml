@@ -39,9 +39,9 @@
             android:paddingBottom="16dp">
 
             <ImageView
+                android:id="@+id/profile_backgroud"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:background="@drawable/background_image"
                 app:layout_constraintTop_toTopOf="@id/ivProfile"
                 app:layout_constraintStart_toStartOf="@id/ivProfile"
                 app:layout_constraintEnd_toEndOf="@id/ivProfile"
@@ -61,7 +61,7 @@
                 android:id="@+id/diabets_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/status_diabets"
+                android:text="@string/status_diabets_negative"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/purple"
