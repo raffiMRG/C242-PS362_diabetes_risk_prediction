@@ -14,4 +14,11 @@
     <color name="text_gray">#82799D</color>
     <color name="title_purple">#432C81</color>
     <color name="red">#cc0a0a</color>
+
+    <color name="blue_primary">#5271FF</color>
+    <color name="green_primary">#2ECC71</color>
+    <color name="onGreen_primary">#EAF8F5</color>
+    <color name="onBlue_primary">#989EBB</color>
+
+    <color name="white_trancparant">#7FFFFFFF</color>
 </resources>
