@@ -1,0 +1,17 @@
+runtime: nodejs18
+
+instance_class: F2
+
+env_variables:
+  JWT_SECRET_KEY: "TOKEN"
+  JWT_REFRESH_SECRET_KEY: "TOKEN"
+
+automatic_scaling:
+  target_cpu_utilization: 0.65
+  max_instances: 10
+
+handlers:
+  - url: /.*  # Semua request lain akan diteruskan ke aplikasi Node.js
+    script: auto
+
+entrypoint: node server.js
