@@ -8,10 +8,33 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#5d615e</color>
-    <color name="purple">#432C81</color>
+    <color name="blue">#5271FF</color>
     <color name="light_gray">#EDECF4</color>
     <color name="transparant">#00FFFFFF</color>
     <color name="text_gray">#82799D</color>
-    <color name="title_purple">#432C81</color>
+    <color name="title_blue">#5271FF</color>
     <color name="red">#cc0a0a</color>
+    <color name="green">#2ECC71</color>
+
+    <!-- Primary Colors -->
+    <color name="colorPrimary">#5271FF</color>
+    <color name="colorPrimaryVariant">#415ECC</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+
+    <!-- Secondary Colors -->
+    <color name="colorSecondary">#A3BFFF</color>
+    <color name="colorSecondaryVariant">#7FAAFF</color>
+    <color name="colorOnSecondary">#000000</color>
+
+    <!-- Background Colors -->
+    <color name="colorBackground">#FFFFFF</color>
+    <color name="colorOnBackground">#000000</color>
+
+    <!-- Surface Colors -->
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorOnSurface">#000000</color>
+
+    <!-- Error Colors -->
+    <color name="colorError">#B00020</color>
+    <color name="colorOnError">#FFFFFF</color>
 </resources>

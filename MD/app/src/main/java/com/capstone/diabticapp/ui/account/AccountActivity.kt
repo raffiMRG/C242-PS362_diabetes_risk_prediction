@@ -2,75 +2,122 @@ package com.capstone.diabticapp.ui.account
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
+import com.capstone.diabticapp.AccountViewModelFactory
 import com.capstone.diabticapp.R
+import com.capstone.diabticapp.data.pref.UserPreference
+import com.capstone.diabticapp.data.pref.dataStore
 import com.capstone.diabticapp.databinding.ActivityAccountBinding
+import com.capstone.diabticapp.ui.custom.ProfileAppBar
+import kotlinx.coroutines.flow.collect
 
 class AccountActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAccountBinding
+    private lateinit var appBar: ProfileAppBar
+    private val accountViewModel: AccountViewModel by viewModels {
+        AccountViewModelFactory(UserPreference.getInstance(applicationContext.dataStore))
+    }
+
+    private var originalName = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivityAccountBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        appBar = binding.appbar
+        appBar.setTitle(getString(R.string.profile))
 
-        // Contoh data profil TODO: nanti gunain data dari API sesuai yang sudah teregister oleh user
-        val accountItems = listOf(
-            AccountItem("Nama", "Julia Mario"),
-            AccountItem("Email", "juliamario@mail.com"),
-            AccountItem("No.HP", "085859028141")
-        )
+        observeViewModel()
 
-        val adapter = AccountProfileAdapter(accountItems) { accountItem ->
-            when (accountItem.label) {
-                "Nama" -> navigateToFragment(ChangeNameFragment())
-                "Email" -> navigateToFragment(ChangePasswordFragment()) // Example placeholder
-                "No.HP" -> navigateToFragment(ChangePhoneFragment())
+        binding.tvChangeName.setOnClickListener {
+            enterEditMode("Edit Name", binding.etName)
+        }
+
+        appBar.setSaveClickListener {
+            saveChanges()
+        }
+
+        appBar.setCancelClickListener {
+            cancelChanges()
+        }
+    }
+
+    private fun observeViewModel() {
+        lifecycleScope.launchWhenStarted {
+            accountViewModel.userName.collect { name ->
+                originalName = name
+                binding.etName.setText(name)
             }
         }
 
-        binding.recyclerView.adapter = adapter
-        // Add back stack listener to handle visibility toggling
-        supportFragmentManager.addOnBackStackChangedListener {
-            handleBackStackChanged()
+        lifecycleScope.launchWhenStarted {
+            accountViewModel.userEmail.collect { email ->
+                binding.tvEmail.text = email
+            }
         }
 
-    }
+        lifecycleScope.launchWhenStarted {
+            accountViewModel.stateMessage.collect { message ->
+                message?.let {
+                    Toast.makeText(this@AccountActivity, it, Toast.LENGTH_SHORT).show()
+                    accountViewModel.clearMessage()
+                }
+            }
+        }
 
-    // TODO: untuk navigasi ke Fragment yang bisa merubah nama profile saat ini
-    private fun navigateToFragment(fragment: Fragment) {
-        toggleVisibility(true)
-        supportFragmentManager.commit {
-            replace(R.id.fragment_container, fragment)
-            addToBackStack(null)
+        lifecycleScope.launchWhenStarted {
+            accountViewModel.userPhotoUrl.collect { photoUrl ->
+                photoUrl?.let {
+                    Glide.with(this@AccountActivity)
+                        .load(it)
+                        .placeholder(R.drawable.ic_profile)
+                        .error(R.drawable.ic_profile)
+                        .circleCrop()
+                        .into(binding.ivProfilePicture)
+                }
+            }
         }
     }
-    @Suppress("DEPRECATION")
-    override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount > 0) {
-            supportFragmentManager.popBackStack()
-        } else {
-            super.onBackPressed()
+
+    private fun enterEditMode(title: String, editText: View) {
+        appBar.setTitle(title)
+        appBar.showEditActions()
+
+        editText.isFocusableInTouchMode = true
+        editText.isFocusable = true
+        editText.requestFocus()
+    }
+
+    private fun saveChanges() {
+        val newName = binding.etName.text.toString()
+
+        if (newName != originalName) {
+            accountViewModel.updateUserName(newName)
         }
+
+        exitEditMode()
     }
 
-    private fun toggleVisibility(showFragment: Boolean) {
-        binding.accountContent.visibility = if (showFragment) View.GONE else View.VISIBLE
-        binding.fragmentContainer.visibility = if (showFragment) View.VISIBLE else View.GONE
-    }
-    private fun handleBackStackChanged() {
-        // Check the back stack and toggle visibility accordingly
-        val isFragmentVisible = supportFragmentManager.backStackEntryCount > 0
-        toggleVisibility(showFragment = isFragmentVisible)
+    private fun cancelChanges() {
+        binding.etName.setText(originalName)
+        exitEditMode()
     }
 
+    private fun exitEditMode() {
+        appBar.setTitle(getString(R.string.profile))
+        appBar.hideEditActions()
+
+        disableEditing(binding.etName)
+    }
+
+    private fun disableEditing(editText: View) {
+        editText.isFocusable = false
+        editText.isFocusableInTouchMode = false
+    }
 }

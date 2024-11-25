@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +16,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DiabticApp"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.otp.PhoneNumberActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.otp.OtpVerificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.login.LoginGmailActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.account.AccountActivity"
             android:exported="false" />
@@ -34,13 +51,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.login.LoginActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false"

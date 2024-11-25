@@ -5,15 +5,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.capstone.diabticapp.AuthViewModelFactory
 import com.capstone.diabticapp.R
+import com.capstone.diabticapp.data.AuthRepository
+import com.capstone.diabticapp.data.pref.UserPreference
+import com.capstone.diabticapp.data.pref.dataStore
 import com.capstone.diabticapp.databinding.FragmentSettingBinding
 import com.capstone.diabticapp.ui.account.AccountActivity
+import com.capstone.diabticapp.ui.login.LoginGmailActivity
 
 class SettingsFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingBinding
+    private val viewModel: SettingsViewModel by viewModels {
+        AuthViewModelFactory(AuthRepository(UserPreference.getInstance(requireContext().dataStore)))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,14 +38,12 @@ class SettingsFragment : Fragment() {
 
         val settingItems = listOf(
             SettingItem(R.drawable.ic_account, "Account"),
-            SettingItem(R.drawable.ic_appearance, "Appearance"),
             SettingItem(R.drawable.ic_logout, "Logout")
         )
 
         val adapter = SettingAdapter(settingItems) { settingItem ->
             when (settingItem.title) {
                 "Account" -> navigateToAccount()
-                "Appearance" -> navigateToAppearance()
                 "Logout" -> navigateToLogout()
             }
         }
@@ -48,10 +56,14 @@ class SettingsFragment : Fragment() {
         this.context?.startActivity(intent)
     }
 
-    private fun navigateToAppearance() {
-    }
 
     private fun navigateToLogout() {
+        viewModel.logout()
+        Toast.makeText(requireContext(), "Logged out successfully", Toast.LENGTH_SHORT).show()
 
+        // Navigate to ChooseLoginActivity
+        val intent = Intent(requireContext(), LoginGmailActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish() // Clear the back stack
     }
 }

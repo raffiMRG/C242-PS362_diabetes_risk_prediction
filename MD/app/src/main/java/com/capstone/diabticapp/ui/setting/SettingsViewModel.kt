@@ -3,11 +3,15 @@ package com.capstone.diabticapp.ui.setting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.capstone.diabticapp.data.AuthRepository
+import kotlinx.coroutines.launch
 
-class SettingsViewModel : ViewModel() {
+class SettingsViewModel (private val authRepository: AuthRepository) : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is notifications Fragment"
+    fun logout() {
+        viewModelScope.launch {
+            authRepository.logout()
+        }
     }
-    val text: LiveData<String> = _text
 }
