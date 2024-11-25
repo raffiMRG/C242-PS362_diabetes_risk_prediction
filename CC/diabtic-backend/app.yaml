@@ -3,8 +3,8 @@ runtime: nodejs18
 instance_class: F2
 
 env_variables:
-  JWT_SECRET_KEY: "XNDCuAbKzW3IwPFDkDsSJI5tzYs9kHyPcfgxMBHw/aY="
-  JWT_REFRESH_SECRET_KEY: "4fokP+wcespkxSquJmx3Fc3YlePDxamp4d6CTR2UQ70="
+  JWT_SECRET_KEY: "TOKEN"
+  JWT_REFRESH_SECRET_KEY: "TOKEN"
 
 automatic_scaling:
   target_cpu_utilization: 0.65
