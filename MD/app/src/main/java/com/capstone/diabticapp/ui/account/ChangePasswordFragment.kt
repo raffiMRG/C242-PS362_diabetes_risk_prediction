@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.capstone.diabticapp.R
-import com.capstone.diabticapp.databinding.FragmentChangeNameBinding
 import com.capstone.diabticapp.databinding.FragmentChangePasswordBinding
 
 class ChangePasswordFragment : Fragment() {
