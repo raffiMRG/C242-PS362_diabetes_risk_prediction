@@ -1,6 +1,7 @@
 package com.capstone.diabticapp.ui.home
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -57,6 +58,13 @@ class HomeFragment : Fragment() {
         binding.rvHomeCards.isNestedScrollingEnabled = false
         binding.rvHomeCards.layoutManager = LinearLayoutManager(requireContext())
         binding.rvHomeCards.adapter = adapter
+
+        setBackgroundBasedOnMode()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        setBackgroundBasedOnMode()
     }
 
     private fun navigateToDiabetsCalculator() {
@@ -72,5 +80,21 @@ class HomeFragment : Fragment() {
     private fun navigateToRelatedNews(){
         val intent = Intent(this.context, NewsActivity::class.java)
         this.context?.startActivity(intent)
+    }
+
+    private fun setBackgroundBasedOnMode() {
+        // Ganti dengan ID root layout Anda
+        if (isNightMode()) {
+            binding.heroLayout.setBackgroundResource(R.drawable.hero1_3night) // Warna untuk Night Mode
+            binding.tvGreeting.setBackgroundResource(R.color.night_primary)
+        } else {
+            binding.heroLayout.setBackgroundResource(R.drawable.hero1_2) // Warna untuk Light Mode
+            binding.tvGreeting.setBackgroundResource(R.color.blue_primary)
+        }
+    }
+
+    private fun isNightMode(): Boolean {
+        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return currentNightMode == Configuration.UI_MODE_NIGHT_YES
     }
 }

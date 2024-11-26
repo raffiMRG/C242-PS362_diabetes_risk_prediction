@@ -25,4 +25,10 @@
 
     <color name="white_trancparant">#7FFFFFFF</color>
 
+    <color name="night_primary_background">#161622</color>
+    <color name="night_primary_foreground">#27273A</color>
+    <color name="night_btn_active">#0066FF</color>
+    <color name="night_btn_inactive">#8B8B94</color>
+    <color name="night_primary">#253993</color>
+    <color name="night_on_primary">#E9EB87</color>
 </resources>
