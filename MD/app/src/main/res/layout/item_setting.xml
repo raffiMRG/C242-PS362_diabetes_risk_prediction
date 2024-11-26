@@ -12,7 +12,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:src="@drawable/ic_account"
-        app:tint="@color/blue" />
+        app:tint="?android:attr/textColor" />
 
     <TextView
         android:id="@+id/tvTitle"
@@ -22,7 +22,6 @@
         android:layout_marginEnd="8dp"
         android:text="@string/account"
         android:textSize="16sp"
-        android:textColor="@color/black"
         android:layout_weight="1" />
 
     <ImageView
@@ -30,5 +29,5 @@
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:src="@drawable/ic_arrow_right"
-        app:tint="@color/gray" />
+        app:tint="?android:attr/textColor" />
 </LinearLayout>

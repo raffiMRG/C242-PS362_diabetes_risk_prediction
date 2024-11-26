@@ -2,15 +2,20 @@
     <!-- Base application theme. -->
     <style name="Theme.DiabticApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/night_btn_active</item>
+        <item name="colorPrimaryVariant">@color/night_primary</item>
+        <item name="colorOnPrimary">@color/night_btn_active</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/night_btn_active</item>
+        <item name="colorSecondaryVariant">@color/night_btn_active</item>
+        <item name="colorOnSecondary">@color/night_btn_active</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:navigationBarColor">@color/night_primary_foreground</item>
         <!-- Customize your theme here. -->
+        <item name="android:colorBackground">@color/night_primary_background</item>
+
+        <item name="android:textColor">@color/white</item>
     </style>
+
 </resources>

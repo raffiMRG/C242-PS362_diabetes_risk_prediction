@@ -46,7 +46,6 @@ class MyAppBar @JvmOverloads constructor(
             text = "Default Title"
             textSize = 24f
             typeface = ResourcesCompat.getFont(context, R.font.raleway_bold)
-            setTextColor(ContextCompat.getColor(context, R.color.blue))
             layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
                 topToTop = backButton.id
                 bottomToBottom = backButton.id
