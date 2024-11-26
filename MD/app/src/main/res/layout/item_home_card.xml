@@ -8,6 +8,7 @@
     app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/home_item_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/card1_4">
@@ -19,7 +20,6 @@
             android:text="@string/diabets_calculator"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/blue"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
