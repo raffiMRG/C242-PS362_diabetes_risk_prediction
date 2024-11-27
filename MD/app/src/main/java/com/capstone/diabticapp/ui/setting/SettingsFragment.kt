@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.capstone.diabticapp.AuthViewModelFactory
 import com.capstone.diabticapp.R
 import com.capstone.diabticapp.data.AuthRepository
@@ -36,6 +37,11 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupRecyclerView()
+        observeViewModel()
+    }
+
+    private fun setupRecyclerView() {
         val settingItems = listOf(
             SettingItem(R.drawable.ic_account, "Account"),
             SettingItem(R.drawable.ic_logout, "Logout")
@@ -51,19 +57,38 @@ class SettingsFragment : Fragment() {
         binding.rvMenu.layoutManager = LinearLayoutManager(requireContext())
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
+    private fun observeViewModel() {
+        // Observe username changes
+        viewModel.username.observe(viewLifecycleOwner) { name ->
+            binding.tvNama.text = name
+        }
+
+        // Observe profile picture changes
+        viewModel.userPhotoUrl.observe(viewLifecycleOwner) { photoUrl ->
+            Glide.with(this)
+                .load(photoUrl)
+                .placeholder(R.drawable.ic_profile) // Default placeholder
+                .circleCrop()
+                .into(binding.ivProfilePicture)
+        }
+
+    }
+
     private fun navigateToAccount() {
         val intent = Intent(this.context, AccountActivity::class.java)
         this.context?.startActivity(intent)
     }
 
-
     private fun navigateToLogout() {
         viewModel.logout()
         Toast.makeText(requireContext(), "Logged out successfully", Toast.LENGTH_SHORT).show()
 
-        // Navigate to ChooseLoginActivity
         val intent = Intent(requireContext(), LoginGmailActivity::class.java)
         startActivity(intent)
-        requireActivity().finish() // Clear the back stack
+        requireActivity().finish()
     }
 }

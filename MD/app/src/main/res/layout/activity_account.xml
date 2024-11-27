@@ -38,6 +38,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:src="@drawable/ic_profile"
+                    android:padding="4dp"
                     android:contentDescription="Profile Picture"
                     android:background="@drawable/circle_background" />
 
@@ -118,13 +119,6 @@
                     android:textSize="16sp"
                     android:textColor="@color/black" />
 
-                <TextView
-                    android:id="@+id/tvChangeEmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Change"
-                    android:textColor="@color/blue"
-                    android:textStyle="bold" />
             </LinearLayout>
 
             <View
@@ -153,7 +147,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:hint="Phone Number"
-                    android:text="085894753157"
+                    android:text="-"
                     android:textSize="16sp"
                     android:textColor="@color/black"
                     android:focusable="false"
@@ -173,7 +167,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/gray" />
-
+            <!--
             <Button
                 android:id="@+id/btnDeleteAccount"
                 android:layout_width="match_parent"
@@ -183,6 +177,7 @@
                 android:textColor="@color/red"
                 android:text="@string/hapus_akun"
                 android:fontFamily="sans-serif-medium" />
+                -->
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

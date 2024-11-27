@@ -75,7 +75,7 @@ class AccountViewModel(private val userPreference: UserPreference) : ViewModel()
                 _stateMessage.value = "Name updated successfully!"
 
                 val session = userPreference.getSession().first()
-                userPreference.saveSession(session.copy(email = newName))
+                userPreference.saveSession(session.copy(name = newName))
             } catch (e: Exception) {
                 _stateMessage.value = "Failed to update name: ${e.message}"
             }

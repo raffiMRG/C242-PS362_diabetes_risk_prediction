@@ -13,7 +13,7 @@ import com.capstone.diabticapp.data.pref.UserPreference
 import com.capstone.diabticapp.data.pref.dataStore
 import com.capstone.diabticapp.databinding.ActivityAccountBinding
 import com.capstone.diabticapp.ui.custom.ProfileAppBar
-import kotlinx.coroutines.flow.collect
+
 
 class AccountActivity : AppCompatActivity() {
 

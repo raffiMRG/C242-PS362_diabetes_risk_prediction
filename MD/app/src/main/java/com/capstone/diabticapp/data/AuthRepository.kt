@@ -22,9 +22,11 @@ class AuthRepository(private val userPreference: UserPreference) {
             user?.let {
                 userPreference.saveSession(
                     UserModel(
+                        name = it.displayName ?: "No Name",
                         email = it.email ?: "",
                         token = it.uid,
-                        isLogin = true
+                        isLogin = true,
+                        photoUrl = it.photoUrl?.toString()
 //                        isOtpVerified = false,
 //                        isPhoneNumberSet = false
                     )
