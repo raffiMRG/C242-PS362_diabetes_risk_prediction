@@ -20,6 +20,8 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
             preferences[EMAIL_KEY] = user.email
             preferences[TOKEN_KEY] = user.token
             preferences[IS_LOGIN_KEY] = user.isLogin
+            preferences[NAME_KEY] = user.name
+            user.photoUrl?.let { preferences[PHOTO_URL_KEY] = it }
 //            preferences[IS_OTP_VERIFIED_KEY] = user.isOtpVerified
 //            preferences[IS_PHONE_NUMBER_SET_KEY] = user.isPhoneNumberSet
 //            preferences[PHONE_NUMBER_KEY] = user.phoneNumber?: ""
@@ -32,7 +34,9 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
             UserModel(
                 email = preferences[EMAIL_KEY] ?: "",
                 token = preferences[TOKEN_KEY] ?: "",
-                isLogin = preferences[IS_LOGIN_KEY] ?: false
+                isLogin = preferences[IS_LOGIN_KEY] ?: false,
+                name = preferences[NAME_KEY] ?: "No Name",
+                photoUrl = preferences[PHOTO_URL_KEY]
 //                isOtpVerified = preferences[IS_OTP_VERIFIED_KEY] ?: false,
 //                isPhoneNumberSet = preferences[IS_PHONE_NUMBER_SET_KEY] ?: false,
 //                phoneNumber = preferences[PHONE_NUMBER_KEY]
@@ -75,6 +79,8 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         private val EMAIL_KEY = stringPreferencesKey("email")
         private val TOKEN_KEY = stringPreferencesKey("token")
         private val IS_LOGIN_KEY = booleanPreferencesKey("isLogin")
+        private val NAME_KEY = stringPreferencesKey("name")
+        private val PHOTO_URL_KEY = stringPreferencesKey("photo_url")
 //        private val IS_OTP_VERIFIED_KEY = booleanPreferencesKey("isOtpVerified")
 //        private val IS_PHONE_NUMBER_SET_KEY = booleanPreferencesKey("isPhoneNumberSet")
 //        private val PHONE_NUMBER_KEY = stringPreferencesKey("phoneNumber")
