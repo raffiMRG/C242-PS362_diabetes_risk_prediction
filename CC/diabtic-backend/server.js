@@ -4,6 +4,8 @@ const registerHandler = require("./registerHandler");
 const refreshTokenHandler = require("./refreshTokenHandler");
 const logoutHandler = require("./logoutHandler");
 const accountHandler = require("./accountHandler");
+const addPredictionHandler = require("./addPredictionHandler");
+const getPredictionHandler = require("./getPredictionHandler");
 
 const app = express();
 app.use(express.json());
@@ -14,6 +16,8 @@ app.post("/register", registerHandler);
 app.post("/logout", logoutHandler);
 app.post("/refresh-token", refreshTokenHandler);
 app.get("/account", accountHandler);
+app.post("/account/predictions", addPredictionHandler);
+app.get("/account/predictions", getPredictionHandler);
 
 // Default route
 app.get("/", (req, res) => {

@@ -57,6 +57,13 @@ const registerHandler = async (req, res) => {
       createdAt: Firestore.FieldValue.serverTimestamp(),
     });
 
+    // Buat subkoleksi predictions kosong untuk pengguna baru
+    const predictionsRef = userRefByUsername.collection("predictions");
+    await predictionsRef.doc("init").set({
+      initialized: true,
+      createdAt: Firestore.FieldValue.serverTimestamp(),
+    });
+
     // Respons sukses
     return res.status(200).json({
       success: true,
