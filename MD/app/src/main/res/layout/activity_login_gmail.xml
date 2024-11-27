@@ -50,7 +50,8 @@
         android:id="@+id/btn_login_email"
         style="@style/ButtonStyle.Email"
         android:text="Login with Email"
-        app:layout_constraintTop_toBottomOf="@id/iv_illustration"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@id/tv_or"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.8"
@@ -62,10 +63,10 @@
         android:layout_height="wrap_content"
         android:text="OR"
         android:textColor="@color/title_blue"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:textSize="12sp"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login_email"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login_google"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -74,10 +75,10 @@
         android:id="@+id/btn_login_google"
         style="@style/ButtonStyle.Google"
         android:text="Continue With Google"
-        app:layout_constraintTop_toBottomOf="@id/tv_or"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintWidth_percent="0.8"
-        android:layout_marginTop="16dp" />
+        android:layout_marginBottom="24dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
