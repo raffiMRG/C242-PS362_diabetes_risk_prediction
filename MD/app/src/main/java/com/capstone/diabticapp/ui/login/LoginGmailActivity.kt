@@ -3,6 +3,7 @@ package com.capstone.diabticapp.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +19,7 @@ import com.capstone.diabticapp.ui.otp.PhoneNumberActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -97,7 +99,7 @@ class LoginGmailActivity : AppCompatActivity() {
         binding.btnLoginGoogle.setOnClickListener {
             googleSignInClient.signOut().addOnCompleteListener {
                 val signInIntent = googleSignInClient.signInIntent
-                startActivityForResult(signInIntent, REQUEST_CODE_GOOGLE_SIGN_IN)
+                googleSignInLauncher.launch(signInIntent)
             }
         }
 
@@ -126,19 +128,22 @@ class LoginGmailActivity : AppCompatActivity() {
         }
     }
 
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_GOOGLE_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            val account = task.result
-            account?.idToken?.let {
-                authViewModel.loginWithGoogle(it)
-            } ?: run {
-                Toast.makeText(this, "Google sign-in failed.", Toast.LENGTH_SHORT).show()
+    private val googleSignInLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                account?.idToken?.let { idToken ->
+                    authViewModel.loginWithGoogle(idToken)
+                }
+            } catch (e: ApiException) {
+                Toast.makeText(this, "Google Sign-In failed: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
 
 //    private fun navigateToActivity(activity: Class<*>) {
 //        val intent = Intent(this, activity)
