@@ -15,8 +15,8 @@ def download_model_from_gcs(bucket_name, model_path, local_path):
     print(f"Model downloaded from {bucket_name}/{model_path} to {local_path}")
 
 BUCKET_NAME = "diabtic-capstone-project.appspot.com" 
-MODEL_PATH = "binary_model.h5"
-LOCAL_MODEL_PATH = "binary_model.h5"
+MODEL_PATH = "diabetes_risk_model.h5"
+LOCAL_MODEL_PATH = "diabetes_risk_model.h5"
 
 # Download model saat container dimulai
 download_model_from_gcs(BUCKET_NAME, MODEL_PATH, LOCAL_MODEL_PATH)
