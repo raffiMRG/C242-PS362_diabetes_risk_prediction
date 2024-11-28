@@ -14,6 +14,7 @@
         <!-- Customize your theme here. -->
         <item name="android:navigationBarColor">@color/white</item>
         <item name="android:textColor">@color/purple</item>
+        <item name="android:windowSplashScreenIconBackgroundColor" tools:ignore="NewApi">@color/blue</item>
     </style>
 
     <style name="ShapeAppearanceOverlay.App.CornerSize16" parent="">

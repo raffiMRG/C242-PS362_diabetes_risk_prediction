@@ -24,4 +24,6 @@
     <string name="Ubah_pw">Ubah Password</string>
     <string name="hapus_akun">Hapus Akun</string>
     <string name="profile">Profile</string>
+    <string name="tagline_title">Deteksi dini\nDengan Diabtic</string>
+    <string name="tagline_subtitle">Karena manisnya gula tak sebanding\ndengan manisnya hidup sehat</string>
 </resources>

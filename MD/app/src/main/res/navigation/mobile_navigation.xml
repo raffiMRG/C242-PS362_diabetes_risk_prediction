@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_setting"
         android:name="com.capstone.diabticapp.ui.setting.SettingsFragment"
         android:label="@string/title_setting"
         tools:layout="@layout/fragment_setting" />
