@@ -7,14 +7,12 @@ import com.capstone.diabticapp.data.pref.UserModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-
 import kotlinx.coroutines.launch
 
 class ChooseLoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
 
     private val _loginState = MutableStateFlow<AuthState>(AuthState.Idle)
     val loginState: StateFlow<AuthState> = _loginState
-
     // Login with Google
     fun loginWithGoogle(idToken: String) {
         viewModelScope.launch {

@@ -14,8 +14,6 @@ import com.capstone.diabticapp.data.AuthRepository
 import com.capstone.diabticapp.data.pref.UserPreference
 import com.capstone.diabticapp.data.pref.dataStore
 import com.capstone.diabticapp.databinding.ActivityLoginGmailBinding
-import com.capstone.diabticapp.ui.otp.OtpVerificationActivity
-import com.capstone.diabticapp.ui.otp.PhoneNumberActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -23,7 +21,6 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.flow.first
 import java.util.Properties
 
 @Suppress("DEPRECATION")
@@ -54,32 +51,7 @@ class LoginGmailActivity : AppCompatActivity() {
         observeLoginState()
     }
 
-//    private fun checkUserSession() {
-//        lifecycleScope.launchWhenStarted {
-//            val userSession = authViewModel.getUserSession().first()
 //
-//            when {
-//                userSession.isLogin && userSession.isPhoneNumberSet && userSession.isOtpVerified -> {
-//                    // User fully verified, navigate to MainActivity
-//                    navigateToActivity(MainActivity::class.java)
-//                }
-//                userSession.isLogin && !userSession.isPhoneNumberSet -> {
-//                    // User logged in but phone number is not set
-//                    navigateToActivity(PhoneNumberActivity::class.java)
-//                }
-//                userSession.isLogin && !userSession.isOtpVerified -> {
-//                    // User logged in but OTP is not verified
-//                    navigateToActivity(OtpVerificationActivity::class.java)
-//                }
-//                else -> {
-//                    // User not logged in
-//                    navigateToActivity(LoginGmailActivity::class.java)
-//                }
-//
-//            }
-//        }
-//    }
-
     private fun setupGoogleSignInClient() {
         val clientId = getClientIdFromProperties()
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -90,11 +62,6 @@ class LoginGmailActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        // kalo relogin user gak bisa pilih email baru lagi
-//        binding.btnLoginGoogle.setOnClickListener {
-//            val signInIntent = googleSignInClient.signInIntent
-//            startActivityForResult(signInIntent, REQUEST_CODE_GOOGLE_SIGN_IN)
-//        }
         // bisa pilih email tiap relog
         binding.btnLoginGoogle.setOnClickListener {
             googleSignInClient.signOut().addOnCompleteListener {
@@ -145,19 +112,12 @@ class LoginGmailActivity : AppCompatActivity() {
     }
 
 
-//    private fun navigateToActivity(activity: Class<*>) {
-//        val intent = Intent(this, activity)
-//        startActivity(intent)
-//        finish()
-//    }
-
     private fun navigateToHome() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
 
-    // Masih bug karena belom ada API auth dari CC klo klik login bisa langsung masuk home tanpa harus punya akun
     private fun navigateToLogin() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
@@ -177,5 +137,4 @@ class LoginGmailActivity : AppCompatActivity() {
         }
         return properties.getProperty("DEFAULT_WEB_CLIENT_ID", "")
     }
-
 }
