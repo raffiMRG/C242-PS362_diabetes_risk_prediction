@@ -4,7 +4,7 @@ const { Firestore } = require("@google-cloud/firestore");
 // Inisialisasi Firestore
 const db = new Firestore();
 
-const accountHandler = async (req, res) => {
+const getAccountHandler = async (req, res) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -42,6 +42,7 @@ const accountHandler = async (req, res) => {
         username: userData.username,
         email: userData.email,
         phone: userData.phone,
+        profilePicture: userData.profilePicture || null, // Tambahkan profile picture
         createdAt: userData.createdAt.toDate(), // Konversi timestamp ke Date
       },
     });
@@ -54,4 +55,4 @@ const accountHandler = async (req, res) => {
   }
 };
 
-module.exports = accountHandler;
+module.exports = getAccountHandler;
