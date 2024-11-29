@@ -21,27 +21,27 @@ const getPredictionHandler = async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
     const username = decoded.username;
 
-    // Referensi koleksi prediksi pengguna
-    const predictionsRef = firestore.collection("users").doc(username).collection("predictions");
+    // Referensi dokumen pengguna
+    const userRef = firestore.collection("users").doc(username);
+    const userDoc = await userRef.get();
 
-    // Ambil semua prediksi pengguna
-    const snapshot = await predictionsRef.orderBy("createdAt", "desc").get();
+    if (!userDoc.exists) {
+      return res.status(404).json({
+        success: false,
+        message: "Pengguna tidak ditemukan.",
+      });
+    }
 
-    if (snapshot.empty) {
+    // Ambil data prediksi dari dokumen pengguna
+    const userData = userDoc.data();
+    const predictions = userData.predictions || [];
+
+    if (predictions.length === 0) {
       return res.status(404).json({
         success: false,
         message: "Tidak ada riwayat prediksi ditemukan.",
       });
     }
-
-    // Buat array untuk menyimpan data prediksi
-    const predictions = [];
-    snapshot.forEach((doc) => {
-      predictions.push({
-        id: doc.id,
-        ...doc.data(),
-      });
-    });
 
     // Respons sukses
     return res.status(200).json({
