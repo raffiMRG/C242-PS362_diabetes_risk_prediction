@@ -38,28 +38,45 @@ const addPredictionHandler = async (req, res) => {
         message: "Lengkapi semua data prediksi.",
       });
     }
-    
 
-    // Call Cloud Run API for prediction
-    const predictionResponse = await axios.post('https://diabetes-893955223741.asia-southeast2.run.app/predict', {
-      age, gender, bmi, smoking, alcohol, activity
-    });
+    // Panggil Cloud Run API untuk prediksi
+    const predictionResponse = await axios.post(
+      'https://diabetes-893955223741.asia-southeast2.run.app/predict',
+      { age, gender, bmi, smoking, alcohol, activity }
+    );
 
     const predictionResult = predictionResponse.data.prediction;
 
-    // Ambil referensi ke koleksi prediksi pengguna
+    // Ambil referensi pengguna di Firestore
     const userRef = firestore.collection("users").doc(username);
-    const predictionsRef = userRef.collection("predictions");
+    const userDoc = await userRef.get();
 
-    // Tambahkan data prediksi
+    if (!userDoc.exists) {
+      return res.status(404).json({
+        success: false,
+        message: "Pengguna tidak ditemukan.",
+      });
+    }
+
+    // Ambil data pengguna dan prediksi yang sudah ada
+    const userData = userDoc.data();
+    const existingPredictions = userData.predictions || [];
+
+    // Tambahkan prediksi baru ke array
     const newPrediction = {
+      id: `prediction-${Date.now()}`, // ID unik untuk setiap prediksi
       predictionResult,
       predictionDetails: { age, gender, bmi, smoking, alcohol, activity },
       predictionSuggestion: predictionResult === 'Yes' ? 'Risky' : 'Not risky',
-      createdAt: Firestore.FieldValue.serverTimestamp(),
+      createdAt: new Date().toISOString(),
     };
 
-    const addedPrediction = await predictionsRef.add(newPrediction);
+    const updatedPredictions = [...existingPredictions, newPrediction];
+
+    // Perbarui dokumen pengguna dengan prediksi baru
+    await userRef.update({
+      predictions: updatedPredictions,
+    });
 
     // Respons sukses
     return res.status(200).json({
@@ -67,7 +84,7 @@ const addPredictionHandler = async (req, res) => {
       message: "Prediksi berhasil disimpan.",
       data: {
         username,
-        predictionId: addedPrediction.id,
+        prediction: newPrediction,
       },
     });
   } catch (error) {
