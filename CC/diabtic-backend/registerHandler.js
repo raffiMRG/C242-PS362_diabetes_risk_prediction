@@ -1,5 +1,5 @@
-const { Firestore } = require('@google-cloud/firestore');
-const bcrypt = require('bcryptjs');
+const { Firestore } = require("@google-cloud/firestore");
+const bcrypt = require("bcryptjs");
 
 // Inisialisasi Firestore client
 const firestore = new Firestore();
@@ -54,13 +54,8 @@ const registerHandler = async (req, res) => {
       email,
       phone,
       password: hashedPassword,
-      createdAt: Firestore.FieldValue.serverTimestamp(),
-    });
-
-    // Buat subkoleksi predictions kosong untuk pengguna baru
-    const predictionsRef = userRefByUsername.collection("predictions");
-    await predictionsRef.doc("init").set({
-      initialized: true,
+      profilePicture: null, // URL profil kosong atau default
+      predictions: null, // Prediction kosong 
       createdAt: Firestore.FieldValue.serverTimestamp(),
     });
 
