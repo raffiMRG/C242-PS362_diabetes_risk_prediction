@@ -1,41 +1,30 @@
 from flask import Flask, request, jsonify
-from tensorflow.keras.models import load_model
-from google.cloud import storage
+import tensorflow as tf
 import numpy as np
-import os
 
 app = Flask(__name__)
 
-# Fungsi untuk mendownload model dari GCS
-def download_model_from_gcs(bucket_name, model_path, local_path):
-    client = storage.Client()
-    bucket = client.bucket(bucket_name)
-    blob = bucket.blob(model_path)
-    blob.download_to_filename(local_path)
-    print(f"Model downloaded from {bucket_name}/{model_path} to {local_path}")
-
-BUCKET_NAME = "diabtic-capstone-project.appspot.com" 
-MODEL_PATH = "diabetes_risk_model.h5"
-LOCAL_MODEL_PATH = "diabetes_risk_model.h5"
-
-# Download model saat container dimulai
-download_model_from_gcs(BUCKET_NAME, MODEL_PATH, LOCAL_MODEL_PATH)
-model = load_model(LOCAL_MODEL_PATH)
-
-@app.route('/')
-def home():
-    return jsonify({"message": "Welcome to the Flask App!"})
+model = tf.keras.models.load_model('diabetes_risk_model.h5')
 
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        data = request.json
-        features = np.array(data['features']).reshape(1, -1)
-        prediction = model.predict(features)
-        result = "yes" if prediction[0][0] > 0.5 else "no"
-        return jsonify({"prediction": result})
+        # Get the data from the request
+        data = request.get_json()
+
+        if not all(key in data for key in ["age", "gender", "bmi", "smoking", "alcohol", "activity"]):
+            return jsonify({"error": "Missing required data"}), 400
+
+        input_data = np.array([[data["age"], data["gender"], data["bmi"], data["smoking"], data["alcohol"], data["activity"]]])
+
+        # Make prediction
+        prediction = model.predict(input_data)
+        result = "Yes" if prediction[0] > 0.5 else "No"
+
+        return jsonify({"prediction": result}), 200
+
     except Exception as e:
-        return jsonify({"error": str(e)}), 400
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(debug=True, host='0.0.0.0', port=8080)

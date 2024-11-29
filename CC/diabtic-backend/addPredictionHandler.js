@@ -1,5 +1,6 @@
-const { Firestore } = require("@google-cloud/firestore");
-const jwt = require("jsonwebtoken");
+const axios = require('axios');
+const { Firestore } = require('@google-cloud/firestore');
+const jwt = require('jsonwebtoken');
 
 // Inisialisasi Firestore client
 const firestore = new Firestore();
@@ -22,14 +23,29 @@ const addPredictionHandler = async (req, res) => {
     const username = decoded.username;
 
     // Validasi input dari body
-    const { predictionResult, predictionDetails, predictionSuggestion } = req.body;
+    const { age, gender, bmi, smoking, alcohol, activity } = req.body;
 
-    if (!predictionResult || !predictionDetails || !predictionSuggestion) {
+    if (
+      age == null ||
+      gender == null ||
+      bmi == null ||
+      smoking == null ||
+      alcohol == null ||
+      activity == null
+    ) {
       return res.status(400).json({
         success: false,
         message: "Lengkapi semua data prediksi.",
       });
     }
+    
+
+    // Call Cloud Run API for prediction
+    const predictionResponse = await axios.post('https://diabetes-893955223741.asia-southeast2.run.app/predict', {
+      age, gender, bmi, smoking, alcohol, activity
+    });
+
+    const predictionResult = predictionResponse.data.prediction;
 
     // Ambil referensi ke koleksi prediksi pengguna
     const userRef = firestore.collection("users").doc(username);
@@ -38,8 +54,8 @@ const addPredictionHandler = async (req, res) => {
     // Tambahkan data prediksi
     const newPrediction = {
       predictionResult,
-      predictionDetails,
-      predictionSuggestion,
+      predictionDetails: { age, gender, bmi, smoking, alcohol, activity },
+      predictionSuggestion: predictionResult === 'Yes' ? 'Risky' : 'Not risky',
       createdAt: Firestore.FieldValue.serverTimestamp(),
     };
 
