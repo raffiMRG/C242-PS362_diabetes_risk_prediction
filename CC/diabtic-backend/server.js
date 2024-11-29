@@ -3,7 +3,7 @@ const loginHandler = require("./loginHandler");
 const registerHandler = require("./registerHandler");
 const refreshTokenHandler = require("./refreshTokenHandler");
 const logoutHandler = require("./logoutHandler");
-const accountHandler = require("./accountHandler");
+const getAccountHandler = require("./getAccountHandler");
 const addPredictionHandler = require("./addPredictionHandler");
 const getPredictionHandler = require("./getPredictionHandler");
 
@@ -15,7 +15,7 @@ app.post("/login", loginHandler);
 app.post("/register", registerHandler);
 app.post("/logout", logoutHandler);
 app.post("/refresh-token", refreshTokenHandler);
-app.get("/account", accountHandler);
+app.get("/account", getAccountHandler);
 app.post("/account/predictions", addPredictionHandler);
 app.get("/account/predictions", getPredictionHandler);
 
