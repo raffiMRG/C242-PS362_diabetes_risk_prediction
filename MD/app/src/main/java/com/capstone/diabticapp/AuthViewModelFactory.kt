@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.capstone.diabticapp.data.AuthRepository
 import com.capstone.diabticapp.di.Injection
+import com.capstone.diabticapp.ui.home.HomeViewModel
 import com.capstone.diabticapp.ui.login.LoginViewModel
 import com.capstone.diabticapp.ui.register.RegisterViewModel
 import com.capstone.diabticapp.ui.setting.SettingsViewModel
@@ -23,6 +24,9 @@ class AuthViewModelFactory(
             }
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
                 RegisterViewModel(authRepository) as T
+            }
+            modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
+                HomeViewModel(authRepository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
