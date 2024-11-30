@@ -8,46 +8,40 @@ const firestore = new Firestore();
 const addPredictionHandler = async (req, res) => {
   const authHeader = req.headers.authorization;
 
+  // Validasi header authorization
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(401).json({
       success: false,
-      message: "Unauthorized.",
+      message: "Unauthorized. Token tidak ditemukan.",
     });
   }
 
   const token = authHeader.split(" ")[1];
 
   try {
-    // Verifikasi token
+    // Verifikasi token JWT
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    const username = decoded.username;
+    const { username } = decoded;
 
-    // Validasi input dari body
+    // Validasi input body
     const { age, gender, bmi, smoking, alcohol, activity } = req.body;
-
-    if (
-      age == null ||
-      gender == null ||
-      bmi == null ||
-      smoking == null ||
-      alcohol == null ||
-      activity == null
-    ) {
+    const requiredFields = [age, gender, bmi, smoking, alcohol, activity];
+    
+    // Cek apakah semua field telah terisi
+    if (requiredFields.some(field => field == null)) {
       return res.status(400).json({
         success: false,
         message: "Lengkapi semua data prediksi.",
       });
     }
 
-    // Panggil Cloud Run API untuk prediksi
-    const predictionResponse = await axios.post(
+    // Panggil API untuk prediksi
+    const { data: { prediction } } = await axios.post(
       'https://diabetes-893955223741.asia-southeast2.run.app/predict',
       { age, gender, bmi, smoking, alcohol, activity }
     );
 
-    const predictionResult = predictionResponse.data.prediction;
-
-    // Ambil referensi pengguna di Firestore
+    // Ambil referensi pengguna dari Firestore
     const userRef = firestore.collection("users").doc(username);
     const userDoc = await userRef.get();
 
@@ -59,21 +53,21 @@ const addPredictionHandler = async (req, res) => {
     }
 
     // Ambil data pengguna dan prediksi yang sudah ada
-    const userData = userDoc.data();
-    const existingPredictions = userData.predictions || [];
+    const { predictions = [] } = userDoc.data();
 
-    // Tambahkan prediksi baru ke array
+    // Buat prediksi baru
     const newPrediction = {
-      id: `prediction-${Date.now()}`, // ID unik untuk setiap prediksi
-      predictionResult,
+      id: `prediction-${Date.now()}`, // ID unik prediksi
+      predictionResult: prediction,
       predictionDetails: { age, gender, bmi, smoking, alcohol, activity },
-      predictionSuggestion: predictionResult === 'Yes' ? 'Risky' : 'Not risky',
+      predictionSuggestion: prediction === 'Yes' ? 'Risky' : 'Not risky',
       createdAt: new Date().toISOString(),
     };
 
-    const updatedPredictions = [...existingPredictions, newPrediction];
+    // Update prediksi
+    const updatedPredictions = [...predictions, newPrediction];
 
-    // Perbarui dokumen pengguna dengan prediksi baru
+    // Perbarui Firestore dengan prediksi baru
     await userRef.update({
       predictions: updatedPredictions,
     });
@@ -82,13 +76,20 @@ const addPredictionHandler = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Prediksi berhasil disimpan.",
-      data: {
-        username,
-        prediction: newPrediction,
-      },
+      data: { username, prediction: newPrediction },
     });
   } catch (error) {
     console.error("Error menambahkan prediksi: ", error);
+
+    // Tangani error spesifik terkait JWT
+    if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError") {
+      return res.status(401).json({
+        success: false,
+        message: "Token tidak valid atau telah kedaluwarsa.",
+      });
+    }
+
+    // Tangani kesalahan lainnya
     return res.status(500).json({
       success: false,
       message: "Kesalahan saat menyimpan prediksi.",
