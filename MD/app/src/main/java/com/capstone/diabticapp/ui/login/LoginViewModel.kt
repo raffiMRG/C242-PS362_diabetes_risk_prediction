@@ -1,6 +1,8 @@
 package com.capstone.diabticapp.ui.login
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.capstone.diabticapp.data.AuthRepository
@@ -9,6 +11,9 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
 
     private fun saveSession(user: UserModel){
         viewModelScope.launch {
@@ -19,17 +24,11 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
     fun login(username: String, password: String, onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             try {
+                _isLoading.value = true
                 val response = authRepository.login(username, password)
                 if (response.success == true) {
                     response.data?.let { data ->
-                        val user = UserModel(
-                            email = username,
-                            token = data.accessToken ?: "",
-                            refreshToken = data.refreshToken ?: "",
-                            isLogin = true,
-                            username = username,
-                            photoUrl = null
-                        )
+                        val user = UserModel.fromLoginResponse(username, data)
                         saveSession(user)
                         onResult(true)
                     }
@@ -40,6 +39,9 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
             } catch (e: Exception) {
                 Log.e("LoginViewModel", "Exception during login: ${e.message}")
                 onResult(false)
+            }finally {
+                _isLoading.value = false
+
             }
         }
     }

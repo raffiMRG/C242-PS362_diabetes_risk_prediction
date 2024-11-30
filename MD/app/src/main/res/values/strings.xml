@@ -7,7 +7,7 @@
     <string name="user_email">juliamario@gmail.com</string>
     <string name="account">Account</string>
     <string name="diabets_calculator">Diabets Calculator</string>
-    <string name="hi_user">👋 Hi Julia!</string>
+    <string name="hi_user">👋 Hi %1$s!</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="status_diabets_negative">\"Stay healthy, stay safe\"</string>

@@ -2,8 +2,9 @@ package com.capstone.diabticapp.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
+import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.capstone.diabticapp.AuthViewModelFactory
 import com.capstone.diabticapp.MainActivity
@@ -20,17 +21,15 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        checkLoginStatus() // Perform login status check
+        checkLoginStatus()
+        observeViewModel()
     }
 
     private fun checkLoginStatus() {
         loginViewModel.checkLoginStatus { isLoggedIn ->
             if (isLoggedIn) {
-                // If logged in, directly go to MainActivity
                 navigateToMainActivity()
             } else {
-                // If not logged in, inflate the login screen
                 setupLoginScreen()
             }
         }
@@ -43,38 +42,59 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
-        binding.loginButton.setOnClickListener {
-            val username = binding.usernameEditText.text.toString()
-            val password = binding.passwordEditText.text.toString()
+        binding.apply {
+            loginButton.setOnClickListener { handleLogin() }
+            signupOption.setOnClickListener { navigateToActivity(RegisterActivity::class.java) }
+        }
+    }
 
-            if (username.isEmpty() || password.isEmpty()) {
-                showToast("Username and password cannot be empty")
-                return@setOnClickListener
-            }
+    private fun handleLogin() {
+        val username = binding.usernameEditText.text.toString()
+        val password = binding.passwordEditText.text.toString()
 
-            loginViewModel.login(username, password) { isSuccess ->
-                if (isSuccess) {
-                    showToast("Login Successful!")
-                    navigateToMainActivity()
-                } else {
-                    showToast("Login failed! Please try again.")
-                }
-            }
+        if (username.isBlank() || password.isBlank()) {
+            showAlertDialog("Login Failed", "Username and password cannot be empty.")
+            return
         }
 
-        binding.signupOption.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
+        loginViewModel.login(username, password) { isSuccess ->
+            if (isSuccess) {
+                showAlertDialog("Login Successful", "Welcome back!") {
+                    navigateToMainActivity()
+                }
+            } else {
+                showAlertDialog("Login Failed", "Invalid username or password. Please try again.")
+            }
         }
     }
 
     private fun navigateToMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish() // Finish LoginActivity to prevent returning to it
+        navigateToActivity(MainActivity::class.java)
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun navigateToActivity(activityClass: Class<*>) {
+        Intent(this, activityClass).also {
+            startActivity(it)
+            finish()
+        }
+    }
+
+    private fun showAlertDialog(title: String, message: String, onPositiveClick: (() -> Unit)? = null) {
+        AlertDialog.Builder(this).apply {
+            setTitle(title)
+            setMessage(message)
+            setPositiveButton("OK") { _, _ -> onPositiveClick?.invoke() }
+            create()
+            show()
+        }
+    }
+
+    private fun observeViewModel() {
+        loginViewModel.isLoading.observe(this) { isLoading ->
+            binding.apply {
+                progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+                loginButton.isEnabled = !isLoading
+            }
+        }
     }
 }

@@ -24,17 +24,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.otp.PhoneNumberActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.otp.OtpVerificationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.login.LoginGmailActivity"
-            android:exported="false">
-
-        </activity>
-        <activity
             android:name=".ui.account.AccountActivity"
             android:exported="false" />
         <activity
