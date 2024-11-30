@@ -6,6 +6,7 @@ const firestore = new Firestore();
 const logoutHandler = async (req, res) => {
   const { username } = req.body;
 
+  // Validasi input
   if (!username) {
     return res.status(400).json({
       success: false,
@@ -14,8 +15,19 @@ const logoutHandler = async (req, res) => {
   }
 
   try {
-    // Hapus refresh token pengguna dari Firestore
+    // Cari pengguna berdasarkan username
     const userRef = firestore.collection("users").doc(username);
+    const userDoc = await userRef.get();
+
+    // Cek apakah pengguna ada
+    if (!userDoc.exists) {
+      return res.status(400).json({
+        success: false,
+        message: "Username tidak ditemukan.",
+      });
+    }
+
+    // Hapus refresh token pengguna
     await userRef.update({
       refreshToken: Firestore.FieldValue.delete(),
     });
@@ -26,10 +38,11 @@ const logoutHandler = async (req, res) => {
       message: "Anda telah logout.",
     });
   } catch (error) {
-    console.error("Error logout: ", error);
+    console.error("Error logout:", error);
     return res.status(500).json({
       success: false,
-      message: "Gagal logout.",
+      message: "Gagal logout. Silakan coba lagi nanti.",
+      error: error.message || "Internal server error",
     });
   }
 };
