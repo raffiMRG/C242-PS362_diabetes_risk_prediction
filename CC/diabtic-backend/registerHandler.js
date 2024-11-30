@@ -7,6 +7,7 @@ const firestore = new Firestore();
 const registerHandler = async (req, res) => {
   const { username, email, phone, password } = req.body;
 
+  // Validasi input
   if (!username || !email || !phone || !password) {
     return res.status(400).json({
       success: false,
@@ -15,7 +16,10 @@ const registerHandler = async (req, res) => {
   }
 
   try {
-    // Cek apakah username sudah terdaftar
+    // Batch untuk memproses beberapa query di Firestore dalam satu transaksi
+    const batch = firestore.batch();
+
+    // Cek apakah username, email, atau phone sudah terdaftar
     const userRefByUsername = firestore.collection("users").doc(username);
     const docByUsername = await userRefByUsername.get();
     if (docByUsername.exists) {
@@ -25,7 +29,6 @@ const registerHandler = async (req, res) => {
       });
     }
 
-    // Cek apakah email sudah terdaftar
     const userRefByEmail = firestore.collection("users").where("email", "==", email);
     const snapshotByEmail = await userRefByEmail.get();
     if (!snapshotByEmail.empty) {
@@ -35,7 +38,6 @@ const registerHandler = async (req, res) => {
       });
     }
 
-    // Cek apakah nomor HP sudah terdaftar
     const userRefByPhone = firestore.collection("users").where("phone", "==", phone);
     const snapshotByPhone = await userRefByPhone.get();
     if (!snapshotByPhone.empty) {
@@ -48,16 +50,22 @@ const registerHandler = async (req, res) => {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Simpan data pengguna di Firestore dengan ID berdasarkan username
-    await userRefByUsername.set({
+    // Siapkan data pengguna
+    const userData = {
       username,
       email,
       phone,
       password: hashedPassword,
-      profilePicture: null, // URL profil kosong atau default
-      predictions: null, // Prediction kosong 
+      profilePicture: null, // Default null
+      predictions: [], // Prediction kosong
       createdAt: Firestore.FieldValue.serverTimestamp(),
-    });
+    };
+
+    // Tambahkan transaksi ke batch
+    batch.set(userRefByUsername, userData);
+
+    // Commit batch transaksi
+    await batch.commit();
 
     // Respons sukses
     return res.status(200).json({
@@ -65,10 +73,11 @@ const registerHandler = async (req, res) => {
       message: "Pendaftaran berhasil, silahkan login.",
     });
   } catch (error) {
-    console.error("Error registrasi: ", error);
+    console.error("Error registrasi:", error);
     return res.status(500).json({
       success: false,
       message: "Gagal melakukan pendaftaran.",
+      error: error.message || "Internal server error",
     });
   }
 };
