@@ -3,11 +3,13 @@ package com.capstone.diabticapp.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import com.capstone.diabticapp.data.AuthRepository
+import kotlinx.coroutines.flow.map
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(private val authRepository: AuthRepository) : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
-    val text: LiveData<String> = _text
+    val username: LiveData<String> = authRepository.getUserSession().map { session ->
+        session.username
+    }.asLiveData()
 }

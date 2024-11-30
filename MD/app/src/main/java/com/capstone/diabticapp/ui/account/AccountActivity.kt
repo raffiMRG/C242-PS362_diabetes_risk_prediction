@@ -97,9 +97,9 @@ class AccountActivity : AppCompatActivity() {
     private fun saveChanges() {
         val newName = binding.etName.text.toString()
 
-        if (newName != originalName) {
-            accountViewModel.updateUserName(newName)
-        }
+//        if (newName != originalName) {
+//            accountViewModel.updateUserName(newName)
+//        }
 
         exitEditMode()
     }

@@ -17,13 +17,13 @@ import com.capstone.diabticapp.data.pref.UserPreference
 import com.capstone.diabticapp.data.pref.dataStore
 import com.capstone.diabticapp.databinding.FragmentSettingBinding
 import com.capstone.diabticapp.ui.account.AccountActivity
-import com.capstone.diabticapp.ui.login.LoginGmailActivity
+import com.capstone.diabticapp.ui.login.LoginActivity
 
 class SettingsFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingBinding
     private val viewModel: SettingsViewModel by viewModels {
-        AuthViewModelFactory(AuthRepository(UserPreference.getInstance(requireContext().dataStore)))
+        AuthViewModelFactory.getInstance(requireContext())
     }
 
     override fun onCreateView(
@@ -62,16 +62,14 @@ class SettingsFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        // Observe username changes
         viewModel.username.observe(viewLifecycleOwner) { name ->
             binding.tvNama.text = name
         }
 
-        // Observe profile picture changes
         viewModel.userPhotoUrl.observe(viewLifecycleOwner) { photoUrl ->
             Glide.with(this)
                 .load(photoUrl)
-                .placeholder(R.drawable.ic_profile) // Default placeholder
+                .placeholder(R.drawable.ic_profile)
                 .circleCrop()
                 .into(binding.ivProfilePicture)
         }
@@ -87,7 +85,7 @@ class SettingsFragment : Fragment() {
         viewModel.logout()
         Toast.makeText(requireContext(), "Logged out successfully", Toast.LENGTH_SHORT).show()
 
-        val intent = Intent(requireContext(), LoginGmailActivity::class.java)
+        val intent = Intent(requireContext(), LoginActivity::class.java)
         startActivity(intent)
         requireActivity().finish()
     }
