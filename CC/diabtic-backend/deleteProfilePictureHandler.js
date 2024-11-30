@@ -57,22 +57,20 @@ const deleteProfilePictureHandler = async (req, res) => {
       });
     }
 
-    // Hapus gambar profil dari Google Cloud Storage
-    const fileName = profilePicture.split("/").pop();
-    const file = storage.bucket(bucketName).file(fileName);
+    // Hapus semua file dalam folder username di bucket
+    const folderPath = `${username}/`; // Folder berdasarkan username
+    const [files] = await storage.bucket(bucketName).getFiles({ prefix: folderPath });
 
-    // Pastikan file ada sebelum dihapus
-    const [exists] = await file.exists();
-    if (!exists) {
+    if (files.length === 0) {
       return res.status(404).json({
         success: false,
-        message: "File foto profil tidak ditemukan di storage.",
+        message: "Tidak ada file untuk dihapus di folder pengguna.",
       });
     }
 
-    await file.delete();
+    await storage.bucket(bucketName).deleteFiles({ prefix: folderPath });
 
-    // Perbarui Firestore untuk menghapus foto profil
+    // Perbarui Firestore untuk menghapus informasi profilePicture
     await userRef.update({
       profilePicture: null,
     });
@@ -80,13 +78,13 @@ const deleteProfilePictureHandler = async (req, res) => {
     // Respons sukses
     return res.status(200).json({
       success: true,
-      message: "Foto profil berhasil dihapus.",
+      message: "Folder dan foto profil berhasil dihapus.",
     });
   } catch (error) {
-    console.error("Error hapus gambar profil: ", error.message);
+    console.error("Error menghapus folder profil pengguna:", error.message);
     return res.status(500).json({
       success: false,
-      message: error.message || "Gagal menghapus foto profil.",
+      message: error.message || "Gagal menghapus folder profil pengguna.",
     });
   }
 };
