@@ -9,9 +9,19 @@ const firestore = new Firestore();
 // Nama bucket Google Cloud Storage untuk foto profil
 const bucketName = process.env.GCS_BUCKET_NAME;
 
+// Fungsi untuk verifikasi token JWT
+const verifyToken = (token) => {
+  try {
+    return jwt.verify(token, process.env.JWT_SECRET_KEY);
+  } catch (error) {
+    throw new Error('Token tidak valid atau telah kedaluwarsa.');
+  }
+};
+
 const editProfilePictureHandler = async (req, res) => {
   const authHeader = req.headers.authorization;
 
+  // Validasi token
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(401).json({
       success: false,
@@ -23,8 +33,8 @@ const editProfilePictureHandler = async (req, res) => {
 
   try {
     // Verifikasi token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    const username = decoded.username;
+    const decoded = verifyToken(token);
+    const { username } = decoded;
 
     // Ambil file gambar dari request
     const file = req.file;
@@ -35,7 +45,7 @@ const editProfilePictureHandler = async (req, res) => {
       });
     }
 
-    // Ambil data pengguna dan URL foto profil lama dari Firestore
+    // Ambil data pengguna dari Firestore
     const userRef = firestore.collection("users").doc(username);
     const userDoc = await userRef.get();
     if (!userDoc.exists) {
@@ -45,54 +55,60 @@ const editProfilePictureHandler = async (req, res) => {
       });
     }
 
-    const userData = userDoc.data();
-    const oldProfilePicture = userData.profilePicture;
+    const { profilePicture: oldProfilePicture } = userDoc.data();
 
     // Hapus gambar profil lama dari Google Cloud Storage (jika ada)
     if (oldProfilePicture) {
       const oldFileName = oldProfilePicture.split("/").pop();
       const oldFile = storage.bucket(bucketName).file(oldFileName);
-      await oldFile.delete();
+      try {
+        await oldFile.delete();
+      } catch (err) {
+        console.warn('Gagal menghapus gambar lama dari Storage:', err.message);
+      }
     }
 
     // Nama file untuk disimpan di Google Cloud Storage
     const fileName = `${username}/profile-pictures/${Date.now()}-${file.originalname}`;
-    
+
     // Upload file ke Cloud Storage
-    const bucket = storage.bucket(bucketName);
-    const blob = bucket.file(fileName);
-    const blobStream = blob.createWriteStream({
-      resumable: false,
-      contentType: file.mimetype,
-    });
-
-    // Menulis file ke Cloud Storage
-    blobStream.on('finish', async () => {
-      // Mendapatkan URL file yang baru di-upload
-      const profilePictureUrl = `https://storage.googleapis.com/${bucketName}/${fileName}`;
-
-      // Update Firestore dengan URL foto profil baru
-      await userRef.update({
-        profilePicture: profilePictureUrl,
+    const fileUploadPromise = new Promise((resolve, reject) => {
+      const bucket = storage.bucket(bucketName);
+      const blob = bucket.file(fileName);
+      const blobStream = blob.createWriteStream({
+        resumable: false,
+        contentType: file.mimetype,
       });
 
-      // Respons sukses
-      return res.status(200).json({
-        success: true,
-        message: "Foto profil berhasil diubah.",
-        data: {
-          profilePictureUrl,
-        },
+      blobStream.on('finish', () => {
+        const profilePictureUrl = `https://storage.googleapis.com/${bucketName}/${fileName}`;
+        resolve(profilePictureUrl);
       });
+
+      blobStream.on('error', (err) => reject(err));
+
+      blobStream.end(file.buffer);
     });
 
-    // Menulis file ke Cloud Storage
-    blobStream.end(file.buffer);
+    // Tunggu sampai upload selesai dan update Firestore
+    const profilePictureUrl = await fileUploadPromise;
+
+    // Update Firestore dengan URL foto profil baru
+    await userRef.update({
+      profilePicture: profilePictureUrl,
+    });
+
+    // Respons sukses
+    return res.status(200).json({
+      success: true,
+      message: "Foto profil berhasil diubah.",
+      data: { profilePictureUrl },
+    });
   } catch (error) {
-    console.error("Error edit gambar profil: ", error);
+    console.error("Error edit gambar profil: ", error.message);
     return res.status(500).json({
       success: false,
-      message: "Gagal mengedit foto profil.",
+      message: error.message || "Gagal mengedit foto profil.",
     });
   }
 };
