@@ -7,14 +7,16 @@ const logoutHandler = require("./logoutHandler");
 const getAccountHandler = require("./getAccountHandler");
 const addPredictionHandler = require("./addPredictionHandler");
 const getPredictionHandler = require("./getPredictionHandler");
+const uploadProfilePictureHandler = require("./uploadProfilePictureHandler");
 const editProfilePictureHandler = require("./editProfilePictureHandler");
 const deleteProfilePictureHandler = require("./deleteProfilePictureHandler");
-const uploadProfilePictureHandler = require("./uploadProfilePictureHandler"); // Menambahkan handler untuk upload foto profil
 
 const app = express();
+
+// Middleware untuk parsing JSON body
 app.use(express.json());
 
-// Setup multer untuk menyimpan file dalam memory
+// Setup multer untuk menyimpan file dalam memory (jika Anda ingin menangani upload file)
 const storage = multer.memoryStorage(); 
 const upload = multer({ storage: storage });
 
@@ -27,18 +29,23 @@ app.get("/account", getAccountHandler);
 app.post("/account/predictions", addPredictionHandler);
 app.get("/account/predictions", getPredictionHandler);
 
-// Route untuk upload gambar profil
+// Upload dan manipulasi foto profil
 app.post("/account/upload-profile-picture", upload.single('profilePicture'), uploadProfilePictureHandler);
-
-// Route untuk edit gambar profil
 app.post("/account/edit-profile-picture", upload.single('profilePicture'), editProfilePictureHandler);
-
-// Route untuk hapus gambar profil
 app.delete("/account/delete-profile-picture", deleteProfilePictureHandler);
 
 // Default route
 app.get("/", (req, res) => {
   res.send("Welcome to the authentication API!");
+});
+
+// Global error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({
+    success: false,
+    message: "Terjadi kesalahan internal.",
+  });
 });
 
 // Start the server
