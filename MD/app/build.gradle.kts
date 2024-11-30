@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -50,11 +49,7 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.activity)
-    implementation(libs.play.services.base)
-    implementation(libs.firebase.auth)
-    implementation(libs.play.services.auth)
     implementation(libs.androidx.datastore.preferences)
-    implementation (platform(libs.firebase.bom))
     implementation (libs.kotlinx.coroutines.android)
     implementation (libs.androidx.lifecycle.runtime.ktx)
 
@@ -64,4 +59,7 @@ dependencies {
 
     implementation (libs.circleimageview)
     implementation(libs.glide)
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 }
