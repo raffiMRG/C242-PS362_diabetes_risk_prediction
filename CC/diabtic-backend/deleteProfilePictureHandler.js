@@ -9,9 +9,19 @@ const firestore = new Firestore();
 // Nama bucket Google Cloud Storage untuk foto profil
 const bucketName = process.env.GCS_BUCKET_NAME;
 
+// Fungsi untuk verifikasi token JWT
+const verifyToken = (token) => {
+  try {
+    return jwt.verify(token, process.env.JWT_SECRET_KEY);
+  } catch (error) {
+    throw new Error('Token tidak valid atau telah kedaluwarsa.');
+  }
+};
+
 const deleteProfilePictureHandler = async (req, res) => {
   const authHeader = req.headers.authorization;
 
+  // Validasi token
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(401).json({
       success: false,
@@ -23,12 +33,13 @@ const deleteProfilePictureHandler = async (req, res) => {
 
   try {
     // Verifikasi token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    const username = decoded.username;
+    const decoded = verifyToken(token);
+    const { username } = decoded;
 
-    // Ambil data pengguna dan URL foto profil dari Firestore
+    // Ambil data pengguna dari Firestore
     const userRef = firestore.collection("users").doc(username);
     const userDoc = await userRef.get();
+
     if (!userDoc.exists) {
       return res.status(404).json({
         success: false,
@@ -36,10 +47,9 @@ const deleteProfilePictureHandler = async (req, res) => {
       });
     }
 
-    const userData = userDoc.data();
-    const profilePicture = userData.profilePicture;
+    const { profilePicture } = userDoc.data();
 
-    // Cek apakah pengguna sudah memiliki foto profil
+    // Cek apakah pengguna memiliki foto profil
     if (!profilePicture) {
       return res.status(400).json({
         success: false,
@@ -50,9 +60,19 @@ const deleteProfilePictureHandler = async (req, res) => {
     // Hapus gambar profil dari Google Cloud Storage
     const fileName = profilePicture.split("/").pop();
     const file = storage.bucket(bucketName).file(fileName);
+
+    // Pastikan file ada sebelum dihapus
+    const [exists] = await file.exists();
+    if (!exists) {
+      return res.status(404).json({
+        success: false,
+        message: "File foto profil tidak ditemukan di storage.",
+      });
+    }
+
     await file.delete();
 
-    // Set field profilePicture menjadi null di Firestore
+    // Perbarui Firestore untuk menghapus foto profil
     await userRef.update({
       profilePicture: null,
     });
@@ -63,10 +83,10 @@ const deleteProfilePictureHandler = async (req, res) => {
       message: "Foto profil berhasil dihapus.",
     });
   } catch (error) {
-    console.error("Error hapus gambar profil: ", error);
+    console.error("Error hapus gambar profil: ", error.message);
     return res.status(500).json({
       success: false,
-      message: "Gagal menghapus foto profil.",
+      message: error.message || "Gagal menghapus foto profil.",
     });
   }
 };
