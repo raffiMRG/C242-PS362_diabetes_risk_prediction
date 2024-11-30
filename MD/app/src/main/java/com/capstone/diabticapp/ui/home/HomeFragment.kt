@@ -72,7 +72,7 @@ class HomeFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.username.observe(viewLifecycleOwner) { name ->
-            binding.tvGreeting.text = name
+            binding.tvGreeting.text = getString(R.string.hi_user, name)
         }
     }
 

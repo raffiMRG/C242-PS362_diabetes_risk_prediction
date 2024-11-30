@@ -9,12 +9,11 @@
     android:background="@color/white"
     tools:context=".ui.login.LoginActivity">
 
-    <!-- Welcome Back Text -->
     <TextView
         android:id="@+id/welcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome Back"
+        android:text="Selamat Datang di Diabtic"
         android:textSize="18sp"
         android:layout_marginTop="32dp"
         android:textColor="@color/title_blue"
@@ -23,7 +22,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Login Title -->
     <TextView
         android:id="@+id/loginTitle"
         android:layout_width="wrap_content"
@@ -38,18 +36,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp" />
 
-    <!-- Illustration -->
     <ImageView
         android:id="@+id/loginImage"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/ic_login"
+        android:layout_marginStart="42dp"
+        android:src="@drawable/ic_choose_login"
         app:layout_constraintTop_toBottomOf="@id/loginTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Email Field -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/usernameInputLayout"
         android:layout_width="0dp"
@@ -58,7 +55,7 @@
         app:layout_constraintTop_toBottomOf="@id/loginImage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="32dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/usernameEditText"
@@ -68,7 +65,6 @@
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Password Field -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordInputLayout"
         android:layout_width="0dp"
@@ -89,19 +85,6 @@
 
 </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-    android:id="@+id/forgotPassword"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Forgot Password?"
-    android:textSize="14sp"
-    android:textColor="@color/blue"
-    android:fontFamily="sans-serif"
-    app:layout_constraintTop_toBottomOf="@id/passwordInputLayout"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginEnd="24dp"
-    android:layout_marginTop="8dp" />
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/loginButton"
         style="@style/ButtonStyle.Button"
@@ -112,7 +95,7 @@
         android:backgroundTint="@color/blue"
         android:textAllCaps="false"
         android:layout_marginHorizontal="24dp"
-        app:layout_constraintTop_toBottomOf="@id/forgotPassword"
+        app:layout_constraintTop_toBottomOf="@id/passwordInputLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
@@ -121,12 +104,22 @@
         android:id="@+id/signupOption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Don't have an account? Sign Up"
+        android:text="Tidak punya akun? Daftar Disini"
         android:textSize="14sp"
         android:textColor="@color/blue"
         app:layout_constraintTop_toBottomOf="@id/loginButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
