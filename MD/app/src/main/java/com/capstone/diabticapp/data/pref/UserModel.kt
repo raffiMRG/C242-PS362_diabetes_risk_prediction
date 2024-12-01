@@ -9,7 +9,9 @@ data class UserModel(
     val refreshToken: String,
     val isLogin: Boolean,
     val username: String,
-    val photoUrl: String? = null
+    val photoUrl: String? = null,
+    val phone: String? = null
+
 ){
     companion object {
         fun fromLoginResponse(username: String, data: Data): UserModel {

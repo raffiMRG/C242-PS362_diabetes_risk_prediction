@@ -27,24 +27,21 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
                 _isLoading.value = true
                 val response = authRepository.login(username, password)
                 if (response.success == true) {
-                    response.data?.let { data ->
-                        val user = UserModel.fromLoginResponse(username, data)
-                        saveSession(user)
-                        onResult(true)
-                    }
-                }else{
+                    authRepository.getAccountData()
+                    onResult(true)
+                } else {
                     Log.e("LoginViewModel", "Login failed: ${response.message}")
                     onResult(false)
                 }
             } catch (e: Exception) {
                 Log.e("LoginViewModel", "Exception during login: ${e.message}")
                 onResult(false)
-            }finally {
+            } finally {
                 _isLoading.value = false
-
             }
         }
     }
+
 
     fun checkLoginStatus(onResult: (Boolean) -> Unit) {
         viewModelScope.launch {

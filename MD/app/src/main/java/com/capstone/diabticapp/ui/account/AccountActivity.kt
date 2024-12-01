@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.capstone.diabticapp.AccountViewModelFactory
+import com.capstone.diabticapp.AuthViewModelFactory
 import com.capstone.diabticapp.R
 import com.capstone.diabticapp.data.pref.UserPreference
 import com.capstone.diabticapp.data.pref.dataStore
@@ -20,10 +20,11 @@ class AccountActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAccountBinding
     private lateinit var appBar: ProfileAppBar
     private val accountViewModel: AccountViewModel by viewModels {
-        AccountViewModelFactory(UserPreference.getInstance(applicationContext.dataStore))
+        AuthViewModelFactory.getInstance(this)
     }
 
     private var originalName = ""
+    private var originalPhone = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +64,12 @@ class AccountActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launchWhenStarted {
+            accountViewModel.userPhone.collect { phone ->
+                binding.etPhone.setText(phone)
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
             accountViewModel.stateMessage.collect { message ->
                 message?.let {
                     Toast.makeText(this@AccountActivity, it, Toast.LENGTH_SHORT).show()
@@ -73,14 +80,18 @@ class AccountActivity : AppCompatActivity() {
 
         lifecycleScope.launchWhenStarted {
             accountViewModel.userPhotoUrl.collect { photoUrl ->
-                photoUrl?.let {
-                    Glide.with(this@AccountActivity)
-                        .load(it)
-                        .placeholder(R.drawable.ic_profile)
-                        .error(R.drawable.ic_profile)
-                        .circleCrop()
-                        .into(binding.ivProfilePicture)
-                }
+                Glide.with(this@AccountActivity)
+                    .load(photoUrl)
+                    .placeholder(R.drawable.ic_profile)
+                    .error(R.drawable.ic_profile)
+                    .circleCrop()
+                    .into(binding.ivProfilePicture)
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            accountViewModel.isLoading.collect { isLoading ->
+                binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
             }
         }
     }
