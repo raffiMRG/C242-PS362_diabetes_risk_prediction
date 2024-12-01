@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.capstone.diabticapp.AuthViewModelFactory
 import com.capstone.diabticapp.R
 import com.capstone.diabticapp.databinding.FragmentHomeBinding
@@ -73,6 +74,13 @@ class HomeFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.username.observe(viewLifecycleOwner) { name ->
             binding.tvGreeting.text = getString(R.string.hi_user, name)
+        }
+        viewModel.userPhotoUrl.observe(viewLifecycleOwner) { photoUrl ->
+            Glide.with(this)
+                .load(photoUrl)
+                .placeholder(R.drawable.ic_profile)
+                .circleCrop()
+                .into(binding.ivProfile)
         }
     }
 

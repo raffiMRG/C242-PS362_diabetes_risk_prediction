@@ -4,10 +4,13 @@ import com.capstone.diabticapp.data.pref.UserModel
 import com.capstone.diabticapp.data.pref.UserPreference
 import com.capstone.diabticapp.data.remote.request.LoginRequest
 import com.capstone.diabticapp.data.remote.request.RegisterRequest
+import com.capstone.diabticapp.data.remote.response.EditProfilePictureResponse
 import com.capstone.diabticapp.data.remote.response.GetAccResponse
 import com.capstone.diabticapp.data.remote.response.LoginResponse
 import com.capstone.diabticapp.data.remote.retrofit.ApiService
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import okhttp3.MultipartBody
 
 
 class AuthRepository private constructor(
@@ -45,6 +48,20 @@ class AuthRepository private constructor(
         }
         return response
     }
+
+    suspend fun editProfilePicture(file: MultipartBody.Part): EditProfilePictureResponse {
+        val response = apiService.editProfilePicture(file)
+        if (response.success == true) {
+            response.data?.let { data ->
+                // Update the user's profile picture in the session
+                val currentSession = userPreference.getSession().first()
+                val updatedSession = currentSession.copy(photoUrl = data.profilePictureUrl)
+                saveSession(updatedSession)
+            }
+        }
+        return response
+    }
+
 
     suspend fun logout(){
         userPreference.logout()

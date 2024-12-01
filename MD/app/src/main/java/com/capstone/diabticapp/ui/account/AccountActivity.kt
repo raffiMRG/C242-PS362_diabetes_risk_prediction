@@ -1,19 +1,26 @@
 package com.capstone.diabticapp.ui.account
 
+import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.capstone.diabticapp.AuthViewModelFactory
 import com.capstone.diabticapp.R
-import com.capstone.diabticapp.data.pref.UserPreference
-import com.capstone.diabticapp.data.pref.dataStore
 import com.capstone.diabticapp.databinding.ActivityAccountBinding
 import com.capstone.diabticapp.ui.custom.ProfileAppBar
-
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 
 class AccountActivity : AppCompatActivity() {
 
@@ -23,8 +30,12 @@ class AccountActivity : AppCompatActivity() {
         AuthViewModelFactory.getInstance(this)
     }
 
-    private var originalName = ""
-    private var originalPhone = ""
+    private val pickImageLauncher =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            uri?.let { handleImageUri(it) }
+        }
+
+    private var originalName: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +46,7 @@ class AccountActivity : AppCompatActivity() {
         appBar.setTitle(getString(R.string.profile))
 
         observeViewModel()
+        setupListeners()
 
         binding.tvChangeName.setOnClickListener {
             enterEditMode("Edit Name", binding.etName)
@@ -49,6 +61,57 @@ class AccountActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupListeners() {
+        binding.ivEditPicture.setOnClickListener {
+            pickImageLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+    }
+
+    private fun handleImageUri(uri: Uri) {
+        val file = createFileFromUri(uri)
+        if (file != null) {
+            val mimeType = contentResolver.getType(uri) ?: "image/jpeg"
+            val requestBody = file.asRequestBody(mimeType.toMediaTypeOrNull())
+            val multipartBody = MultipartBody.Part.createFormData("profilePicture", file.name, requestBody)
+
+            accountViewModel.uploadProfilePicture(multipartBody)
+        } else {
+            Toast.makeText(this, "Failed to process image", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun createFileFromUri(uri: Uri): File? {
+        return try {
+            val inputStream: InputStream? = contentResolver.openInputStream(uri)
+            val fileName = getFileName(uri)
+            val file = File(cacheDir, fileName)
+
+            FileOutputStream(file).use { outputStream ->
+                inputStream?.copyTo(outputStream)
+            }
+            file
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    private fun getFileName(uri: Uri): String {
+        var fileName = "temp_image.jpg"
+        if (uri.scheme == "content") {
+            contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                if (nameIndex != -1 && cursor.moveToFirst()) {
+                    fileName = cursor.getString(nameIndex)
+                }
+            }
+        } else if (uri.scheme == "file") {
+            fileName = File(uri.path ?: "").name
+        }
+        return fileName
+    }
+
+    @Suppress("DEPRECATION")
     private fun observeViewModel() {
         lifecycleScope.launchWhenStarted {
             accountViewModel.userName.collect { name ->
@@ -107,11 +170,6 @@ class AccountActivity : AppCompatActivity() {
 
     private fun saveChanges() {
         val newName = binding.etName.text.toString()
-
-//        if (newName != originalName) {
-//            accountViewModel.updateUserName(newName)
-//        }
-
         exitEditMode()
     }
 
@@ -123,7 +181,6 @@ class AccountActivity : AppCompatActivity() {
     private fun exitEditMode() {
         appBar.setTitle(getString(R.string.profile))
         appBar.hideEditActions()
-
         disableEditing(binding.etName)
     }
 

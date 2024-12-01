@@ -3,11 +3,11 @@ package com.capstone.diabticapp.ui.account
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.capstone.diabticapp.data.AuthRepository
-import com.capstone.diabticapp.data.pref.UserModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 
 class AccountViewModel(private val authRepository: AuthRepository) : ViewModel() {
 
@@ -32,6 +32,26 @@ class AccountViewModel(private val authRepository: AuthRepository) : ViewModel()
     init {
         loadUserInfo()
     }
+
+    fun uploadProfilePicture(file: MultipartBody.Part) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val response = authRepository.editProfilePicture(file)
+                if (response.success == true) {
+                    _stateMessage.value = "Profile picture updated successfully!"
+                    loadUserInfo()
+                } else {
+                    _stateMessage.value = response.message ?: "Failed to update profile picture."
+                }
+            } catch (e: Exception) {
+                _stateMessage.value = "Error: ${e.message}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
 
     private fun loadUserInfo() {
         viewModelScope.launch {

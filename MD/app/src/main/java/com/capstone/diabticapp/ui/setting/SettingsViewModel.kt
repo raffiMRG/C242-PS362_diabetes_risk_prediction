@@ -10,12 +10,10 @@ import kotlinx.coroutines.launch
 
 class SettingsViewModel (private val authRepository: AuthRepository) : ViewModel() {
 
-    // Observe username from UserPreference
     val username: LiveData<String> = authRepository.getUserSession().map { session ->
         session.username
     }.asLiveData()
 
-    // Observe profile picture URL from UserPreference
     val userPhotoUrl: LiveData<String?> = authRepository.getUserSession().map { session ->
         session.photoUrl
     }.asLiveData()

@@ -12,4 +12,8 @@ class HomeViewModel(private val authRepository: AuthRepository) : ViewModel() {
     val username: LiveData<String> = authRepository.getUserSession().map { session ->
         session.username
     }.asLiveData()
+
+    val userPhotoUrl: LiveData<String?> = authRepository.getUserSession().map { session ->
+        session.photoUrl
+    }.asLiveData()
 }
