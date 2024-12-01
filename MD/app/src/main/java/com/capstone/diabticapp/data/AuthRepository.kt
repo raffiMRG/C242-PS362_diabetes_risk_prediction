@@ -6,11 +6,8 @@ import com.capstone.diabticapp.data.remote.request.LoginRequest
 import com.capstone.diabticapp.data.remote.request.RegisterRequest
 import com.capstone.diabticapp.data.remote.response.GetAccResponse
 import com.capstone.diabticapp.data.remote.response.LoginResponse
-import com.capstone.diabticapp.data.remote.retrofit.ApiConfig
 import com.capstone.diabticapp.data.remote.retrofit.ApiService
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 
 
 class AuthRepository private constructor(
@@ -27,20 +24,26 @@ class AuthRepository private constructor(
             response.data?.let { data ->
                 val user = UserModel.fromLoginResponse(username, data)
                 saveSession(user)
-                refreshToken()
+
+                try {
+                    val accountResponse = getAccountData()
+                    if (accountResponse.success == true) {
+                        accountResponse.data?.let { accountData ->
+                            val updatedUser = user.copy(
+                                email = accountData.email ?: user.email,
+                                username = accountData.username ?: user.username,
+                                phone = accountData.phone ?: user.phone,
+                                photoUrl = accountData.profilePicture?.toString()
+                            )
+                            saveSession(updatedUser)
+                        }
+                    }
+                } catch (e: Exception) {
+                    println("Failed to fetch account data: ${e.message}")
+                }
             }
         }
         return response
-    }
-
-
-    private suspend fun refreshToken() {
-        val updatedToken = userPreference.getSession().first().token
-        runBlocking {
-            userPreference.saveSession(
-                userPreference.getSession().first().copy(token = updatedToken)
-            )
-        }
     }
 
     suspend fun logout(){

@@ -39,27 +39,7 @@ class AccountViewModel(private val authRepository: AuthRepository) : ViewModel()
             _userName.value = cachedUser.username
             _userEmail.value = cachedUser.email
             _userPhone.value = cachedUser.phone ?: "No Phone"
-
-            try {
-                val response = authRepository.getAccountData()
-                if (response.success == true) {
-                    response.data?.let { data ->
-                        val updatedUser = UserModel(
-                            email = data.email ?: cachedUser.email,
-                            token = cachedUser.token,
-                            refreshToken = cachedUser.refreshToken,
-                            isLogin = true,
-                            username = data.username ?: cachedUser.username,
-                            phone = data.phone ?: cachedUser.phone
-                        )
-                        authRepository.saveSession(updatedUser)
-                    }
-                } else {
-                    _stateMessage.value = response.message ?: "Failed to fetch account data."
-                }
-            } catch (e: Exception) {
-                _stateMessage.value = "Error: ${e.message}"
-            }
+            _userPhotoUrl.value = cachedUser.photoUrl
         }
     }
 

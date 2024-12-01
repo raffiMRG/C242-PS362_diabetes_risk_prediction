@@ -27,7 +27,6 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
                 _isLoading.value = true
                 val response = authRepository.login(username, password)
                 if (response.success == true) {
-                    authRepository.getAccountData()
                     onResult(true)
                 } else {
                     Log.e("LoginViewModel", "Login failed: ${response.message}")
@@ -41,6 +40,7 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
             }
         }
     }
+
 
 
     fun checkLoginStatus(onResult: (Boolean) -> Unit) {
