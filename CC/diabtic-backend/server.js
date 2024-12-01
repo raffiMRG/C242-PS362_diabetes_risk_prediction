@@ -10,6 +10,7 @@ const getPredictionHandler = require("./getPredictionHandler");
 const uploadProfilePictureHandler = require("./uploadProfilePictureHandler");
 const editProfilePictureHandler = require("./editProfilePictureHandler");
 const deleteProfilePictureHandler = require("./deleteProfilePictureHandler");
+const editAccountHandler = require("./editAccountHandler");
 
 const app = express();
 
@@ -33,6 +34,8 @@ app.get("/account/predictions", getPredictionHandler);
 app.post("/account/upload-profile-picture", upload.single('profilePicture'), uploadProfilePictureHandler);
 app.post("/account/edit-profile-picture", upload.single('profilePicture'), editProfilePictureHandler);
 app.delete("/account/delete-profile-picture", deleteProfilePictureHandler);
+
+app.patch("/account/edit", editAccountHandler);
 
 // Default route
 app.get("/", (req, res) => {
