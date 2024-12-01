@@ -24,8 +24,8 @@ const addPredictionHandler = async (req, res) => {
     const { username } = decoded;
 
     // Validasi input body
-    const { age, gender, bmi, smoking, alcohol, activity } = req.body;
-    const requiredFields = [age, gender, bmi, smoking, alcohol, activity];
+    const { age, gender, bmi, smoking, alcoholConsumption, physicalActivity, dietQuality, sleepQuality, familyHistoryDiabetes, gestationalDiabetes, previousPreDiabetes, hypertension, systolicBP, diastolicBP, fastingBloodSugar, hbA1c, cholesterolTotal, antihypertensiveMedications, antidiabeticMedications, frequentUrination, excessiveThirst, unexplainedWeightLoss, fatigueLevels, blurredVision, slowHealingSores, tinglingHandsFeet, qualityOfLifeScore, heavyMetalsExposure, occupationalExposureChemicals, waterQuality, medicalCheckupsFrequency, medicationAdherence, healthLiteracy, } = req.body;
+    const requiredFields = [age, gender, bmi, smoking, alcoholConsumption, physicalActivity, dietQuality, sleepQuality, familyHistoryDiabetes, gestationalDiabetes, previousPreDiabetes, hypertension, systolicBP, diastolicBP, fastingBloodSugar, hbA1c, cholesterolTotal, antihypertensiveMedications, antidiabeticMedications, frequentUrination, excessiveThirst, unexplainedWeightLoss, fatigueLevels, blurredVision, slowHealingSores, tinglingHandsFeet, qualityOfLifeScore, heavyMetalsExposure, occupationalExposureChemicals, waterQuality, medicalCheckupsFrequency, medicationAdherence, healthLiteracy];
     
     // Cek apakah semua field telah terisi
     if (requiredFields.some(field => field == null)) {
@@ -37,8 +37,8 @@ const addPredictionHandler = async (req, res) => {
 
     // Panggil API untuk prediksi
     const { data: { prediction } } = await axios.post(
-      'https://diabetes-893955223741.asia-southeast2.run.app/predict',
-      { age, gender, bmi, smoking, alcohol, activity }
+      'https://diabetes-risk-model-893955223741.asia-southeast2.run.app/predict',
+      { age, gender, bmi, smoking, alcoholConsumption, physicalActivity, dietQuality, sleepQuality, familyHistoryDiabetes, gestationalDiabetes, previousPreDiabetes, hypertension, systolicBP, diastolicBP, fastingBloodSugar, hbA1c, cholesterolTotal, antihypertensiveMedications, antidiabeticMedications, frequentUrination, excessiveThirst, unexplainedWeightLoss, fatigueLevels, blurredVision, slowHealingSores, tinglingHandsFeet, qualityOfLifeScore, heavyMetalsExposure, occupationalExposureChemicals, waterQuality, medicalCheckupsFrequency, medicationAdherence, healthLiteracy }
     );
 
     // Ambil referensi pengguna dari Firestore
@@ -59,7 +59,7 @@ const addPredictionHandler = async (req, res) => {
     const newPrediction = {
       id: `prediction-${Date.now()}`, // ID unik prediksi
       predictionResult: prediction,
-      predictionDetails: { age, gender, bmi, smoking, alcohol, activity },
+      predictionDetails: { age, gender, bmi, smoking, alcoholConsumption, physicalActivity, dietQuality, sleepQuality, familyHistoryDiabetes, gestationalDiabetes, previousPreDiabetes, hypertension, systolicBP, diastolicBP, fastingBloodSugar, hbA1c, cholesterolTotal, antihypertensiveMedications, antidiabeticMedications, frequentUrination, excessiveThirst, unexplainedWeightLoss, fatigueLevels, blurredVision, slowHealingSores, tinglingHandsFeet, qualityOfLifeScore, heavyMetalsExposure, occupationalExposureChemicals, waterQuality, medicalCheckupsFrequency, medicationAdherence, healthLiteracy },
       predictionSuggestion: prediction === 'Yes' ? 'Risky' : 'Not risky',
       createdAt: new Date().toISOString(),
     };
