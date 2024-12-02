@@ -17,6 +17,7 @@ const editAccountHandler = require("./editAccountHandler");
 // Artikel
 const getArticleHandler = require('./getArticleHandler');
 const addArticleHandler = require('./addArticleHandler');
+const editArticleHandler = require('./editArticleHandler');
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.delete("/account/delete-profile-picture", deleteProfilePictureHandler);
 // Route artikel
 app.get("/articles/:id?", getArticleHandler);
 app.post("/add-article", addArticleHandler);
+app.patch("/articles/:id", editArticleHandler);
 
 // Default route
 app.get("/", (req, res) => {
