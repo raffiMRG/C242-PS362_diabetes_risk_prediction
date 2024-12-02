@@ -1,8 +1,10 @@
 package com.capstone.diabticapp.data.remote.retrofit
 
+import com.capstone.diabticapp.data.remote.request.CalculateRequest
 import com.capstone.diabticapp.data.remote.request.ChangePasswordRequest
 import com.capstone.diabticapp.data.remote.request.LoginRequest
 import com.capstone.diabticapp.data.remote.request.RegisterRequest
+import com.capstone.diabticapp.data.remote.response.CalculateResponse
 import com.capstone.diabticapp.data.remote.response.ChangePasswordResponse
 import com.capstone.diabticapp.data.remote.response.EditProfilePictureResponse
 import com.capstone.diabticapp.data.remote.response.GetAccResponse
@@ -41,4 +43,9 @@ interface ApiService {
     suspend fun changePassword(
         @Body request: ChangePasswordRequest
     ):ChangePasswordResponse
+
+    @POST("account/predictions")
+    suspend fun createPrediction(
+        @Body user: CalculateRequest
+    ): CalculateResponse
 }
