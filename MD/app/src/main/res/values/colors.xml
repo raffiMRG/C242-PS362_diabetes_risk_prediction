@@ -16,7 +16,7 @@
     <color name="red">#cc0a0a</color>
     <color name="blue">#5271FF</color>
     <color name="title_blue">#5271FF</color>
-
+    <color name="icon_profile">#432C81FF</color>
 
     <color name="blue_primary">#5271FF</color>
     <color name="green_primary">#2ECC71</color>

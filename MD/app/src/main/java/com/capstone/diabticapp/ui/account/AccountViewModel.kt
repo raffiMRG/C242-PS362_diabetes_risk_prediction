@@ -2,15 +2,14 @@ package com.capstone.diabticapp.ui.account
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.capstone.diabticapp.data.pref.UserModel
-import com.capstone.diabticapp.data.pref.UserPreference
+import com.capstone.diabticapp.data.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 
-class AccountViewModel(private val userPreference: UserPreference) : ViewModel() {
-
+class AccountViewModel(private val authRepository: AuthRepository) : ViewModel() {
 
     private val _userName = MutableStateFlow<String>("")
     val userName: StateFlow<String> = _userName
@@ -18,65 +17,51 @@ class AccountViewModel(private val userPreference: UserPreference) : ViewModel()
     private val _userEmail = MutableStateFlow<String>("")
     val userEmail: StateFlow<String> = _userEmail
 
+    private val _userPhone = MutableStateFlow<String>("")
+    val userPhone: StateFlow<String> = _userPhone
+
     private val _userPhotoUrl = MutableStateFlow<String?>(null)
     val userPhotoUrl: StateFlow<String?> = _userPhotoUrl
 
     private val _stateMessage = MutableStateFlow<String?>(null)
     val stateMessage: StateFlow<String?> = _stateMessage
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
     init {
         loadUserInfo()
     }
 
-    private fun loadUserInfo() {
-//        viewModelScope.launch {
-//            val user = auth.currentUser
-//            if (user != null) {
-//                val name = user.displayName ?: "No Name"
-//                val email = user.email ?: "No Email"
-//                val photoUrl = user.photoUrl?.toString()
-//
-//                _userName.value = name
-//                _userEmail.value = email
-//                _userPhotoUrl.value = photoUrl
-//
-//                val session = userPreference.getSession().first()
-//                if (session.email != email || session.isLogin != true) {
-//                    userPreference.saveSession(
-//                        session.copy(
-//                            email = email,
-//                            isLogin = true
-//                        )
-//                    )
-//                }
-//            } else {
-//                val session = userPreference.getSession().first()
-//                _userName.value = session.email
-//                _userEmail.value = session.email
-//                _stateMessage.value = "No user is logged in."
-//            }
-//        }
+    fun uploadProfilePicture(file: MultipartBody.Part) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val response = authRepository.editProfilePicture(file)
+                if (response.success == true) {
+                    _stateMessage.value = "Profile picture updated successfully!"
+                    loadUserInfo()
+                } else {
+                    _stateMessage.value = response.message ?: "Failed to update profile picture."
+                }
+            } catch (e: Exception) {
+                _stateMessage.value = "Error: ${e.message}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
     }
 
-//    fun updateUserName(newName: String) {
-//        val user = auth.currentUser
-//        val profileUpdates = UserProfileChangeRequest.Builder()
-//            .setDisplayName(newName)
-//            .build()
-//
-//        viewModelScope.launch {
-//            try {
-//                user?.updateProfile(profileUpdates)?.await()
-//                _userName.value = newName
-//                _stateMessage.value = "Name updated successfully!"
-//
-//                val session = userPreference.getSession().first()
-//                userPreference.saveSession(session.copy(name = newName))
-//            } catch (e: Exception) {
-//                _stateMessage.value = "Failed to update name: ${e.message}"
-//            }
-//        }
-//    }
+
+    private fun loadUserInfo() {
+        viewModelScope.launch {
+            val cachedUser = authRepository.getUserSession().first()
+            _userName.value = cachedUser.username
+            _userEmail.value = cachedUser.email
+            _userPhone.value = cachedUser.phone ?: "No Phone"
+            _userPhotoUrl.value = cachedUser.photoUrl
+        }
+    }
 
     fun clearMessage() {
         _stateMessage.value = null
