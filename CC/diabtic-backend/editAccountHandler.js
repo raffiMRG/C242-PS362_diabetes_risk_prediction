@@ -1,5 +1,6 @@
 const { Firestore } = require("@google-cloud/firestore");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 const firestore = new Firestore();
 
@@ -11,7 +12,7 @@ const verifyToken = (token) => {
   }
 };
 
-// Create new token JWT y
+// Membuat token JWT baru
 const generateToken = (username) => {
   return jwt.sign({ username }, process.env.JWT_SECRET_KEY, {
     expiresIn: "1h",
@@ -31,7 +32,7 @@ const editAccountHandler = async (req, res) => {
   const token = authHeader.split(" ")[1];
 
   try {
-    // Verif token
+    // Verifikasi token
     const decoded = verifyToken(token);
     const { username } = decoded;
 
@@ -55,6 +56,21 @@ const editAccountHandler = async (req, res) => {
       });
     }
 
+    // Cek keberadaan data yang sama di database
+    if (["username", "email", "phone"].includes(field)) {
+      const usersSnapshot = await firestore
+        .collection("users")
+        .where(field, "==", value)
+        .get();
+
+      if (!usersSnapshot.empty) {
+        return res.status(409).json({
+          success: false,
+          message: `${field.charAt(0).toUpperCase() + field.slice(1)} sudah digunakan.`,
+        });
+      }
+    }
+
     // Update data di Firestore
     if (field === "username") {
       const newUsernameRef = firestore.collection("users").doc(value);
@@ -71,7 +87,7 @@ const editAccountHandler = async (req, res) => {
       // Copy data ke doc baru dengan username baru
       await newUsernameRef.set({ ...userDoc.data(), username: value });
 
-      // Delete doc lama
+      // Hapus dokumen lama
       await userRef.delete();
 
       // Buat token baru
@@ -82,8 +98,20 @@ const editAccountHandler = async (req, res) => {
         message: "Username berhasil diubah.",
         data: { token: newToken },
       });
+    } else if (field === "password") {
+      // Hash password baru menggunakan bcryptjs
+      const hashedPassword = bcrypt.hashSync(value, 10);
+
+      await userRef.update({
+        password: hashedPassword,
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: "Password berhasil diubah.",
+      });
     } else {
-      // Untuk patch field lain
+      // Untuk field lain
       await userRef.update({
         [field]: value,
       });
