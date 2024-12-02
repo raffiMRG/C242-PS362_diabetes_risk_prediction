@@ -2,7 +2,6 @@ package com.capstone.diabticapp.ui.account
 
 import android.net.Uri
 import android.os.Bundle
-import android.provider.OpenableColumns
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
@@ -15,12 +14,7 @@ import com.capstone.diabticapp.AuthViewModelFactory
 import com.capstone.diabticapp.R
 import com.capstone.diabticapp.databinding.ActivityAccountBinding
 import com.capstone.diabticapp.ui.custom.ProfileAppBar
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
+import com.capstone.diabticapp.utils.ImageHelper
 
 class AccountActivity : AppCompatActivity() {
 
@@ -68,48 +62,14 @@ class AccountActivity : AppCompatActivity() {
     }
 
     private fun handleImageUri(uri: Uri) {
-        val file = createFileFromUri(uri)
-        if (file != null) {
-            val mimeType = contentResolver.getType(uri) ?: "image/jpeg"
-            val requestBody = file.asRequestBody(mimeType.toMediaTypeOrNull())
-            val multipartBody = MultipartBody.Part.createFormData("profilePicture", file.name, requestBody)
-
+        val multipartBody = ImageHelper.createMultipartBody(this, uri, "profilePicture")
+        if (multipartBody != null) {
             accountViewModel.uploadProfilePicture(multipartBody)
         } else {
             Toast.makeText(this, "Failed to process image", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun createFileFromUri(uri: Uri): File? {
-        return try {
-            val inputStream: InputStream? = contentResolver.openInputStream(uri)
-            val fileName = getFileName(uri)
-            val file = File(cacheDir, fileName)
-
-            FileOutputStream(file).use { outputStream ->
-                inputStream?.copyTo(outputStream)
-            }
-            file
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
-    }
-
-    private fun getFileName(uri: Uri): String {
-        var fileName = "temp_image.jpg"
-        if (uri.scheme == "content") {
-            contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-                val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                if (nameIndex != -1 && cursor.moveToFirst()) {
-                    fileName = cursor.getString(nameIndex)
-                }
-            }
-        } else if (uri.scheme == "file") {
-            fileName = File(uri.path ?: "").name
-        }
-        return fileName
-    }
 
     @Suppress("DEPRECATION")
     private fun observeViewModel() {
