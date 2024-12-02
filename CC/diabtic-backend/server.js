@@ -1,5 +1,7 @@
 const express = require("express");
 const multer = require("multer");
+const cors = require("cors");
+
 const loginHandler = require("./loginHandler");
 const registerHandler = require("./registerHandler");
 const refreshTokenHandler = require("./refreshTokenHandler");
@@ -21,6 +23,9 @@ app.use(express.json());
 const storage = multer.memoryStorage(); 
 const upload = multer({ storage: storage });
 
+// Middleware untuk parsing request body
+app.use(cors());
+
 // Route Handlers
 app.post("/login", loginHandler);
 app.post("/register", registerHandler);
@@ -29,17 +34,16 @@ app.post("/refresh-token", refreshTokenHandler);
 app.get("/account", getAccountHandler);
 app.post("/account/predictions", addPredictionHandler);
 app.get("/account/predictions", getPredictionHandler);
+app.patch("/account/edit", editAccountHandler);
 
 // Upload dan manipulasi foto profil
 app.post("/account/upload-profile-picture", upload.single('profilePicture'), uploadProfilePictureHandler);
 app.post("/account/edit-profile-picture", upload.single('profilePicture'), editProfilePictureHandler);
 app.delete("/account/delete-profile-picture", deleteProfilePictureHandler);
 
-app.patch("/account/edit", editAccountHandler);
-
 // Default route
 app.get("/", (req, res) => {
-  res.send("Welcome to the authentication API!");
+  res.send("Welcome to the diabtic authentication API!");
 });
 
 // Global error handling middleware
