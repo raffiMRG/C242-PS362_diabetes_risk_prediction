@@ -53,6 +53,11 @@ class AccountActivity : AppCompatActivity() {
         appBar.setCancelClickListener {
             cancelChanges()
         }
+
+        appBar.setBackClickListener {
+            @Suppress("DEPRECATION")
+            onBackPressed()
+        }
     }
 
     private fun setupListeners() {
