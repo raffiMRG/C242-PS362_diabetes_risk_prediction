@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.capstone.diabticapp.data.AuthRepository
 import com.capstone.diabticapp.di.Injection
 import com.capstone.diabticapp.ui.account.AccountViewModel
+import com.capstone.diabticapp.ui.account.ChangePasswordViewModel
 import com.capstone.diabticapp.ui.home.HomeViewModel
 import com.capstone.diabticapp.ui.login.LoginViewModel
 import com.capstone.diabticapp.ui.register.RegisterViewModel
@@ -31,6 +32,9 @@ class AuthViewModelFactory(
             }
             modelClass.isAssignableFrom(AccountViewModel::class.java) -> {
                 AccountViewModel(authRepository) as T
+            }
+            modelClass.isAssignableFrom(ChangePasswordViewModel::class.java) -> {
+                ChangePasswordViewModel(authRepository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

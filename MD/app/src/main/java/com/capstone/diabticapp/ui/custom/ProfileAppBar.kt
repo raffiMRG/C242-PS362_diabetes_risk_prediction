@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import com.capstone.diabticapp.R
 
 class ProfileAppBar @JvmOverloads constructor(

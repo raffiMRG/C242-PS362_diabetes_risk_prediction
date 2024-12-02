@@ -41,8 +41,6 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
         }
     }
 
-
-
     fun checkLoginStatus(onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             val userSession = authRepository.getUserSession().first()

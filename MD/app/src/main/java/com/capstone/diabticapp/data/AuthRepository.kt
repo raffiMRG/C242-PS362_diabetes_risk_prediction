@@ -2,6 +2,7 @@ package com.capstone.diabticapp.data
 
 import com.capstone.diabticapp.data.pref.UserModel
 import com.capstone.diabticapp.data.pref.UserPreference
+import com.capstone.diabticapp.data.remote.request.ChangePasswordRequest
 import com.capstone.diabticapp.data.remote.request.LoginRequest
 import com.capstone.diabticapp.data.remote.request.RegisterRequest
 import com.capstone.diabticapp.data.remote.response.EditProfilePictureResponse
@@ -53,7 +54,6 @@ class AuthRepository private constructor(
         val response = apiService.editProfilePicture(file)
         if (response.success == true) {
             response.data?.let { data ->
-                // Update the user's profile picture in the session
                 val currentSession = userPreference.getSession().first()
                 val updatedSession = currentSession.copy(photoUrl = data.profilePictureUrl)
                 saveSession(updatedSession)
@@ -62,6 +62,9 @@ class AuthRepository private constructor(
         return response
     }
 
+    suspend fun changePassword(field: String, value: String) = apiService.changePassword(
+        ChangePasswordRequest(field, value)
+    )
 
     suspend fun logout(){
         userPreference.logout()

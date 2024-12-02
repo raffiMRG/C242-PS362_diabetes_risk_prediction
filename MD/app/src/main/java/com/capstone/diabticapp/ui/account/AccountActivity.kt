@@ -1,5 +1,6 @@
 package com.capstone.diabticapp.ui.account
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -41,10 +42,8 @@ class AccountActivity : AppCompatActivity() {
 
         observeViewModel()
         setupListeners()
+        changeProfile()
 
-        binding.tvChangeName.setOnClickListener {
-            enterEditMode("Edit Name", binding.etName)
-        }
 
         appBar.setSaveClickListener {
             saveChanges()
@@ -60,6 +59,17 @@ class AccountActivity : AppCompatActivity() {
         }
     }
 
+    private fun changeProfile(){
+        binding.tvChangeName.setOnClickListener {
+            enterEditMode("Edit Name", binding.etName)
+        }
+
+        binding.tvChangePassword.setOnClickListener {
+            val intent = Intent(this, ChangePasswordActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
     private fun setupListeners() {
         binding.ivEditPicture.setOnClickListener {
             pickImageLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
