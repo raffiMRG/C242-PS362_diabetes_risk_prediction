@@ -14,6 +14,10 @@ const editProfilePictureHandler = require("./editProfilePictureHandler");
 const deleteProfilePictureHandler = require("./deleteProfilePictureHandler");
 const editAccountHandler = require("./editAccountHandler");
 
+// Artikel
+const getArticleHandler = require('./getArticleHandler');
+const addArticleHandler = require('./addArticleHandler');
+
 const app = express();
 
 // Middleware untuk parsing JSON body
@@ -40,6 +44,10 @@ app.patch("/account/edit", editAccountHandler);
 app.post("/account/upload-profile-picture", upload.single('profilePicture'), uploadProfilePictureHandler);
 app.post("/account/edit-profile-picture", upload.single('profilePicture'), editProfilePictureHandler);
 app.delete("/account/delete-profile-picture", deleteProfilePictureHandler);
+
+// Route artikel
+app.get("/articles/:id?", getArticleHandler);
+app.post("/add-article", addArticleHandler);
 
 // Default route
 app.get("/", (req, res) => {
