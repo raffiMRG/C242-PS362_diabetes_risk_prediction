@@ -1,5 +1,6 @@
 package com.capstone.diabticapp.data.remote.retrofit
 
+import android.util.Log
 import com.capstone.diabticapp.data.pref.UserPreference
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -8,6 +9,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 class ApiConfig(private val userPreference: UserPreference) {
 
@@ -20,6 +22,7 @@ class ApiConfig(private val userPreference: UserPreference) {
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         val authInterceptor = Interceptor { chain ->
             val token = runBlocking { getToken() }
+            Log.d("Token", token)
             val req = chain.request()
             val requestHeaders = req.newBuilder()
                 .addHeader("Authorization", "Bearer $token")
@@ -27,6 +30,9 @@ class ApiConfig(private val userPreference: UserPreference) {
             chain.proceed(requestHeaders)
         }
         val client = OkHttpClient.Builder()
+            .connectTimeout(60, TimeUnit.SECONDS) // Timeout koneksi
+            .readTimeout(60, TimeUnit.SECONDS)    // Timeout membaca data
+            .writeTimeout(60, TimeUnit.SECONDS)   // Timeout menulis data
             .addInterceptor(loggingInterceptor)
             .addInterceptor(authInterceptor)
             .build()
