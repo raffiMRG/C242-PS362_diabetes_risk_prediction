@@ -29,21 +29,20 @@ const addArticleHandler = async (req, res) => {
 
   try {
     // Verifikasi token
-    const decoded = verifyToken(token);
-    const { username } = decoded;
+    verifyToken(token);
 
     // Ambil data artikel dari request body
-    const { title, description, image } = req.body;
+    const { title, description, image, author } = req.body;
 
-    if (!title || !description || !image) {
+    if (!title || !description || !image || !author) {
       return res.status(400).json({
         success: false,
-        message: "Judul, deskripsi, dan gambar harus disertakan.",
+        message: "Judul, deskripsi, gambar, dan author harus disertakan.",
       });
     }
 
     // Pastikan description berisi banyak paragraf yang dipisahkan dengan \n
-    const formattedDescription = description.split('\n').join('<br/>');  // Bisa gunakan <br> jika ingin merender HTML
+    const formattedDescription = description.split('\n').join('<br/>'); // Bisa gunakan <br> jika ingin merender HTML
 
     // Referensi ke koleksi "articles"
     const articleRef = firestore.collection('articles');
@@ -51,10 +50,10 @@ const addArticleHandler = async (req, res) => {
     // Data artikel yang akan ditambahkan
     const newArticle = {
       title,
-      description: formattedDescription,  // Menyimpan dengan format HTML atau string paragraf
-      image: image,
-      createdDate: Firestore.Timestamp.now(),  // Gunakan timestamp sekarang
-      author: username,  // Menyertakan username pengirim
+      description: formattedDescription, // Menyimpan dengan format HTML atau string paragraf
+      image,
+      createdDate: Firestore.Timestamp.now(), // Gunakan timestamp sekarang
+      author, // Author dimasukkan secara manual dari body
     };
 
     // Tambahkan artikel baru
