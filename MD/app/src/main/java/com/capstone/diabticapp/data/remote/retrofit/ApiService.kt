@@ -12,6 +12,7 @@ import com.capstone.diabticapp.data.remote.response.ChangePhoneResponse
 import com.capstone.diabticapp.data.remote.response.DetailArticleResponse
 import com.capstone.diabticapp.data.remote.response.EditProfilePictureResponse
 import com.capstone.diabticapp.data.remote.response.GetAccResponse
+import com.capstone.diabticapp.data.remote.response.HistoryResponse
 import com.capstone.diabticapp.data.remote.response.LoginResponse
 import com.capstone.diabticapp.data.remote.response.RegisterResponse
 import okhttp3.MultipartBody
@@ -71,4 +72,7 @@ interface ApiService {
     suspend fun getDetailArticle(
         @Path("id") articleId: String
     ): DetailArticleResponse
+
+    @GET("account/predictions")
+    suspend fun getAllData(): HistoryResponse
 }
