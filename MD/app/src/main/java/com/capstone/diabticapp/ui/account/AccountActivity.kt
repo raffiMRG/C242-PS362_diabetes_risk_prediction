@@ -59,8 +59,8 @@ class AccountActivity : AppCompatActivity() {
     }
 
     private fun changeProfile(){
-        binding.tvChangeName.setOnClickListener {
-            enterEditMode("Edit Name", binding.etName)
+        binding.tvChangeEmail.setOnClickListener {
+            enterEditMode("Edit Email", binding.etEmail)
         }
 
         binding.tvChangePassword.setOnClickListener {
@@ -137,7 +137,7 @@ class AccountActivity : AppCompatActivity() {
     }
 
     private fun enterEditMode(title: String, editText: View) {
-        appBar.setTitleText(title) // Use the explicit setter
+        appBar.setTitleText(title)
         appBar.showEditActions()
 
         editText.isFocusableInTouchMode = true
@@ -146,15 +146,15 @@ class AccountActivity : AppCompatActivity() {
     }
 
     private fun saveChanges() {
-        val newName = binding.etName.text.toString()
         val newPhone = binding.etPhone.text.toString()
+        val newEmail = binding.etEmail.text.toString()
 
         println("AppBar Title: ${appBar.title}")
 
         when (appBar.getTitleText()) {
-            "Edit Name" -> {
-                accountViewModel.changeName(newName)
-                println("Changing name to: $newName")
+            "Edit Email" -> {
+                accountViewModel.changeEmail(newEmail)
+                println("Changing name to: $newEmail")
             }
             "Edit Phone Number" -> {
                 accountViewModel.changePhone(newPhone)
@@ -174,7 +174,7 @@ class AccountActivity : AppCompatActivity() {
         appBar.setTitle(getString(R.string.profile))
         appBar.hideEditActions()
         disableEditing(binding.etPhone)
-        disableEditing(binding.etName)
+        disableEditing(binding.etEmail)
     }
 
     private fun disableEditing(editText: View) {

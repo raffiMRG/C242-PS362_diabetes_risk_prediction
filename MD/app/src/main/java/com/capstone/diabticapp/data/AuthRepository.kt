@@ -70,6 +70,10 @@ class AuthRepository private constructor(
         ChangeProfileRequest(field, value)
     )
 
+    suspend fun changeEmail(field: String, value: String) = apiService.changeEmail(
+        ChangeProfileRequest(field, value)
+    )
+
     suspend fun logout(){
         userPreference.logout()
     }

@@ -71,9 +71,24 @@ class AccountViewModel(private val authRepository: AuthRepository) : ViewModel()
         }
     }
 
-    fun changeName(newName: String) {
-
+    fun changeEmail(newEmail: String) {
+        viewModelScope.launch {
+            try {
+                val response = authRepository.changeEmail("email", newEmail)
+                if(response.success == true){
+                    _stateMessage.value = "Email updated successfully!"
+                    loadUserUpdatedInfo()
+                }else{
+                    _stateMessage.value = response.message ?: "Failed to update email."
+                }
+            }catch (e: Exception){
+                _stateMessage.value = "Error: ${e.message}"
+            }finally {
+                _isLoading.value = false
+            }
+        }
     }
+
     private fun loadUserUpdatedInfo() {
         viewModelScope.launch {
             try {
