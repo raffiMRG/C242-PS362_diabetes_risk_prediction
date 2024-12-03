@@ -4,6 +4,7 @@ import com.capstone.diabticapp.data.remote.request.CalculateRequest
 import com.capstone.diabticapp.data.remote.request.ChangeProfileRequest
 import com.capstone.diabticapp.data.remote.request.LoginRequest
 import com.capstone.diabticapp.data.remote.request.RegisterRequest
+import com.capstone.diabticapp.data.remote.response.ArticleResponse
 import com.capstone.diabticapp.data.remote.response.CalculateResponse
 import com.capstone.diabticapp.data.remote.response.ChangeEmailResponse
 import com.capstone.diabticapp.data.remote.response.ChangePasswordResponse
@@ -60,4 +61,7 @@ interface ApiService {
     suspend fun createPrediction(
         @Body user: CalculateRequest
     ): CalculateResponse
+
+    @GET("articles")
+    suspend fun getArticles(): ArticleResponse
 }
