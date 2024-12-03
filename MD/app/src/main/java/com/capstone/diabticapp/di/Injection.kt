@@ -1,6 +1,7 @@
 package com.capstone.diabticapp.di
 
 import android.content.Context
+import com.capstone.diabticapp.data.ArticleRepository
 import com.capstone.diabticapp.data.AuthRepository
 import com.capstone.diabticapp.data.CalculateRepository
 import com.capstone.diabticapp.data.pref.UserPreference
@@ -27,5 +28,11 @@ object Injection {
         val userPreference = provideUserPreference(context)
         val apiService = ApiConfig(userPreference).getApiService()
         return CalculateRepository.getInstance(apiService)
+    }
+
+    fun provideArticleRepository(context: Context): ArticleRepository {
+        val userPreference = provideUserPreference(context)
+        val apiService = provideApiService(userPreference)
+        return ArticleRepository.getInstance(apiService)
     }
 }

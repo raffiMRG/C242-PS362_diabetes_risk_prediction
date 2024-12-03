@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.util.Patterns
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.widget.doOnTextChanged
+import com.google.android.material.textfield.TextInputLayout
 
 class EmailEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = android.R.attr.editTextStyle
@@ -20,6 +21,8 @@ class EmailEditText @JvmOverloads constructor(
         doOnTextChanged { text, _, _, _ ->
             if (text != null && text.isNotEmpty() && !isValidEmail(text.toString())) {
                 error = "Please enter a valid email address"
+            }else{
+                (parent.parent as? TextInputLayout)?.error = null
             }
         }
     }

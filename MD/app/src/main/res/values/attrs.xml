@@ -3,4 +3,8 @@
     <declare-styleable name="CustomToolbar">
         <attr name="toolbarTitle" format="string"/>
     </declare-styleable>
+
+    <declare-styleable name="NewsAppBar">
+        <attr name="title" format="string" />
+    </declare-styleable>
 </resources>

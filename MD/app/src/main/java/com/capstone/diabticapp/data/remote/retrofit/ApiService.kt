@@ -4,10 +4,12 @@ import com.capstone.diabticapp.data.remote.request.CalculateRequest
 import com.capstone.diabticapp.data.remote.request.ChangeProfileRequest
 import com.capstone.diabticapp.data.remote.request.LoginRequest
 import com.capstone.diabticapp.data.remote.request.RegisterRequest
+import com.capstone.diabticapp.data.remote.response.ArticleResponse
 import com.capstone.diabticapp.data.remote.response.CalculateResponse
 import com.capstone.diabticapp.data.remote.response.ChangeEmailResponse
 import com.capstone.diabticapp.data.remote.response.ChangePasswordResponse
 import com.capstone.diabticapp.data.remote.response.ChangePhoneResponse
+import com.capstone.diabticapp.data.remote.response.DetailArticleResponse
 import com.capstone.diabticapp.data.remote.response.EditProfilePictureResponse
 import com.capstone.diabticapp.data.remote.response.GetAccResponse
 import com.capstone.diabticapp.data.remote.response.LoginResponse
@@ -19,6 +21,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 
 interface ApiService {
 
@@ -60,4 +63,12 @@ interface ApiService {
     suspend fun createPrediction(
         @Body user: CalculateRequest
     ): CalculateResponse
+
+    @GET("articles")
+    suspend fun getArticles(): ArticleResponse
+
+    @GET("articles/{id}")
+    suspend fun getDetailArticle(
+        @Path("id") articleId: String
+    ): DetailArticleResponse
 }

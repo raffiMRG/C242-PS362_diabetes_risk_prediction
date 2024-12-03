@@ -1,56 +1,52 @@
 package com.capstone.diabticapp.ui.news
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.view.menu.MenuView.ItemView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.capstone.diabticapp.R
-import com.capstone.diabticapp.databinding.ItemNewsBinding
-import com.capstone.diabticapp.ui.detail_news.DetailNewsActivity
-import com.capstone.diabticapp.ui.home.HomeAdapter
-import com.google.android.material.imageview.ShapeableImageView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
-//import androidx.recyclerview.widget.RecyclerView
+import com.capstone.diabticapp.data.remote.response.DataItem
+import com.capstone.diabticapp.utils.Time
+
 
 class NewsAdapter(
-    private val items: List<ExampleNews>
-): RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
-    inner class NewsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        private val thumbnail: ShapeableImageView = itemView.findViewById(R.id.img_thumbnail)
-        private val title: TextView = itemView.findViewById(R.id.tv_title)
+    private val articles: List<DataItem>,
+    private val onItemClick: (DataItem) -> Unit
+    ) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
-        fun bind(item: ExampleNews){
-            Glide.with(itemView)
-                .load(item.image)
-                .into(thumbnail)
-            title.text = item.title
-            itemView.setOnClickListener{
-                val intentDetail = Intent(this.itemView.context, DetailNewsActivity::class.java)
-                intentDetail.putExtra("image", item.image)
-                intentDetail.putExtra("title", item.title)
-                intentDetail.putExtra("description", item.description)
-                this.itemView.context.startActivity(intentDetail)
-            }
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_news, parent, false)
+        return NewsViewHolder(view, onItemClick)
     }
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
-            holder.bind(items[position])
+        val article = articles[position]
+        holder.bind(article)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-//        LayoutInflater.from(parent.context)
-//            .inflate(R.layout.item_home_card, parent, false)
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_news, parent, false)
-        return NewsViewHolder(view)
+    override fun getItemCount(): Int = articles.size
+
+    class NewsViewHolder(view: View, private val onItemClick: (DataItem) -> Unit) : RecyclerView.ViewHolder(view) {
+        private val titleTextView: TextView = view.findViewById(R.id.tv_title)
+        private val timeTextView: TextView = view.findViewById(R.id.tv_time)
+        private val thumbnailImageView: ImageView = view.findViewById(R.id.img_thumbnail)
+
+        fun bind(article: DataItem) {
+            titleTextView.text = article.title ?: "No Title"
+
+            val formattedDate = Time.formatDate(article.createdDate?.seconds)
+            timeTextView.text = formattedDate
+
+            Glide.with(itemView.context)
+                .load(article.image)
+                .placeholder(R.drawable.image)
+                .into(thumbnailImageView)
+
+            itemView.setOnClickListener { onItemClick(article) }
+        }
+
     }
-
-    override fun getItemCount(): Int = items.size
-
 }
