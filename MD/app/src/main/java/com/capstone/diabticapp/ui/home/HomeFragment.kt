@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
 
         val homeCards = listOf(
             HomeCardItem(R.drawable.ic_stomatch, "Diabets Calculator"),
-            HomeCardItem(R.drawable.ic_bloodrop, "Medical History"),
+            HomeCardItem(R.drawable.ic_computer, "Medical History"),
             HomeCardItem(R.drawable.ic_news, "Related News"),
         )
 
