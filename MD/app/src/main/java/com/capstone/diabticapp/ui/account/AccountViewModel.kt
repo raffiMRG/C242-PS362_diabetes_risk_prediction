@@ -73,6 +73,7 @@ class AccountViewModel(private val authRepository: AuthRepository) : ViewModel()
 
     fun changeEmail(newEmail: String) {
         viewModelScope.launch {
+            _isLoading.value = true
             try {
                 val response = authRepository.changeEmail("email", newEmail)
                 if(response.success == true){

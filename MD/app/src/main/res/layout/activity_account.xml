@@ -109,13 +109,12 @@
                 android:orientation="horizontal"
                 android:paddingBottom="8dp">
 
-                <EditText
+                <com.capstone.diabticapp.ui.custom.EmailEditText
                     android:id="@+id/etEmail"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:hint="Name"
-                    android:inputType="textEmailAddress"
+                    android:hint="Enter your email"
                     android:text="warenbupet@gmail.com"
                     android:textSize="16sp"
                     android:focusable="false"
