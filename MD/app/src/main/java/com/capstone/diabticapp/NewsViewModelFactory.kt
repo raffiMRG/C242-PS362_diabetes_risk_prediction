@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.capstone.diabticapp.data.ArticleRepository
 import com.capstone.diabticapp.data.remote.retrofit.ApiConfig
 import com.capstone.diabticapp.di.Injection
+import com.capstone.diabticapp.ui.detail_news.DetailNewsViewModel
 import com.capstone.diabticapp.ui.news.NewsViewModel
 
 class NewsViewModelFactory(private val articleRepository: ArticleRepository) :
@@ -13,10 +14,17 @@ class NewsViewModelFactory(private val articleRepository: ArticleRepository) :
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(NewsViewModel::class.java)) {
-            return NewsViewModel(articleRepository) as T
+        return when {
+            modelClass.isAssignableFrom(NewsViewModel::class.java) -> {
+                NewsViewModel(articleRepository) as T
+            }
+
+            modelClass.isAssignableFrom(DetailNewsViewModel::class.java) -> {
+                DetailNewsViewModel(articleRepository) as T
+            }
+
+            else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
-        throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
     }
 
     companion object {

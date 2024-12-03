@@ -1,7 +1,7 @@
 package com.capstone.diabticapp.data
 
 import com.capstone.diabticapp.data.remote.response.ArticleResponse
-import com.capstone.diabticapp.data.remote.response.GetAccResponse
+import com.capstone.diabticapp.data.remote.response.DetailArticleResponse
 import com.capstone.diabticapp.data.remote.retrofit.ApiService
 
 class ArticleRepository private constructor(
@@ -10,6 +10,10 @@ class ArticleRepository private constructor(
 
     suspend fun getArticles(): ArticleResponse {
         return apiService.getArticles()
+    }
+
+    suspend fun getDetailArticle(articleId: String): DetailArticleResponse {
+        return apiService.getDetailArticle(articleId)
     }
 
     companion object{

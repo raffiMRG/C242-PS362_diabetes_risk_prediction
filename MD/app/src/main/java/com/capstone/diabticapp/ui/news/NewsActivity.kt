@@ -1,5 +1,6 @@
 package com.capstone.diabticapp.ui.news
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -17,6 +18,7 @@ import com.capstone.diabticapp.data.ArticleRepository
 import com.capstone.diabticapp.data.remote.retrofit.ApiConfig
 import com.capstone.diabticapp.databinding.ActivityCalculateBinding
 import com.capstone.diabticapp.databinding.ActivityNewsBinding
+import com.capstone.diabticapp.ui.detail_news.DetailNewsActivity
 import com.capstone.diabticapp.ui.home.HomeCardItem
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -49,7 +51,11 @@ class NewsActivity : AppCompatActivity() {
             newsViewModel.articles.collectLatest { response ->
                 if (response != null && response.success == true) {
                     val articles = response.data?.filterNotNull() ?: emptyList()
-                    val adapter = NewsAdapter(articles)
+                    val adapter = NewsAdapter(articles) { article ->
+                        val intent = Intent(this@NewsActivity, DetailNewsActivity::class.java)
+                        intent.putExtra("ARTICLE_ID", article.id)
+                        startActivity(intent)
+                    }
                     binding.rvNews.adapter = adapter
                 } else {
                     Log.e("NewsActivity", "Failed to load articles")

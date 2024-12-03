@@ -12,11 +12,14 @@ import com.capstone.diabticapp.data.remote.response.DataItem
 import com.capstone.diabticapp.utils.Time
 
 
-class NewsAdapter(private val articles: List<DataItem>) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
+class NewsAdapter(
+    private val articles: List<DataItem>,
+    private val onItemClick: (DataItem) -> Unit
+    ) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_news, parent, false)
-        return NewsViewHolder(view)
+        return NewsViewHolder(view, onItemClick)
     }
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
@@ -26,7 +29,7 @@ class NewsAdapter(private val articles: List<DataItem>) : RecyclerView.Adapter<N
 
     override fun getItemCount(): Int = articles.size
 
-    class NewsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class NewsViewHolder(view: View, private val onItemClick: (DataItem) -> Unit) : RecyclerView.ViewHolder(view) {
         private val titleTextView: TextView = view.findViewById(R.id.tv_title)
         private val timeTextView: TextView = view.findViewById(R.id.tv_time)
         private val thumbnailImageView: ImageView = view.findViewById(R.id.img_thumbnail)
@@ -41,6 +44,8 @@ class NewsAdapter(private val articles: List<DataItem>) : RecyclerView.Adapter<N
                 .load(article.image)
                 .placeholder(R.drawable.image)
                 .into(thumbnailImageView)
+
+            itemView.setOnClickListener { onItemClick(article) }
         }
 
     }
