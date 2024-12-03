@@ -1,13 +1,40 @@
 package com.capstone.diabticapp.ui.history
 
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.capstone.diabticapp.data.HistoryRepository
+import com.capstone.diabticapp.data.database.UserEntity
+import kotlinx.coroutines.launch
 
-class HistoryViewModel : ViewModel() {
+class HistoryViewModel(private val repository: HistoryRepository) : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
+    private val _getDataResponse = MutableLiveData<List<UserEntity>>()
+    val getDataResponse: LiveData<List<UserEntity>> get() = _getDataResponse
+
+    private val _statusMesage = MutableLiveData<String>()
+    val statusMesage: LiveData<String> = _statusMesage
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> get() = _isLoading
+
+    fun getDataPrediction(forceRefresh: Boolean = false) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            val data = if (forceRefresh) {
+                Log.d("ModelSource", "Load From API Server")
+                _statusMesage.value = "Get Data From Server"
+                repository.refreshUsers() // Refresh data from API
+            } else {
+                Log.d("ModelSource", "Load room")
+                _statusMesage.value = "Get Local Data"
+                repository.getUsersFromRoom() // Get data from Room
+            }
+            _getDataResponse.value = data
+            _isLoading.value = false
+        }
     }
-    val text: LiveData<String> = _text
 }

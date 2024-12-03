@@ -54,6 +54,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:translationY="-58dp"/>
 
+            <ProgressBar
+                android:id="@+id/loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/image_in_scroll"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone"/>
+
             <!-- Background Card -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/bg_rv"

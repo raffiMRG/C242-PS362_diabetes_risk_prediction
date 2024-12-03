@@ -8,25 +8,23 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.capstone.diabticapp.R
+import com.capstone.diabticapp.data.database.UserEntity
+import com.capstone.diabticapp.helper.DateConverterUtils
 import com.google.android.material.imageview.ShapeableImageView
 
 class HistoryAdapter(
-    private val items: List<ExampleHistory>
+    private val items: List<UserEntity>
 ): RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
     inner class HistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val date: TextView = itemView.findViewById(R.id.tv_date)
         private val status: TextView = itemView.findViewById(R.id.tv_result)
 
-        fun bind(item: ExampleHistory) {
-            date.text = item.date
-            status.text = item.status
-//            itemView.setOnClickListener{
-//                val intentDetail = Intent(this.itemView.context, DetailNewsActivity::class.java)
-//                intentDetail.putExtra("image", item.image)
-//                intentDetail.putExtra("title", item.title)
-//                intentDetail.putExtra("description", item.description)
-//                this.itemView.context.startActivity(intentDetail)
-//            }
+        fun bind(item: UserEntity) {
+            val devaultTime = item.createdAt
+            val wibTime = DateConverterUtils.convertUtcToWib(devaultTime)
+
+            date.text = wibTime
+            status.text = item.predictionSuggestion
         }
     }
 
@@ -35,8 +33,6 @@ class HistoryAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
-//        LayoutInflater.from(parent.context)
-//            .inflate(R.layout.item_home_card, parent, false)
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_history, parent, false)
         return HistoryViewHolder(view)
     }
