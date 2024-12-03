@@ -2,7 +2,7 @@ package com.capstone.diabticapp.data
 
 import com.capstone.diabticapp.data.pref.UserModel
 import com.capstone.diabticapp.data.pref.UserPreference
-import com.capstone.diabticapp.data.remote.request.ChangePasswordRequest
+import com.capstone.diabticapp.data.remote.request.ChangeProfileRequest
 import com.capstone.diabticapp.data.remote.request.LoginRequest
 import com.capstone.diabticapp.data.remote.request.RegisterRequest
 import com.capstone.diabticapp.data.remote.response.EditProfilePictureResponse
@@ -63,7 +63,15 @@ class AuthRepository private constructor(
     }
 
     suspend fun changePassword(field: String, value: String) = apiService.changePassword(
-        ChangePasswordRequest(field, value)
+        ChangeProfileRequest(field, value)
+    )
+
+    suspend fun changePhone(field: String, value: String) = apiService.changePhone(
+        ChangeProfileRequest(field, value)
+    )
+
+    suspend fun changeEmail(field: String, value: String) = apiService.changeEmail(
+        ChangeProfileRequest(field, value)
     )
 
     suspend fun logout(){

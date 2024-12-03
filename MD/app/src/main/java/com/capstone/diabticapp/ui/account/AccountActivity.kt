@@ -30,7 +30,6 @@ class AccountActivity : AppCompatActivity() {
             uri?.let { handleImageUri(it) }
         }
 
-    private var originalName: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,8 +59,8 @@ class AccountActivity : AppCompatActivity() {
     }
 
     private fun changeProfile(){
-        binding.tvChangeName.setOnClickListener {
-            enterEditMode("Edit Name", binding.etName)
+        binding.tvChangeEmail.setOnClickListener {
+            enterEditMode("Edit Email", binding.etEmail)
         }
 
         binding.tvChangePassword.setOnClickListener {
@@ -69,6 +68,10 @@ class AccountActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+        binding.tvChangePhone.setOnClickListener {
+            enterEditMode("Edit Phone Number", binding.etPhone)
+        }
+
     }
     private fun setupListeners() {
         binding.ivEditPicture.setOnClickListener {
@@ -90,14 +93,13 @@ class AccountActivity : AppCompatActivity() {
     private fun observeViewModel() {
         lifecycleScope.launchWhenStarted {
             accountViewModel.userName.collect { name ->
-                originalName = name
                 binding.etName.setText(name)
             }
         }
 
         lifecycleScope.launchWhenStarted {
             accountViewModel.userEmail.collect { email ->
-                binding.tvEmail.text = email
+                binding.etEmail.setText(email)
             }
         }
 
@@ -135,7 +137,7 @@ class AccountActivity : AppCompatActivity() {
     }
 
     private fun enterEditMode(title: String, editText: View) {
-        appBar.setTitle(title)
+        appBar.setTitleText(title)
         appBar.showEditActions()
 
         editText.isFocusableInTouchMode = true
@@ -144,19 +146,35 @@ class AccountActivity : AppCompatActivity() {
     }
 
     private fun saveChanges() {
-        val newName = binding.etName.text.toString()
+        val newPhone = binding.etPhone.text.toString()
+        val newEmail = binding.etEmail.text.toString()
+
+        println("AppBar Title: ${appBar.title}")
+
+        when (appBar.getTitleText()) {
+            "Edit Email" -> {
+                accountViewModel.changeEmail(newEmail)
+                println("Changing name to: $newEmail")
+            }
+            "Edit Phone Number" -> {
+                accountViewModel.changePhone(newPhone)
+                println("Changing phone to: $newPhone")
+            }
+            else -> println("No matching title found for action")
+        }
         exitEditMode()
     }
 
     private fun cancelChanges() {
-        binding.etName.setText(originalName)
+        observeViewModel()
         exitEditMode()
     }
 
     private fun exitEditMode() {
         appBar.setTitle(getString(R.string.profile))
         appBar.hideEditActions()
-        disableEditing(binding.etName)
+        disableEditing(binding.etPhone)
+        disableEditing(binding.etEmail)
     }
 
     private fun disableEditing(editText: View) {

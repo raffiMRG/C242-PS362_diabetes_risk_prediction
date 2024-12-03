@@ -16,6 +16,7 @@ class ProfileAppBar @JvmOverloads constructor(
     private var saveButton: ImageView
     private var cancelButton: ImageView
     private var backButton: ImageView
+    private var currentTitle: String? = null
 
     init {
         inflate(context, R.layout.custom_app_bar_profile, this)
@@ -29,9 +30,12 @@ class ProfileAppBar @JvmOverloads constructor(
         cancelButton.visibility = GONE
     }
 
-    fun setTitle(title: String) {
+    fun setTitleText(title: String) {
+        currentTitle = title
         titleTextView.text = title
     }
+
+    fun getTitleText(): String? = currentTitle
 
     fun showEditActions() {
         saveButton.visibility = VISIBLE

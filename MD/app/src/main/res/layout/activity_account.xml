@@ -75,11 +75,10 @@
                     android:hint="Name"
                     android:text="Warren Buffet"
                     android:textSize="16sp"
-                    android:textColor="@color/black"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:background="@null" />
-
+                <!--
                 <TextView
                     android:id="@+id/tvChangeName"
                     android:layout_width="wrap_content"
@@ -87,6 +86,7 @@
                     android:text="Change"
                     android:textColor="@color/blue"
                     android:textStyle="bold" />
+                    -->
             </LinearLayout>
 
             <View
@@ -109,14 +109,17 @@
                 android:orientation="horizontal"
                 android:paddingBottom="8dp">
 
-                <TextView
-                    android:id="@+id/tvEmail"
+                <com.capstone.diabticapp.ui.custom.EmailEditText
+                    android:id="@+id/etEmail"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="juliamario@gmail.com"
+                    android:hint="Enter your email"
+                    android:text="warenbupet@gmail.com"
                     android:textSize="16sp"
-                    android:textColor="@color/black" />
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:background="@null" />
 
                 <TextView
                     android:id="@+id/tvChangeEmail"
@@ -197,8 +200,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Phone Number"
                     android:text="-"
+                    android:inputType="phone"
                     android:textSize="16sp"
-                    android:textColor="@color/black"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:background="@null" />
@@ -209,7 +212,9 @@
                     android:layout_height="wrap_content"
                     android:text="Change"
                     android:textColor="@color/blue"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    android:focusable="true"/>
             </LinearLayout>
 
             <View

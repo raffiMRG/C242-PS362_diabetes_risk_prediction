@@ -12,12 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.capstone.diabticapp.AuthViewModelFactory
 import com.capstone.diabticapp.R
-import com.capstone.diabticapp.data.AuthRepository
-import com.capstone.diabticapp.data.pref.UserPreference
-import com.capstone.diabticapp.data.pref.dataStore
 import com.capstone.diabticapp.databinding.FragmentSettingBinding
 import com.capstone.diabticapp.ui.account.AccountActivity
-import com.capstone.diabticapp.ui.login.LoginActivity
 
 class SettingsFragment : Fragment() {
 
@@ -85,8 +81,6 @@ class SettingsFragment : Fragment() {
         viewModel.logout()
         Toast.makeText(requireContext(), "Logged out successfully", Toast.LENGTH_SHORT).show()
 
-        val intent = Intent(requireContext(), LoginActivity::class.java)
-        startActivity(intent)
-        requireActivity().finish()
+        requireActivity().finishAffinity()
     }
 }

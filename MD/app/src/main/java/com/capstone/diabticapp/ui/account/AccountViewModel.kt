@@ -52,6 +52,67 @@ class AccountViewModel(private val authRepository: AuthRepository) : ViewModel()
         }
     }
 
+    fun changePhone(newPhone: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val response = authRepository.changePhone("phone", newPhone)
+                if(response.success == true){
+                    _stateMessage.value = "Phone number updated successfully!"
+                    loadUserUpdatedInfo()
+                }else{
+                    _stateMessage.value = response.message ?: "Failed to update phone number."
+                }
+            }catch (e: Exception){
+                _stateMessage.value = "Error: ${e.message}"
+            }finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun changeEmail(newEmail: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val response = authRepository.changeEmail("email", newEmail)
+                if(response.success == true){
+                    _stateMessage.value = "Email updated successfully!"
+                    loadUserUpdatedInfo()
+                }else{
+                    _stateMessage.value = response.message ?: "Failed to update email."
+                }
+            }catch (e: Exception){
+                _stateMessage.value = "Error: ${e.message}"
+            }finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    private fun loadUserUpdatedInfo() {
+        viewModelScope.launch {
+            try {
+                val response = authRepository.getAccountData()
+                if (response.success == true) {
+                    response.data?.let { accountData ->
+                        val updatedUser = authRepository.getUserSession().first().copy(
+                            username = accountData.username ?: "",
+                            email = accountData.email ?: "",
+                            phone = accountData.phone ?: "",
+                            photoUrl = accountData.profilePicture?.toString()
+                        )
+                        authRepository.saveSession(updatedUser)
+                        loadUserInfo()
+                    }
+                } else {
+                    _stateMessage.value = response.message ?: "Failed to fetch updated user data."
+                }
+            } catch (e: Exception) {
+                _stateMessage.value = "Error: ${e.message}"
+            }
+        }
+    }
 
     private fun loadUserInfo() {
         viewModelScope.launch {

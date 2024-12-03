@@ -75,6 +75,7 @@ class HomeFragment : Fragment() {
         viewModel.username.observe(viewLifecycleOwner) { name ->
             binding.tvGreeting.text = getString(R.string.hi_user, name)
         }
+
         viewModel.userPhotoUrl.observe(viewLifecycleOwner) { photoUrl ->
             Glide.with(this)
                 .load(photoUrl)
