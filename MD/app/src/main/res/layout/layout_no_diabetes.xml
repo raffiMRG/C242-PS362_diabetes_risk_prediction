@@ -10,10 +10,10 @@
     <!-- ubah image nya bang. di figma gw gak bisa download resource image nya. Sementara ini dlu -->
     <ImageView
         android:id="@+id/imageNoDiabetes"
-        android:layout_width="200dp"
+        android:layout_width="250dp"
         android:layout_height="200dp"
         android:layout_marginTop="64dp"
-        android:src="@drawable/diabetes_detected"
+        android:src="@drawable/no_diabet"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/titleNoDiabetes"
         app:layout_constraintStart_toStartOf="parent"

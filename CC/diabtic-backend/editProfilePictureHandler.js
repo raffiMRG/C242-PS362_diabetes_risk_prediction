@@ -60,7 +60,7 @@ const editProfilePictureHandler = async (req, res) => {
     // Hapus gambar profil lama dari Google Cloud Storage (jika ada)
     if (oldProfilePicture) {
       const oldFileName = oldProfilePicture.split("/").pop();
-      const oldFile = storage.bucket(bucketName).file(oldFileName);
+      const oldFile = storage.bucket(bucketName).file(`${username}/profile-pictures/${oldFileName}`);
       try {
         await oldFile.delete();
       } catch (err) {
