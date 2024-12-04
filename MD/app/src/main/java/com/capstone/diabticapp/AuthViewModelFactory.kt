@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.capstone.diabticapp.data.AuthRepository
+import com.capstone.diabticapp.data.pref.UserPreference
 import com.capstone.diabticapp.di.Injection
 import com.capstone.diabticapp.ui.account.AccountViewModel
 import com.capstone.diabticapp.ui.account.ChangePasswordViewModel
@@ -13,7 +14,8 @@ import com.capstone.diabticapp.ui.register.RegisterViewModel
 import com.capstone.diabticapp.ui.setting.SettingsViewModel
 
 class AuthViewModelFactory(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val userPreference: UserPreference
 ): ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -28,7 +30,7 @@ class AuthViewModelFactory(
                 RegisterViewModel(authRepository) as T
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
-                HomeViewModel(authRepository) as T
+                HomeViewModel(authRepository, userPreference) as T
             }
             modelClass.isAssignableFrom(AccountViewModel::class.java) -> {
                 AccountViewModel(authRepository) as T
@@ -49,7 +51,7 @@ class AuthViewModelFactory(
                 val userPreference = Injection.provideUserPreference(context)
                 val apiService = Injection.provideApiService(userPreference)
                 val authRepository = AuthRepository.getInstance(userPreference, apiService)
-                AuthViewModelFactory(authRepository).also {
+                AuthViewModelFactory(authRepository, userPreference).also {
                     INSTANCE = it
                 }
             }

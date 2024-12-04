@@ -14,11 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.diabticapp.AuthViewModelFactory
 import com.capstone.diabticapp.CalculateViewModelFactory
 import com.capstone.diabticapp.MainActivity
+import com.capstone.diabticapp.data.pref.UserPreference
 import com.capstone.diabticapp.data.remote.request.CalculateRequest
 import com.capstone.diabticapp.databinding.ActivityCalculateBinding
 import com.capstone.diabticapp.databinding.LayoutDiabetesDetectedBinding
 import com.capstone.diabticapp.databinding.LayoutNoDiabetesBinding
+import com.capstone.diabticapp.di.Injection
 import com.capstone.diabticapp.ui.home.HomeViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlin.math.pow
 import kotlin.math.roundToInt
@@ -92,6 +95,7 @@ class CalculateActivity : AppCompatActivity(), FormAdapter.OnFormItemChangedList
     private val userViewModel: HomeViewModel by viewModels {
         AuthViewModelFactory.getInstance(this)
     }
+    private val authRepository by lazy { Injection.provideAuthRepository(applicationContext) } // buat ngebinding username sama status isDiabetes biar tiap account gak conflict status diabetesnya
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -444,6 +448,12 @@ class CalculateActivity : AppCompatActivity(), FormAdapter.OnFormItemChangedList
         setContentView(binding.root)
 
         binding.btnNextDiabetesDetected.setOnClickListener {
+            lifecycleScope.launch {
+                val userPreference = UserPreference.getInstance(applicationContext)
+                val user = authRepository.getUserSession().first()
+                userPreference.saveDiabetesStatus(false, user.username) // False = Diabetes Detected
+            }
+
             // TODO: bisa navigasi ke halaman utama atau menyimpan Hasil Prediksi ?
             val intent = Intent(this, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -459,6 +469,11 @@ class CalculateActivity : AppCompatActivity(), FormAdapter.OnFormItemChangedList
         setContentView(binding.root)
 
         binding.btnNextNoDiabetes.setOnClickListener {
+            lifecycleScope.launch {
+                val userPreference = UserPreference.getInstance(applicationContext)
+                val user = authRepository.getUserSession().first()
+                userPreference.saveDiabetesStatus(true, user.username) // True = No Diabetes Detected
+            }
             // TODO: bisa navigasi ke halaman utama atau menyimpan Hasil Prediksi ?
             val intent = Intent(this, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
