@@ -167,12 +167,14 @@ class AccountActivity : AppCompatActivity() {
 
     private fun cancelChanges() {
         observeViewModel()
+        binding.etPhone.setText(accountViewModel.userPhone.value ?: "")
+        binding.etEmail.setText(accountViewModel.userEmail.value ?: "")
         exitEditMode()
     }
 
     private fun exitEditMode() {
-        appBar.setTitle(getString(R.string.profile))
-        appBar.hideEditActions()
+        appBar.setTitleText(getString(R.string.profile)) // Reset app bar title
+        appBar.hideEditActions() // Hide save and cancel buttons
         disableEditing(binding.etPhone)
         disableEditing(binding.etEmail)
     }
