@@ -23,7 +23,6 @@ import com.capstone.diabticapp.ui.setting.SettingsViewModel
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-    private var isDiabetets: Boolean = false
 
     private val viewModel: HomeViewModel by viewModels {
         AuthViewModelFactory.getInstance(requireContext())
@@ -54,15 +53,6 @@ class HomeFragment : Fragment() {
             }
         }
 
-        if (isDiabetets){
-            binding.profileBackgroud.background = ContextCompat.getDrawable(requireContext(), R.drawable.background_image_green)
-            binding.diabetsStatus.text = getString(R.string.status_diabets_negative)
-        }else{
-            binding.profileBackgroud.background = ContextCompat.getDrawable(requireContext(), R.drawable.background_image_red)
-            binding.diabetsStatus.text = getString(R.string.status_diabets_positive)
-        }
-
-
         binding.rvHomeCards.isNestedScrollingEnabled = false
         binding.rvHomeCards.layoutManager = LinearLayoutManager(requireContext())
         binding.rvHomeCards.adapter = adapter
@@ -83,6 +73,19 @@ class HomeFragment : Fragment() {
                 .circleCrop()
                 .into(binding.ivProfile)
         }
+
+        viewModel.isDiabetes.observe(viewLifecycleOwner) { isDiabetes ->
+            if (isDiabetes) {
+                binding.profileBackgroud.background =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.background_image_green)
+                binding.diabetsStatus.text = getString(R.string.status_diabets_negative)
+            } else {
+                binding.profileBackgroud.background =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.background_image_red)
+                binding.diabetsStatus.text = getString(R.string.status_diabets_positive)
+            }
+        }
+
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

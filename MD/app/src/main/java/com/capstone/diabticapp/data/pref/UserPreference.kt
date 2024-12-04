@@ -11,8 +11,24 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session")
+val Context.persistentDataStore: DataStore<Preferences> by preferencesDataStore(name = "persistent_data")
 
-class UserPreference private constructor(private val dataStore: DataStore<Preferences>) {
+class UserPreference private constructor(
+    private val dataStore: DataStore<Preferences>,
+    private val persistentDataStore: DataStore<Preferences>
+) {
+
+    suspend fun saveDiabetesStatus(isDiabetes: Boolean, username: String) {
+        persistentDataStore.edit { preferences ->
+            preferences[booleanPreferencesKey("is_diabetes_$username")] = isDiabetes
+        }
+    }
+
+    fun getDiabetesStatus(username: String): Flow<Boolean> {
+        return persistentDataStore.data.map { preferences ->
+            preferences[booleanPreferencesKey("is_diabetes_$username")] ?: true
+        }
+    }
 
     suspend fun saveSession(user: UserModel) {
         dataStore.edit { preferences ->
@@ -58,9 +74,9 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         private val PHONE_KEY = stringPreferencesKey("phone")
         private val PHOTO_URL_KEY = stringPreferencesKey("photo_url")
 
-        fun getInstance(dataStore: DataStore<Preferences>): UserPreference {
+        fun getInstance(context: Context): UserPreference {
             return INSTANCE ?: synchronized(this) {
-                val instance = UserPreference(dataStore)
+                val instance = UserPreference(context.dataStore, context.persistentDataStore)
                 INSTANCE = instance
                 instance
             }

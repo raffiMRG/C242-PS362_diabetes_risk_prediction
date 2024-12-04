@@ -11,7 +11,7 @@ import com.capstone.diabticapp.data.remote.retrofit.ApiService
 
 object Injection {
     fun provideUserPreference(context: Context): UserPreference {
-        return UserPreference.getInstance(context.dataStore)
+        return UserPreference.getInstance(context)
     }
 
     fun provideApiService(userPreference: UserPreference): ApiService {
