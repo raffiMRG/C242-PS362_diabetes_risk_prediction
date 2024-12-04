@@ -4,6 +4,8 @@ import android.content.Context
 import com.capstone.diabticapp.data.ArticleRepository
 import com.capstone.diabticapp.data.AuthRepository
 import com.capstone.diabticapp.data.CalculateRepository
+import com.capstone.diabticapp.data.HistoryRepository
+import com.capstone.diabticapp.data.database.AppDatabase
 import com.capstone.diabticapp.data.pref.UserPreference
 import com.capstone.diabticapp.data.pref.dataStore
 import com.capstone.diabticapp.data.remote.retrofit.ApiConfig
@@ -34,5 +36,12 @@ object Injection {
         val userPreference = provideUserPreference(context)
         val apiService = provideApiService(userPreference)
         return ArticleRepository.getInstance(apiService)
+    }
+
+    fun provideHistoryRepository(context: Context): HistoryRepository {
+        val userPreference = provideUserPreference(context)
+        val apiService = ApiConfig(userPreference).getApiService()
+        val userDao = AppDatabase.getInstance(context).userDao()
+        return HistoryRepository.getInstance(apiService, userDao)
     }
 }
