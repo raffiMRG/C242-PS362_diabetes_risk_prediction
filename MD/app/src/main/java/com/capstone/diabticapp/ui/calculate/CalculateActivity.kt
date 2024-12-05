@@ -65,14 +65,15 @@ class CalculateActivity : AppCompatActivity(), FormAdapter.OnFormItemChangedList
     private var medicalCheckupsFrequency : Int? = 0
     private var medicationAdherence : Int? = 0
     private var healthLiteracy : Int? = 0
-    private var age: Int? = null
+    private var age: Int? = 0
+    private var systolicBP: Int? = 0
+    private var diastolicBP: Int? = 0
+    private var fastingBloodSugar: Int? = 0
+    private var cholesterolTotal: Int? = 0
+//    private var age: Int? = null
     private var familyHistoryDiabetes: Int? = null
     private var gestationalDiabetes: Int? = null
     private var previousPreDiabetes: Int? = null
-    private var systolicBP: Int? = null
-    private var diastolicBP: Int? = null
-    private var fastingBloodSugar: Int? = null
-    private var cholesterolTotal: Int? = null
     private var antihypertensiveMedications: Int? = null
     private var antidiabeticMedications: Int? = null
     private var frequentUrination: Int? = null
@@ -106,6 +107,10 @@ class CalculateActivity : AppCompatActivity(), FormAdapter.OnFormItemChangedList
             CalculateViewModelFactory.getInstance(this)
         }
 
+        addViewModel.isLoading.observe(this){ status ->
+            isloading(status)
+        }
+
         observeViewModel()
 
         binding.recyclerView.isNestedScrollingEnabled = false
@@ -122,7 +127,7 @@ class CalculateActivity : AppCompatActivity(), FormAdapter.OnFormItemChangedList
         // Setup data
         val formItems = listOf(
             // 1
-            FormItem.TextInput("age", "Usia (Tahun)", "Contoh: 17"),
+            FormItem.TextInput("age", "Usia (Tahun)", "Contoh: 20"),
             // 2
             FormItem.RadioButtonInput("gender", "Jenis Kelamin", listOf("Pria", "Wanita")),
             // 3
@@ -156,7 +161,7 @@ class CalculateActivity : AppCompatActivity(), FormAdapter.OnFormItemChangedList
             // 16
             FormItem.SliderInput("hbA1c", "Tingkat Hemoglobin A1c(%)", 0f, 10f, 1f),
             // 17
-            FormItem.TextInput("cholesterolTotal", "Kadar kolesterol total (mg/dL)", "Contoh: 105"),
+            FormItem.TextInput("cholesterolTotal", "Kadar kolesterol total (mg/dL)", "Contoh: 150"),
             // 18
             FormItem.RadioButtonInput("antihypertensiveMedications", "Penggunaan obat antihipertensi?", listOf("Ya", "Tidak")),
             // 19
@@ -224,13 +229,15 @@ class CalculateActivity : AppCompatActivity(), FormAdapter.OnFormItemChangedList
                     // Validasi input
                     // 1 AGE
                     if (age == 0) throw IllegalArgumentException("Usia tidak boleh kosong atau 0")
+//                    batas usia 20 tahun
+//                    if (age != 0 && age!! < 20) age = 20
                     // 2 GENDER
                     gender = if (tmpGender == "Pria") 0 else 1
                     // 3 BMI
                     if (weight == 0.0) throw IllegalArgumentException("Berat Badan tidak boleh kosong atau 0")
                     if (height == 0) throw IllegalArgumentException("Tinggi Badan tidak boleh kosong atau 0")
-                    bmi = weight / ((height / 100.0).pow(2))
-                    bmi = (bmi!! * 10).roundToInt() / 10.0
+//                    bmi = weight / ((height / 100.0).pow(2))
+//                    bmi = (bmi!! * 10).roundToInt() / 10.0
 
                     // 4 SMOKE
                     smoke = if (tmpSmoke == "Ya") 1 else 0
@@ -340,23 +347,41 @@ class CalculateActivity : AppCompatActivity(), FormAdapter.OnFormItemChangedList
                     Toast.makeText(this@CalculateActivity, "${e.message}", Toast.LENGTH_SHORT).show()
                 } catch (e: Exception) {
                     Log.e("ExceptionMessage", e.message.toString())
-                    if (e.message.toString() == "lateinit property tmpGender has not been initialized") Toast.makeText(this@CalculateActivity, "Jenis kelamin diperlukan, harap pilih salah satu opsi", Toast.LENGTH_SHORT).show()
-                    if (e.message.toString() == "lateinit property tmpSmoke has not been initialized") Toast.makeText(this@CalculateActivity, "Apakah Anda Merokok?, harap pilih salah satu opsi", Toast.LENGTH_SHORT).show()
-                    if (e.message.toString() == "lateinit property tmpFamilyHistoryDiabetes has not been initialized") Toast.makeText(this@CalculateActivity, "Apakah keluarga anda memiliki sejarah diabetes?", Toast.LENGTH_SHORT).show()
-                    if (e.message.toString() == "lateinit property tmpGestationalDiabetes has not been initialized") Toast.makeText(this@CalculateActivity, "Apakah terjadi diabetes selama kehamilan?", Toast.LENGTH_SHORT).show()
-                    if (e.message.toString() == "lateinit property tmpPreviousPreDiabetes has not been initialized") Toast.makeText(this@CalculateActivity, "apakah kadar guladarah sempat tinggi atau prediabets?", Toast.LENGTH_SHORT).show()
-                    if (e.message.toString() == "lateinit property tmpHypertension has not been initialized") Toast.makeText(this@CalculateActivity, "Status hypertensi belum di isi, harap pilih salah satu opsi", Toast.LENGTH_SHORT).show()
-//                    lateinit property tmpAntihypertensiveMedications has not been initialized
-//                    lateinit property tmpAntidiabeticMedications has not been initialized
-//                    lateinit property tmpFrequentUrination has not been initialized
-//                    lateinit property tmpExcessiveThirst has not been initialized
-//                    lateinit property tmpUnexplainedWeightLoss has not been initialized
-//                    lateinit property tmpBlurredVision has not been initialized
-//                    lateinit property tmpSlowHealingSores has not been initialized
-//                    lateinit property tmpTinglingHandsFeet has not been initialized
-//                    lateinit property tmpHeavyMetalsExposure has not been initialized
-//                    lateinit property tmpOccupationalExposureChemicals has not been initialized
-//                    lateinit property tmpWaterQuality has not been initialized
+                    if (e.message.toString() == "lateinit property tmpGender has not been initialized")
+                        Toast.makeText(this@CalculateActivity, "Jenis kelamin diperlukan, harap pilih salah satu opsi", Toast.LENGTH_SHORT).show()
+                    if (e.message.toString() == "lateinit property tmpSmoke has not been initialized")
+                        Toast.makeText(this@CalculateActivity, "Apakah Anda Merokok?, harap pilih salah satu opsi", Toast.LENGTH_SHORT).show()
+                    if (e.message.toString() == "lateinit property tmpFamilyHistoryDiabetes has not been initialized")
+                        Toast.makeText(this@CalculateActivity, "Apakah keluarga anda memiliki sejarah diabetes?", Toast.LENGTH_SHORT).show()
+                    if (e.message.toString() == "lateinit property tmpGestationalDiabetes has not been initialized")
+                        Toast.makeText(this@CalculateActivity, "Apakah terjadi diabetes selama kehamilan?", Toast.LENGTH_SHORT).show()
+                    if (e.message.toString() == "lateinit property tmpPreviousPreDiabetes has not been initialized")
+                        Toast.makeText(this@CalculateActivity, "apakah kadar guladarah sempat tinggi atau prediabets?", Toast.LENGTH_SHORT).show()
+                    if (e.message.toString() == "lateinit property tmpHypertension has not been initialized")
+                        Toast.makeText(this@CalculateActivity, "Status hypertensi belum di isi, harap pilih salah satu opsi", Toast.LENGTH_SHORT).show()
+                    if (e.message.toString() == "lateinit property tmpAntihypertensiveMedications has not been initialized")
+                        Toast.makeText(this@CalculateActivity, "Harap pilih penggunaan obat antihipertensi", Toast.LENGTH_SHORT).show()
+                    if (e.message.toString() == "lateinit property tmpAntidiabeticMedications has not been initialized")
+                        Toast.makeText(this@CalculateActivity, "Harap pilih penggunaan obat antidiabetes", Toast.LENGTH_SHORT).show()
+                    if (e.message.toString() == "lateinit property tmpFrequentUrination has not been initialized")
+                        Toast.makeText(this@CalculateActivity, "Harap pilih status sering buang air kecil", Toast.LENGTH_SHORT).show()
+                    if (e.message.toString() == "lateinit property tmpExcessiveThirst has not been initialized")
+                        Toast.makeText(this@CalculateActivity, "Harap pilih status sering merasa haus", Toast.LENGTH_SHORT).show()
+                    if (e.message.toString() == "lateinit property tmpUnexplainedWeightLoss has not been initialized")
+                        Toast.makeText(this@CalculateActivity, "Harap pilih status penurunan berat badan", Toast.LENGTH_SHORT).show()
+                    if (e.message.toString() == "lateinit property tmpBlurredVision has not been initialized")
+                        Toast.makeText(this@CalculateActivity, "Harap pilih status penglihatan kabur", Toast.LENGTH_SHORT).show()
+                    if (e.message.toString() == "lateinit property tmpSlowHealingSores has not been initialized")
+                        Toast.makeText(this@CalculateActivity, "Harap pilih status luka sulit sembuh", Toast.LENGTH_SHORT).show()
+                    if (e.message.toString() == "lateinit property tmpTinglingHandsFeet has not been initialized")
+                        Toast.makeText(this@CalculateActivity, "Harap pilih status kesemutan", Toast.LENGTH_SHORT).show()
+                    if (e.message.toString() == "lateinit property tmpHeavyMetalsExposure has not been initialized")
+                        Toast.makeText(this@CalculateActivity, "Harap pilih status paparan logam berat", Toast.LENGTH_SHORT).show()
+                    if (e.message.toString() == "lateinit property tmpOccupationalExposureChemicals has not been initialized")
+                        Toast.makeText(this@CalculateActivity, "Harap pilih status paparan bahan kimia", Toast.LENGTH_SHORT).show()
+                    if (e.message.toString() == "lateinit property tmpWaterQuality has not been initialized")
+                        Toast.makeText(this@CalculateActivity, "Harap pilih status kualitas air", Toast.LENGTH_SHORT).show()
+
                     isloading(false)
 
                 }
@@ -482,5 +507,4 @@ class CalculateActivity : AppCompatActivity(), FormAdapter.OnFormItemChangedList
             finish()
         }
     }
-
 }
