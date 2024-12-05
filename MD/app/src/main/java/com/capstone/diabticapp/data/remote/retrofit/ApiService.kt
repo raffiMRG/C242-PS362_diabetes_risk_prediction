@@ -3,6 +3,7 @@ package com.capstone.diabticapp.data.remote.retrofit
 import com.capstone.diabticapp.data.remote.request.CalculateRequest
 import com.capstone.diabticapp.data.remote.request.ChangeProfileRequest
 import com.capstone.diabticapp.data.remote.request.LoginRequest
+import com.capstone.diabticapp.data.remote.request.RefreshTokenRequest
 import com.capstone.diabticapp.data.remote.request.RegisterRequest
 import com.capstone.diabticapp.data.remote.response.ArticleResponse
 import com.capstone.diabticapp.data.remote.response.CalculateResponse
@@ -14,6 +15,7 @@ import com.capstone.diabticapp.data.remote.response.EditProfilePictureResponse
 import com.capstone.diabticapp.data.remote.response.GetAccResponse
 import com.capstone.diabticapp.data.remote.response.HistoryResponse
 import com.capstone.diabticapp.data.remote.response.LoginResponse
+import com.capstone.diabticapp.data.remote.response.RefreshTokenResponse
 import com.capstone.diabticapp.data.remote.response.RegisterResponse
 import okhttp3.MultipartBody
 import retrofit2.http.Body
@@ -75,4 +77,10 @@ interface ApiService {
 
     @GET("account/predictions")
     suspend fun getAllData(): HistoryResponse
+
+    @POST("refresh-token")
+    suspend fun refreshToken(
+        @Body request: RefreshTokenRequest
+    ): RefreshTokenResponse
+
 }

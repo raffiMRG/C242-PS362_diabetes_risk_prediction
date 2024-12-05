@@ -25,7 +25,7 @@ class AuthRepository private constructor(
     suspend fun login(username: String, password: String): LoginResponse {
         val response = apiService.login(LoginRequest(username, password))
         if (response.success == true) {
-            response.data?.let { data ->
+            response.loginData?.let { data ->
                 val user = UserModel.fromLoginResponse(username, data)
                 saveSession(user)
 

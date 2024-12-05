@@ -30,6 +30,12 @@ class UserPreference private constructor(
         }
     }
 
+    suspend fun updateAccessToken(newAccessToken: String) {
+        dataStore.edit { preferences ->
+            preferences[TOKEN_KEY] = newAccessToken
+        }
+    }
+
     suspend fun saveSession(user: UserModel) {
         dataStore.edit { preferences ->
             preferences[EMAIL_KEY] = user.email
