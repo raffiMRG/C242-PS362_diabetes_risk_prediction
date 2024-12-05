@@ -34,6 +34,7 @@ class CalculateViewModel(private val calculateRepository: CalculateRepository) :
             } catch (e: Exception){
                 e.printStackTrace()
                 Log.e("errorUpdate", e.message.toString())
+                _isLoading.value = false
             }finally {
                 _isLoading.value = false
             }

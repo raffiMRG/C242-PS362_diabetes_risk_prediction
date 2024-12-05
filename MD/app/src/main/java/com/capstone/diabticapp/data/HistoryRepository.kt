@@ -13,7 +13,6 @@ class HistoryRepository private constructor(
     }
 
     suspend fun refreshUsers(): List<UserEntity> {
-        return try {
             // Fetch data from API
             val apiResponse = apiService.getAllData()
 
@@ -31,11 +30,7 @@ class HistoryRepository private constructor(
             userDao.deleteAll()
             userDao.insertAll(userEntities)
 
-            userEntities
-        } catch (e: Exception) {
-            // Return local data if API call fails
-            userDao.getAllUsers()
-        }
+            return userEntities
     }
 
     companion object {

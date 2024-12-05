@@ -25,9 +25,16 @@ class HistoryViewModel(private val repository: HistoryRepository) : ViewModel() 
         _isLoading.value = true
         viewModelScope.launch {
             val data = if (forceRefresh) {
-                Log.d("ModelSource", "Load From API Server")
-                _statusMesage.value = "Get Data From Server"
-                repository.refreshUsers() // Refresh data from API
+                try {
+                    Log.d("ModelSource", "Load From API Server")
+                    _statusMesage.value = "Get Data From Server"
+                    repository.refreshUsers() // Refresh data from API
+                }catch (e: Exception){
+                    Log.d("ModelSource", "Load room")
+//                    Log.e("ExceptionMessage", e.message.toString(), )
+                    _statusMesage.value = "Internet Accessed But Failed to Fetch Data, Get Local Data"
+                    repository.getUsersFromRoom() // Get data from Room
+                }
             } else {
                 Log.d("ModelSource", "Load room")
                 _statusMesage.value = "Get Local Data"
