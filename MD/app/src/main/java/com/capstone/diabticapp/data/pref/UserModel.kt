@@ -1,8 +1,7 @@
 package com.capstone.diabticapp.data.pref
 
-import com.capstone.diabticapp.data.remote.response.Data
+import com.capstone.diabticapp.data.remote.response.LoginData
 
-//bisa ditambahin kayak isDiabetes buat check apakah user diabetes atau tidak
 data class UserModel(
     val email: String,
     val token: String,
@@ -14,11 +13,11 @@ data class UserModel(
 
 ){
     companion object {
-        fun fromLoginResponse(username: String, data: Data): UserModel {
+        fun fromLoginResponse(username: String, loginData: LoginData): UserModel {
             return UserModel(
                 email = username,
-                token = data.accessToken ?: "",
-                refreshToken = data.refreshToken ?: "",
+                token = loginData.accessToken ?: "",
+                refreshToken = loginData.refreshToken ?: "",
                 isLogin = true,
                 username = username,
                 photoUrl = null
