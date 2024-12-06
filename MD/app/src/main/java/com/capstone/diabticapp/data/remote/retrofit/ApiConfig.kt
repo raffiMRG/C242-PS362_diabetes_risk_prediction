@@ -11,6 +11,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import com.capstone.diabticapp.BuildConfig
 
 class ApiConfig(private val userPreference: UserPreference) {
 
@@ -37,7 +38,7 @@ class ApiConfig(private val userPreference: UserPreference) {
 
                     try {
                         val retrofit = Retrofit.Builder()
-                            .baseUrl("https://diabtic-capstone-project.et.r.appspot.com/")
+                            .baseUrl(BuildConfig.BASE_URL)
                             .addConverterFactory(GsonConverterFactory.create())
                             .build()
 
@@ -76,7 +77,7 @@ class ApiConfig(private val userPreference: UserPreference) {
             .addInterceptor(authInterceptor)
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://diabtic-capstone-project.et.r.appspot.com/")
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

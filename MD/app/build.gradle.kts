@@ -21,11 +21,15 @@ android {
 
     buildTypes {
         release {
+            buildConfigField("String", "BASE_URL", "\"${project.findProperty("BASE_URL") ?: "https://default-url/"}\"")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            buildConfigField("String", "BASE_URL", "\"${project.findProperty("BASE_URL") ?: "https://default-url/"}\"")
         }
     }
     compileOptions {
@@ -38,6 +42,7 @@ android {
     buildFeatures {
         viewBinding = true
         dataBinding = true
+        buildConfig = true
     }
 }
 
