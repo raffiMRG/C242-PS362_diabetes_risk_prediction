@@ -41,6 +41,26 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
         }
     }
 
+    fun checkEverLogedin(onResult: (Boolean) -> Unit){
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                val response = authRepository.checkEverLogedin()
+                if (response.success) {
+                    onResult(true)
+                } else {
+//                    Log.e("LoginViewModel", "Login failed: ${response.message}")
+                    onResult(false)
+                }
+            } catch (e: Exception) {
+                Log.e("LoginViewModel", "Exception during login: ${e.message}")
+                onResult(false)
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
     fun checkLoginStatus(onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             val userSession = authRepository.getUserSession().first()
