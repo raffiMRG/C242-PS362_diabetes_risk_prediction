@@ -25,20 +25,25 @@ data class DataCalculate(
 
 data class Prediction(
 
-	@field:SerializedName("predictionSuggestion")
-	val predictionSuggestion: String? = null,
+	@field:SerializedName("id")
+	val id: String? = null,
 
-	@field:SerializedName("createdAt")
-	val createdAt: String? = null,
+//	@field:SerializedName("predictionSuggestion")
+//	val predictionSuggestion: String? = null,
+//
+//	@field:SerializedName("predictionResult")
+//	val predictionResult: String? = null,
 
-	@field:SerializedName("predictionResult")
-	val predictionResult: String? = null,
+
+	@field:SerializedName("riskScore")
+	val riskScore: String? = null,
+
+	@field:SerializedName("classification")
+	val classification: String? = null,
 
 	@field:SerializedName("predictionDetails")
-	val predictionDetails: PredictionDetails? = null,
+	val predictionDetails: PredictionDetails? = null
 
-	@field:SerializedName("id")
-	val id: String? = null
 )
 
 data class PredictionDetails(

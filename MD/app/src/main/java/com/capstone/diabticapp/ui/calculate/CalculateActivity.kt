@@ -203,9 +203,9 @@ class CalculateActivity : AppCompatActivity(), FormAdapter.OnFormItemChangedList
                 Log.d("uploadRedponse", "response")
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                 isloading(false)
-                if (response.data?.prediction?.predictionResult == "Yes"){
+                if (response.data?.prediction?.classification == "Risky"){
                     showDiabetesDetectedLayout()
-                }else if (response.data?.prediction?.predictionResult == "No"){
+                }else if (response.data?.prediction?.classification == "No Risky"){
                     showNoDiabetesLayout()
                 }else{
                     val intent = Intent(this, MainActivity::class.java)
@@ -236,8 +236,8 @@ class CalculateActivity : AppCompatActivity(), FormAdapter.OnFormItemChangedList
                     // 3 BMI
                     if (weight == 0.0) throw IllegalArgumentException("Berat Badan tidak boleh kosong atau 0")
                     if (height == 0) throw IllegalArgumentException("Tinggi Badan tidak boleh kosong atau 0")
-//                    bmi = weight / ((height / 100.0).pow(2))
-//                    bmi = (bmi!! * 10).roundToInt() / 10.0
+                    bmi = weight / ((height / 100.0).pow(2))
+                    bmi = (bmi!! * 10).roundToInt() / 10.0
 
                     // 4 SMOKE
                     smoke = if (tmpSmoke == "Ya") 1 else 0

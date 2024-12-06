@@ -21,24 +21,24 @@ class HistoryViewModel(private val repository: HistoryRepository) : ViewModel() 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
-    fun getDataPrediction(forceRefresh: Boolean = false) {
+    fun getDataPrediction(name: String, forceRefresh: Boolean = false) {
         _isLoading.value = true
         viewModelScope.launch {
             val data = if (forceRefresh) {
                 try {
                     Log.d("ModelSource", "Load From API Server")
                     _statusMesage.value = "Get Data From Server"
-                    repository.refreshUsers() // Refresh data from API
+                    repository.refreshUsers(name) // Refresh data from API
                 }catch (e: Exception){
                     Log.d("ModelSource", "Load room")
-//                    Log.e("ExceptionMessage", e.message.toString(), )
+                    Log.e("ExceptionMessage", e.message.toString(), )
                     _statusMesage.value = "Internet Accessed But Failed to Fetch Data, Get Local Data"
-                    repository.getUsersFromRoom() // Get data from Room
+                    repository.getUsersFromRoom(name) // Get data from Room
                 }
             } else {
                 Log.d("ModelSource", "Load room")
                 _statusMesage.value = "Get Local Data"
-                repository.getUsersFromRoom() // Get data from Room
+                repository.getUsersFromRoom(name) // Get data from Room
             }
             _getDataResponse.value = data
             _isLoading.value = false

@@ -11,10 +11,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.capstone.diabticapp.AuthViewModelFactory
 import com.capstone.diabticapp.HistoryViewModelFactory
 import com.capstone.diabticapp.R
 import com.capstone.diabticapp.databinding.ActivityHistoryBinding
 import com.capstone.diabticapp.helper.NetworkUtils
+import com.capstone.diabticapp.ui.home.HomeViewModel
 import com.capstone.diabticapp.ui.news.ExampleNews
 import com.capstone.diabticapp.ui.news.NewsAdapter
 
@@ -23,8 +25,12 @@ class HistoryActivity : AppCompatActivity() {
     private val viewModel: HistoryViewModel by viewModels {
         HistoryViewModelFactory.getInstance(this)
     }
+    private val userViewModel: HomeViewModel by viewModels {
+        AuthViewModelFactory.getInstance(this)
+    }
     private lateinit var networkStatusHelper: NetworkUtils
     private var internetStatus: Boolean = true
+    private var name: String = "guest"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +38,6 @@ class HistoryActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         networkStatusHelper = NetworkUtils(this)
-
         setupObservers()
 
         viewModel.statusMesage.observe(this){ message ->
@@ -43,15 +48,23 @@ class HistoryActivity : AppCompatActivity() {
         networkStatusHelper.observe(this) { isConnected ->
             if (isConnected) {
                 internetStatus = true
-                viewModel.getDataPrediction(forceRefresh = internetStatus)
+                viewModel.getDataPrediction(name, forceRefresh = internetStatus)
             } else {
                 internetStatus = false
-                viewModel.getDataPrediction(forceRefresh = internetStatus)
+                viewModel.getDataPrediction(name, forceRefresh = internetStatus)
             }
         }
     }
 
+    private fun observeViewModel() {
+        userViewModel.username.observe(this) { userName ->
+            name = userName
+            Log.d("userName", "name : $name")
+        }
+    }
+
     private fun setupObservers() {
+        observeViewModel()
         viewModel.isLoading.observe(this) { status ->
             isLoading(status)
         }
