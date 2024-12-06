@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.capstone.diabticapp.AuthViewModelFactory
 import com.capstone.diabticapp.MainActivity
 import com.capstone.diabticapp.databinding.ActivityLoginBinding
+import com.capstone.diabticapp.ui.onboarding.OnboardingActivity
 import com.capstone.diabticapp.ui.register.RegisterActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -59,17 +60,31 @@ class LoginActivity : AppCompatActivity() {
 
         loginViewModel.login(username, password) { isSuccess ->
             if (isSuccess) {
-                showAlertDialog("Login Successful", "Welcome back!") {
-                    navigateToMainActivity()
-                }
+                isEverLogin()
             } else {
                 showAlertDialog("Login Failed", "Invalid username or password. Please try again.")
             }
         }
     }
 
+    private fun isEverLogin(){
+        loginViewModel.checkEverLogedin { status ->
+            if(status){
+                showAlertDialog("Login Successful", "Welcome back!") {
+                    navigateToMainActivity()
+                }
+            }else{
+                navigateToOnboardingActivity()
+            }
+        }
+    }
+
     private fun navigateToMainActivity() {
         navigateToActivity(MainActivity::class.java)
+    }
+
+    private fun navigateToOnboardingActivity() {
+        navigateToActivity(OnboardingActivity::class.java)
     }
 
     private fun navigateToActivity(activityClass: Class<*>) {
