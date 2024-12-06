@@ -6,7 +6,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "users")
 data class UserEntity(
     @PrimaryKey val id: String,
-    val predictionResult: String,
-    val predictionSuggestion: String,
+    val name: String,
+    val riskScore: String,
+    val classification: String,
     val createdAt: String
 )

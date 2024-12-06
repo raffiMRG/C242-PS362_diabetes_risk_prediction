@@ -24,7 +24,7 @@ class HistoryAdapter(
             val wibTime = DateConverterUtils.convertUtcToWib(devaultTime)
 
             date.text = wibTime
-            status.text = item.predictionSuggestion
+            status.text = item.classification
         }
     }
 
