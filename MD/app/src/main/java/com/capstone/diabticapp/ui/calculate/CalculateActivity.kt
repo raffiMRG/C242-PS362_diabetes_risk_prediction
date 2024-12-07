@@ -205,7 +205,7 @@ class CalculateActivity : AppCompatActivity(), FormAdapter.OnFormItemChangedList
                 isloading(false)
                 if (response.data?.prediction?.classification == "Risky"){
                     showDiabetesDetectedLayout()
-                }else if (response.data?.prediction?.classification == "No Risky"){
+                }else if (response.data?.prediction?.classification == "Not Risky"){
                     showNoDiabetesLayout()
                 }else{
                     val intent = Intent(this, MainActivity::class.java)
