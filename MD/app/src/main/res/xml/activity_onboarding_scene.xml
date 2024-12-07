@@ -172,6 +172,7 @@
             android:layout_width="0dp"
             android:layout_height="300dp"
             motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintVertical_bias="0.3"/>
@@ -303,6 +304,7 @@
             android:id="@+id/descMenu3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            motion:layout_constraintEnd_toEndOf="@+id/titleMenu3"
             motion:layout_constraintTop_toBottomOf="@+id/titleMenu3"
             motion:layout_constraintStart_toStartOf="@+id/logoMenu3"
             android:layout_marginTop="8dp" />

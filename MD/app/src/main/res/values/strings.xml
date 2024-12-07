@@ -24,15 +24,17 @@
     <string name="Ubah_pw">Ubah Password</string>
     <string name="hapus_akun">Hapus Akun</string>
     <string name="profile">Profile</string>
-    <string name="tagline_title">Deteksi dini\nDengan Diabtic</string>
+    <string name="tagline_title">Deteksi dengan\nDiabtic</string>
     <string name="tagline_subtitle">Karena manisnya gula tak sebanding\ndengan manisnya hidup sehat</string>
 
-    <string name="title_menu_1">Discover Top Doctors</string>
-    <string name="desc_menu_1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lacinia libero ut metus convallis tempor. Vestibulum consequat, tortor mattis consequat</string>
+    <string name="title_menu_1">Calculate Your Diabetes Risk</string>
+    <string name="desc_menu_1">Get accurate risk predictions using machine learning model.\n Stay informed about your health.</string>
 
-    <string name="title_menu_2">Ask a Doctor Online</string>
-    <string name="desc_menu_2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lacinia libero ut metus convallis tempor. Vestibulum consequat, tortor mattis consequat</string>
+    <string name="title_menu_2">Track Your Medical History</string>
+    <string name="desc_menu_2">Keep all your medical records in one place\n for easy access and management.</string>
 
-    <string name="title_menu_3">Get Expert Advice</string>
-    <string name="desc_menu_3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lacinia libero ut metus convallis tempor. Vestibulum consequat, tortor mattis consequat</string>
+    <string name="title_menu_3">Stay Updated with Health News</string>
+    <string name="desc_menu_3">Discover the latest health news\n and tips tailored to your needs.</string>
+    <string name="selanjutnya">Next</string>
+    <string name="skip_tour">Skip</string>
 </resources>
