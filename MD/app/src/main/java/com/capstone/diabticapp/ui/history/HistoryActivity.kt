@@ -1,5 +1,6 @@
 package com.capstone.diabticapp.ui.history
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,8 +14,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.diabticapp.AuthViewModelFactory
 import com.capstone.diabticapp.HistoryViewModelFactory
+import com.capstone.diabticapp.MainActivity
 import com.capstone.diabticapp.R
+import com.capstone.diabticapp.data.database.UserEntity
 import com.capstone.diabticapp.databinding.ActivityHistoryBinding
+import com.capstone.diabticapp.databinding.EmptyStateMedicalHistoryBinding
 import com.capstone.diabticapp.helper.NetworkUtils
 import com.capstone.diabticapp.ui.home.HomeViewModel
 import com.capstone.diabticapp.ui.news.ExampleNews
@@ -70,13 +74,10 @@ class HistoryActivity : AppCompatActivity() {
         }
 
         viewModel.getDataResponse.observe(this) { users ->
-            if (users != null) {
-                val sortedItems = users.reversed()
-                sortedItems.forEach { Log.d("sortedData", it.createdAt) }
-                val adapter = HistoryAdapter(sortedItems)
-
-                binding.rvHistory.layoutManager = GridLayoutManager(this@HistoryActivity, 2)
-                binding.rvHistory.adapter = adapter
+            if (users.isNullOrEmpty()) {
+                showEmptyStateLayout()
+            } else {
+                showRecyclerView(users)
             }
         }
     }
@@ -86,6 +87,28 @@ class HistoryActivity : AppCompatActivity() {
             binding.loading.visibility = View.VISIBLE
         }else{
             binding.loading.visibility = View.GONE
+        }
+    }
+
+    private fun showRecyclerView(users: List<UserEntity>) {
+        binding = ActivityHistoryBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val adapter = HistoryAdapter(users)
+        binding.rvHistory.layoutManager = GridLayoutManager(this@HistoryActivity, 2)
+        binding.rvHistory.adapter = adapter
+    }
+
+
+    private fun showEmptyStateLayout() {
+        val binding = EmptyStateMedicalHistoryBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.btnAddMedicalHistory.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java) // Replace with appropriate Activity
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
         }
     }
 }

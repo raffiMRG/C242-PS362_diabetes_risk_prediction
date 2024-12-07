@@ -37,4 +37,9 @@
     <string name="desc_menu_3">Discover the latest health news\n and tips tailored to your needs.</string>
     <string name="selanjutnya">Next</string>
     <string name="skip_tour">Skip</string>
+
+    <string name="oops_no_medical_history">Oops.. Masukin Data kamu dulu yah buat di prediksi</string>
+    <string name="add_medical_history_hint">Sebelum melihat History data pengecekan. kamu bisa menggunakan fitur prediksi terlebih dahulu.</string>
+    <string name="add_medical_history">Add Medical History</string>
+    <string name="empty_state_image_description">Illustration for empty medical history</string>
 </resources>
