@@ -75,10 +75,8 @@ class HistoryActivity : AppCompatActivity() {
 
         viewModel.getDataResponse.observe(this) { users ->
             if (users.isNullOrEmpty()) {
-                // Show empty state layout when there's no data
                 showEmptyStateLayout()
             } else {
-                // Show the RecyclerView when data is available
                 showRecyclerView(users)
             }
         }
@@ -93,8 +91,8 @@ class HistoryActivity : AppCompatActivity() {
     }
 
     private fun showRecyclerView(users: List<UserEntity>) {
-        binding = ActivityHistoryBinding.inflate(layoutInflater) // Reset to the main layout
-        setContentView(binding.root) // Ensure you're switching back to the main layout
+        binding = ActivityHistoryBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val adapter = HistoryAdapter(users)
         binding.rvHistory.layoutManager = GridLayoutManager(this@HistoryActivity, 2)
@@ -107,7 +105,6 @@ class HistoryActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnAddMedicalHistory.setOnClickListener {
-            // Navigate to prediction feature or any other action
             val intent = Intent(this, MainActivity::class.java) // Replace with appropriate Activity
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
