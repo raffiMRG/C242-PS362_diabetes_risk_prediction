@@ -7,6 +7,7 @@ import com.capstone.diabticapp.data.remote.request.LoginRequest
 import com.capstone.diabticapp.data.remote.request.RegisterRequest
 import com.capstone.diabticapp.data.remote.response.EditProfilePictureResponse
 import com.capstone.diabticapp.data.remote.response.GetAccResponse
+import com.capstone.diabticapp.data.remote.response.HistoryResponse
 import com.capstone.diabticapp.data.remote.response.LoginResponse
 import com.capstone.diabticapp.data.remote.retrofit.ApiService
 import kotlinx.coroutines.flow.Flow
@@ -47,6 +48,11 @@ class AuthRepository private constructor(
                 }
             }
         }
+        return response
+    }
+
+    suspend fun checkEverLogedin(): HistoryResponse {
+        val response = apiService.getAllData()
         return response
     }
 

@@ -8,11 +8,11 @@ class HistoryRepository private constructor(
     private val apiService: ApiService,
     private val userDao: UserDao
 ) {
-    suspend fun getUsersFromRoom(): List<UserEntity> {
-        return userDao.getAllUsers()
+    suspend fun getUsersFromRoom(name: String): List<UserEntity> {
+        return userDao.getAllUsers(name)
     }
 
-    suspend fun refreshUsers(): List<UserEntity> {
+    suspend fun refreshUsers(name: String): List<UserEntity> {
             // Fetch data from API
             val apiResponse = apiService.getAllData()
 
@@ -20,14 +20,15 @@ class HistoryRepository private constructor(
             val userEntities = apiResponse.data.map {
                 UserEntity(
                     id = it.id,
-                    predictionResult = it.predictionResult,
-                    predictionSuggestion = it.predictionSuggestion,
+                    name = name,
+                    riskScore = it.riskScore,
+                    classification = it.classification,
                     createdAt = it.createdAt
                 )
             }
 
             // Update Room database
-            userDao.deleteAll()
+            userDao.deleteAll(name)
             userDao.insertAll(userEntities)
 
             return userEntities

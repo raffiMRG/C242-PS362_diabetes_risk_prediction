@@ -120,19 +120,18 @@ data class HistoryPredictionDetails(
 ) : Parcelable
 
 data class HistoryDataItem(
-
-	@field:SerializedName("predictionSuggestion")
-	val predictionSuggestion: String,
+	@field:SerializedName("id")
+	val id: String,
 
 	@field:SerializedName("createdAt")
 	val createdAt: String,
 
-	@field:SerializedName("predictionResult")
-	val predictionResult: String,
-
 	@field:SerializedName("predictionDetails")
 	val predictionDetails: HistoryPredictionDetails,
 
-	@field:SerializedName("id")
-	val id: String
+	@field:SerializedName("riskScore")
+	val riskScore: String,
+
+	@field:SerializedName("classification")
+	val classification: String,
 )

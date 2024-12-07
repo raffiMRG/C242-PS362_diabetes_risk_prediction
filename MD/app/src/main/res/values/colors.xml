@@ -31,4 +31,6 @@
     <color name="night_btn_inactive">#8B8B94</color>
     <color name="night_primary">#253993</color>
     <color name="night_on_primary">#E9EB87</color>
+
+    <color name="grey">#E0DDEA</color>
 </resources>

@@ -26,4 +26,13 @@
     <string name="profile">Profile</string>
     <string name="tagline_title">Deteksi dini\nDengan Diabtic</string>
     <string name="tagline_subtitle">Karena manisnya gula tak sebanding\ndengan manisnya hidup sehat</string>
+
+    <string name="title_menu_1">Discover Top Doctors</string>
+    <string name="desc_menu_1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lacinia libero ut metus convallis tempor. Vestibulum consequat, tortor mattis consequat</string>
+
+    <string name="title_menu_2">Ask a Doctor Online</string>
+    <string name="desc_menu_2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lacinia libero ut metus convallis tempor. Vestibulum consequat, tortor mattis consequat</string>
+
+    <string name="title_menu_3">Get Expert Advice</string>
+    <string name="desc_menu_3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lacinia libero ut metus convallis tempor. Vestibulum consequat, tortor mattis consequat</string>
 </resources>
