@@ -94,7 +94,8 @@ class HistoryActivity : AppCompatActivity() {
         binding = ActivityHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val adapter = HistoryAdapter(users)
+        val sortedItems = users.reversed()
+        val adapter = HistoryAdapter(sortedItems)
         binding.rvHistory.layoutManager = GridLayoutManager(this@HistoryActivity, 2)
         binding.rvHistory.adapter = adapter
     }
