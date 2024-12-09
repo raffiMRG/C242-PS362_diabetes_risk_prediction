@@ -3,4 +3,4 @@ This repository are used for capstone project from grup id C242-PS362
 
 | Nama          | Student ID | Path              | LinkedIn                                      |
 |---------------|------------|-------------------|-----------------------------------------------|
-| Daniel Cahya Kurniawan      | C233B4KY0988  | Cloud Computing  | [Daniel Cahya Kurniawan]() |
+| Luthfiyyah Wahyu Nurfarida      | M283B4KX2311  | Machine Learning  | [Daniel Cahya Kurniawan]() |
