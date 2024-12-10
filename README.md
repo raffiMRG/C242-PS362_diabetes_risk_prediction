@@ -22,27 +22,21 @@ Diabtic is a machine learning-driven application designed to assist users in pre
 
 For any issues or questions, feel free to reach out to the development team or refer to the comments within the code for guidance.
 
-## Fitur-fitur 🚀
+## Features 🚀
 
-Aplikasi ini memiliki beberapa fitur, antara lain:
+The application includes several features, such as:
 
-- **Autentikasi** Pengguna dimana Pengguna dapat melakukan login menggunakan akun yang sudah mereka buat pada aplikasi.
-
-- **Home** pada halaman utama ini terhapat status berpa lingkaran hijau atau merah di belakang foto profil. dimana hijau, menandakan kalian aman dari diabetes, dan merah menandakan kalian harus berhatihati karena aplikasi memprediksi kalian kemungkinan mengalami diabets.
-
-- **Settings** Acount dimana pengguna dapat merubah data akum mereka jika pengguna mengalami kesalahan dalam pengisian akun.
-
-- **Prediction** merupakan fitur utama dalam aplikasi ini dimana pengguna dapat melakukan prediksi diabtes dengan menginputkan beberapa data yang di butuhkan, akantetapi fitur ini membutuhkan beberapa data intensif seperti tekanan darah, gula darah, dan kolestrol.
-
-- **History** merupakan fitur tambahan dimana pada menu ini pengguna dapat melihat catatan hasil prediksi dari waktu kewaktu kemudian akan di simpan ke dalam database lokal.
-
-- **Article** merupakan fitur tambahan dimana pada fitur ini terdapat berita terkait diabets dari berbagi sumber.
-
-- Mode Gelap/Terang: Aplikasi mendukung mode gelap dan terang, mengikuti pengaturan sistem.
+- **User Authentication** Users can log in with their registered accounts on the application.
+- **Home** The main page displays a status indicator as a green or red circle behind the profile picture. Green Indicates that the user is safe from diabetes, Red Indicates that the user should take precautions, as the application predicts a possible risk of diabetes.
+- **Account Settings** Users can edit their account information if there are errors during registration.
+- **Prediction** The main feature of the application allows users to predict diabetes risk by inputting specific data, including intensive parameters such as blood pressure, blood sugar, and cholesterol levels.
+- **History** A supplementary feature that enables users to view prediction records over time, which are stored in a local database.
+- **Articles** This feature provides news and updates about diabetes from various sources.
+- **Dark/Light Mode** The app supports dark and light themes, following system settings.
 
 ## Alat dan Teknologi yang Digunakan 🛠️
 
-Beberapa alat dan teknologi yang kami gunakan antara lain :
+Here are some of the tools and technologies we used :
 
 <p align="center">
 <a href="#" target="blank"><img align="center" src="IMG/colab-color.png" alt="raffimrg" height="70" width="70" /></a>
