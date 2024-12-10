@@ -1,38 +1,65 @@
 # API Documentation - Diabtic
-Backend API ini dibangun untuk mendukung aplikasi prediksi diabetes. API menyediakan endpoint untuk autentikasi pengguna, prediksi risiko diabetes, dan penyimpanan hasil prediksi ke Firestore.
 
-## 1. Authentication (/account)
-- Endpoint untuk kebutuhan autentikasi pengguna
-- Routes :
-  - `POST /register` (Daftar Akun)
-  - `POST /login` (Login)
-  - `POST /logout` (Logout)
-  - `POST /refresh-token` (JWT)
- 
+Backend API ini dirancang untuk mendukung aplikasi prediksi diabetes. API mencakup berbagai endpoint untuk autentikasi pengguna, pengelolaan akun, prediksi risiko diabetes menggunakan machine learning (ML), dan akses ke artikel kesehatan.
+
+## 1. Authentication (`/account`)
+
+Endpoint ini digunakan untuk autentikasi pengguna.
+
+### Routes:
+- **`POST /register`**: Mendaftar akun baru.
+- **`POST /login`**: Login dengan kredensial pengguna.
+- **`POST /logout`**: Logout dan menghapus sesi pengguna.
+- **`POST /refresh-token`**: Memperbarui token JWT.
+
+---
+
 ## 2. Akun
-- Endpoint untuk mengelola data pengguna
-- Routes :
-  - `GET /account`
-    - Mendapatkan detail akun
-  - `PATCH /account/edit`
-    - Mengedit data pengguna (username, email, phone, password)
-  - `POST /account/upload-profile-picture`
-    - Meng upload foto profil pengguna
-  - `POST /account/edit-profile-picture`
-    - Mengedit foto profil pengguna
-  - `DELETE /account/delete-profile-picture`
-    - Menghapus foto profil pengguna
-   
+
+Endpoint ini digunakan untuk mengelola data pengguna.
+
+### Routes:
+- **`GET /account`**: Mendapatkan detail akun pengguna.
+- **`PATCH /account/edit`**: Mengedit data akun pengguna.
+- **`POST /account/upload-profile-picture`**: Mengunggah foto profil.
+- **`POST /account/edit-profile-picture`**: Mengubah foto profil.
+- **`DELETE /account/delete-profile-picture`**: Menghapus foto profil pengguna.
+
+---
+
 ## 3. Prediksi
-- Endpoint untuk mendapatkan prediksi diabetes dari model ML
-- Routes :
-  - `POST /account/predictions`
-    - Mengirim data pengguna untuk di prediksi oleh model
-  - `GET /account/predictions`
-    - Mendapatkan hasil prediksi
-   
+
+Endpoint ini digunakan untuk prediksi risiko diabetes.
+
+### Routes:
+- **`POST /account/predictions`**: Mengirimkan data untuk prediksi.
+- **`GET /account/predictions`**: Mendapatkan daftar hasil prediksi sebelumnya.
+
+---
+
 ## 4. Artikel
-- Endpoint untuk mendapatkan data artikel
-- Routes :
-  - `GET /articles`
-    - Mendapatkan data artikel dari firestore
+
+Endpoint ini memberikan akses ke artikel kesehatan.
+
+### Routes:
+- **`GET /articles`**: Mendapatkan daftar artikel kesehatan dari Firestore.
+
+---
+
+## Keamanan
+
+- **JWT Authentication:** Semua endpoint dilindungi oleh token JWT.
+- **Role-Based Access Control:** Akses data dibatasi sesuai otorisasi pengguna.
+
+---
+
+## Integrasi Model Machine Learning
+
+Model ML di-host di Google Cloud Storage dan digunakan untuk memproses data medis pengguna secara real-time. Hasil prediksi meliputi probabilitas risiko (dalam persen) dan keputusan akhir (Yes/No).
+
+---
+
+## Penyimpanan Data
+
+- **Firestore:** Menyimpan data prediksi, artikel, dan informasi pengguna.
+- **Google Cloud Storage:** Menyimpan model ML dan file yang diunggah pengguna.
