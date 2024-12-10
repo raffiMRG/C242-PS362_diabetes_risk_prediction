@@ -4,35 +4,35 @@ Backend API ini dibangun untuk mendukung aplikasi prediksi diabetes. API menyedi
 ## 1. Authentication (/account)
 - Endpoint untuk kebutuhan autentikasi pengguna
 - Routes :
-  - POST /register (Daftar Akun)
-  - POST /login (Login)
-  - POST /logout (Logout)
-  - POST /refresh-token (JWT)
+  - `POST /register` (Daftar Akun)
+  - `POST /login` (Login)
+  - `POST /logout` (Logout)
+  - `POST /refresh-token` (JWT)
  
 ## 2. Akun
 - Endpoint untuk mengelola data pengguna
 - Routes :
-  - GET /account
+  - `GET /account`
     - Mendapatkan detail akun
-  - PATCH /account/edit
+  - `PATCH /account/edit`
     - Mengedit data pengguna (username, email, phone, password)
-  - POST /account/upload-profile-picture
+  - `POST /account/upload-profile-picture`
     - Meng upload foto profil pengguna
-  - POST /account/edit-profile-picture
+  - `POST /account/edit-profile-picture`
     - Mengedit foto profil pengguna
-  - DELETE /account/delete-profile-picture
+  - `DELETE /account/delete-profile-picture`
     - Menghapus foto profil pengguna
    
 ## 3. Prediksi
 - Endpoint untuk mendapatkan prediksi diabetes dari model ML
 - Routes :
-  - POST /account/predictions
+  - `POST /account/predictions`
     - Mengirim data pengguna untuk di prediksi oleh model
-  - GET /account/predictions
+  - `GET /account/predictions`
     - Mendapatkan hasil prediksi
    
 ## 4. Artikel
 - Endpoint untuk mendapatkan data artikel
 - Routes :
-  - GET /articles
+  - `GET /articles`
     - Mendapatkan data artikel dari firestore
