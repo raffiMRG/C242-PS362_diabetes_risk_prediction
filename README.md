@@ -12,3 +12,11 @@ This repository are used for capstone project from grup id C242-PS362
 | Muhamad Raffi Gumilang            | A288B4KY2651 | Mobile Development | [raffimrg](https://www.linkedin.com/in/raffimrg)                              |
 | Muhammad Nur Iskandar Dzulqarnain | M200B4KY2978 | Machine Learning   | [Muhammad Nur Iskandar Dzulqarnain](https://www.linkedin.com/in/iskandardzz/) |
 | Fahmi Hanafi                      | A288B4KY1347 | Mobile Development | [fahmi hanafi](https://www.linkedin.com/in/fahmi-hanafi/)                     |
+
+
+
+## Overview
+Diabtic is a machine learning-driven application designed to assist users in predicting their risk of developing diabetes. The program analyzes health data such as BMI, blood pressure, cholesterol levels, and physical activity to provide personalized risk predictions and health insights.
+
+## Support
+For any issues or questions, feel free to reach out to the development team or refer to the comments within the code for guidance.
