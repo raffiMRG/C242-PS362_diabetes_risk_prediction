@@ -34,7 +34,7 @@ The application includes several features, such as:
 - **Articles** This feature provides news and updates about diabetes from various sources.
 - **Dark/Light Mode** The app supports dark and light themes, following system settings.
 
-## Alat dan Teknologi yang Digunakan 🛠️
+## Tools and Technologies Used 🛠️
 
 Here are some of the tools and technologies we used :
 
