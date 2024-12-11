@@ -43,6 +43,7 @@ class UserPreference private constructor(
             preferences[REFRESH_TOKEN_KEY] = user.refreshToken
             preferences[IS_LOGIN_KEY] = user.isLogin
             preferences[NAME_KEY] = user.username
+            preferences[PASSWORD_KEY] = user.password
             user.phone?.let { preferences[PHONE_KEY] = it }
             user.photoUrl?.let { preferences[PHOTO_URL_KEY] = it }
         }
@@ -56,6 +57,7 @@ class UserPreference private constructor(
                 refreshToken = preferences[REFRESH_TOKEN_KEY] ?: "",
                 isLogin = preferences[IS_LOGIN_KEY] ?: false,
                 username = preferences[NAME_KEY] ?: "No Name",
+                password = preferences[PASSWORD_KEY] ?: "No Password",
                 phone = preferences[PHONE_KEY],
                 photoUrl = preferences[PHOTO_URL_KEY]
             )
@@ -77,6 +79,7 @@ class UserPreference private constructor(
         private val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
         private val IS_LOGIN_KEY = booleanPreferencesKey("isLogin")
         private val NAME_KEY = stringPreferencesKey("username")
+        private val PASSWORD_KEY = stringPreferencesKey("password")
         private val PHONE_KEY = stringPreferencesKey("phone")
         private val PHOTO_URL_KEY = stringPreferencesKey("photo_url")
 
