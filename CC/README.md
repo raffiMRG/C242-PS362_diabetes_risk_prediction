@@ -77,6 +77,7 @@ Clone the repository to your Cloudshell:
 
 ```bash
 git clone https://github.com/raffiMRG/C242-PS362_diabetes_risk_prediction.git
+cd C242-PS362_diabetes_risk_prediction/CC/diabtic-backend
 ```
 ### 2. Install Dependencies
 
