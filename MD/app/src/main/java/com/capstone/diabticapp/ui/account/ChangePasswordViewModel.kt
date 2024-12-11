@@ -21,7 +21,7 @@ class ChangePasswordViewModel(private val authRepository: AuthRepository): ViewM
             try {
                 val response: ChangePasswordResponse = authRepository.changePassword("password", newPassword)
                 if (response.success == true) {
-                    authRepository.logout()
+                    authRepository.clearUserData()
                     _stateMessage.value = "Password updated successfully! Please log in again."
                 } else {
                     _stateMessage.value = response.message ?: "Failed to update password."

@@ -4,11 +4,13 @@ import com.capstone.diabticapp.data.pref.UserModel
 import com.capstone.diabticapp.data.pref.UserPreference
 import com.capstone.diabticapp.data.remote.request.ChangeProfileRequest
 import com.capstone.diabticapp.data.remote.request.LoginRequest
+import com.capstone.diabticapp.data.remote.request.LogoutRequest
 import com.capstone.diabticapp.data.remote.request.RegisterRequest
 import com.capstone.diabticapp.data.remote.response.EditProfilePictureResponse
 import com.capstone.diabticapp.data.remote.response.GetAccResponse
 import com.capstone.diabticapp.data.remote.response.HistoryResponse
 import com.capstone.diabticapp.data.remote.response.LoginResponse
+import com.capstone.diabticapp.data.remote.response.LogoutResponse
 import com.capstone.diabticapp.data.remote.retrofit.ApiService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -27,7 +29,7 @@ class AuthRepository private constructor(
         val response = apiService.login(LoginRequest(username, password))
         if (response.success == true) {
             response.loginData?.let { data ->
-                val user = UserModel.fromLoginResponse(username, data)
+                val user = UserModel.fromLoginResponse(username, password, data)
                 saveSession(user)
 
                 try {
@@ -80,8 +82,13 @@ class AuthRepository private constructor(
         ChangeProfileRequest(field, value)
     )
 
-    suspend fun logout(){
+    suspend fun clearUserData(){
         userPreference.logout()
+    }
+
+    suspend fun logout(username: String, password: String):LogoutResponse {
+        val response = apiService.logout(LogoutRequest(username, password))
+        return response
     }
 
     suspend fun getAccountData(): GetAccResponse {

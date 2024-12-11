@@ -2,6 +2,7 @@ package com.capstone.diabticapp.ui.setting
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,8 @@ import com.capstone.diabticapp.ui.account.AccountActivity
 
 class SettingsFragment : Fragment() {
 
+    private lateinit var password: String
+    private lateinit var username: String
     private lateinit var binding: FragmentSettingBinding
     private val viewModel: SettingsViewModel by viewModels {
         AuthViewModelFactory.getInstance(requireContext())
@@ -59,7 +62,12 @@ class SettingsFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.username.observe(viewLifecycleOwner) { name ->
+            username = name
             binding.tvNama.text = name
+        }
+
+        viewModel.password.observe(viewLifecycleOwner) { pwd ->
+            password = pwd
         }
 
         viewModel.userPhotoUrl.observe(viewLifecycleOwner) { photoUrl ->
@@ -78,8 +86,13 @@ class SettingsFragment : Fragment() {
     }
 
     private fun navigateToLogout() {
-        viewModel.logout()
-        Toast.makeText(requireContext(), "Logged out successfully", Toast.LENGTH_SHORT).show()
+        viewModel.logout(username, password){ status ->
+            if (status){
+                Toast.makeText(requireContext(), "Logged out successfully", Toast.LENGTH_SHORT).show()
+            }else{
+                Log.e("LogoutFailed", "failed to logout" )
+            }
+        }
 
         requireActivity().finishAffinity()
     }

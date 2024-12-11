@@ -25,6 +25,7 @@ class ApiConfig(private val userPreference: UserPreference) {
         val authInterceptor = Interceptor { chain ->
             val request = chain.request()
             val token = runBlocking { getToken() }
+            Log.d("Token", token)
             val requestWithToken = request.newBuilder()
                 .addHeader("Authorization", "Bearer $token")
                 .build()
