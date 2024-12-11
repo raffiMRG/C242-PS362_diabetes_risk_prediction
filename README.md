@@ -45,6 +45,8 @@ Here are some of the tools and technologies we used :
 <a href="#" target="blank"><img align="center" src="IMG/postman-icon-svgrepo-com.svg" alt="raffimrg" height="70" width="70" /></a>
 <a href="#" target="blank"><img align="center" src="IMG/vscode.png" alt="raffimrg" height="70" width="70" /></a>
 <a href="#" target="blank"><img align="center" src="IMG/firestore.png" alt="raffimrg" height="70" width="70" /></a>
+<a href="#" target="blank"><img align="center" src="IMG/docker.png" alt="raffimrg" height="70" width="70" /></a>
+<a href="#" target="blank"><img align="center" src="IMG/flask1.png" alt="raffimrg" height="70" width="70" /></a>
 </p>
 
 ## Note For Replicate Our Steps 📝
