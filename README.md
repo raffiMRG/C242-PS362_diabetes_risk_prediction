@@ -40,6 +40,7 @@ Here are some of the tools and technologies we used :
 
 <p align="center">
 <a href="#" target="blank"><img align="center" src="IMG/colab-color.png" alt="raffimrg" height="70" width="70" /></a>
+<a href="#" target="blank"><img align="center" src="IMG/tensorflow.png" alt="raffimrg" height="70" width="70" /></a>
 <a href="#" target="blank"><img align="center" src="IMG/figma2.png" alt="raffimrg" height="70" width="70" /></a>
 <a href="#" target="blank"><img align="center" src="IMG/android-studio-icon.png" alt="raffimrg" height="70" width="70" /></a>
 <a href="#" target="blank"><img align="center" src="IMG/postman-icon-svgrepo-com.svg" alt="raffimrg" height="70" width="70" /></a>
