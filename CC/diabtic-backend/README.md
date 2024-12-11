@@ -1,66 +1,119 @@
-# API Documentation - Diabtic
+# API Documentation - Diabetic
 
-Backend API ini dirancang untuk mendukung aplikasi prediksi diabetes. API mencakup berbagai endpoint untuk autentikasi pengguna, pengelolaan akun, prediksi risiko diabetes menggunakan machine learning (ML), dan akses ke artikel kesehatan.
+This backend API is designed to support a diabetes prediction application. The API includes various endpoints for user authentication, account management, diabetes risk prediction using machine learning (ML), and access to health articles.
 
 ## 1. Authentication (`/auth`)
 
-Endpoint ini digunakan untuk autentikasi pengguna.
+This endpoint is used for user authentication.
 
 ### Routes:
-- **`POST /auth/register`**: Mendaftar akun baru.
-- **`POST /auth/login`**: Login dengan kredensial pengguna.
-- **`POST /auth/logout`**: Logout dan menghapus sesi pengguna.
-- **`POST /auth/refresh-token`**: Memperbarui token JWT.
+- **`POST /auth/register`**: Register a new account.
+- **`POST /auth/login`**: Login with user credentials.
+- **`POST /auth/logout`**: Logout and remove the user session.
+- **`POST /auth/refresh-token`**: Refresh the JWT token.
 
 ---
 
-## 2. Akun (`/users`)
+## 2. Account (`/users`)
 
-Endpoint ini digunakan untuk mengelola data pengguna.
+This endpoint is used for managing user data.
 
 ### Routes:
-- **`GET /users/profile`**: Mendapatkan detail akun pengguna.
-- **`PATCH /users/profile`**: Mengedit data akun pengguna.
-- **`POST /users/profile/profile-picture`**: Mengunggah foto profil.
-- **`PUT /users/profile/profile-picture`**: Mengubah foto profil.
-- **`DELETE /users/profile/profile-picture`**: Menghapus foto profil pengguna.
+- **`GET /users/profile`**: Retrieve user account details.
+- **`PATCH /users/profile`**: Edit user account data.
+- **`POST /users/profile/profile-picture`**: Upload a profile picture.
+- **`PUT /users/profile/profile-picture`**: Change the profile picture.
+- **`DELETE /users/profile/profile-picture`**: Delete the user's profile picture.
 
 ---
 
-## 3. Prediksi (/predictions)
+## 3. Predictions (`/predictions`)
 
-Endpoint ini digunakan untuk prediksi risiko diabetes.
+This endpoint is used for diabetes risk prediction.
 
 ### Routes:
-- **`POST /users/predictions`**: Mengirimkan data untuk prediksi.
-- **`GET /users/predictions`**: Mendapatkan daftar hasil prediksi sebelumnya.
+- **`POST /users/predictions`**: Submit data for prediction.
+- **`GET /users/predictions`**: Retrieve a list of previous prediction results.
 
 ---
 
-## 4. Artikel
+## 4. Articles
 
-Endpoint ini memberikan akses ke artikel.
+This endpoint provides access to articles.
 
 ### Routes:
-- **`GET /articles`**: Mendapatkan daftar artikel dari Firestore.
-- **`GET /articles/:id?`**: Mendapatkan daftar artikel dari Firestore berdasarkan ID.
+- **`GET /articles`**: Retrieve a list of articles from Firestore.
+- **`GET /articles/:id?`**: Retrieve a specific article from Firestore by ID.
 
 ---
 
-## Keamanan
+## Security
 
-- **JWT Authentication:** Semua endpoint dilindungi oleh token JWT.
-- **Role-Based Access Control:** Akses data dibatasi sesuai otorisasi pengguna.
-
----
-
-## Integrasi Model Machine Learning
-
-Model ML di-host di Google Cloud Storage dan digunakan untuk memproses data medis pengguna secara real-time.
+- **JWT Authentication:** All endpoints are secured by a JWT token.
+- **Role-Based Access Control:** Data access is restricted based on user authorization.
 
 ---
 
-## Penyimpanan Data
+## Machine Learning Model Integration
 
-- **Firestore:** Menyimpan data prediksi, artikel, dan informasi pengguna.
-- **Google Cloud Storage:** Menyimpan model ML dan file yang diunggah pengguna.
+The ML model is hosted on Google Cloud Storage and is used to process users' medical data in real-time.
+
+---
+
+## Data Storage
+
+- **Firestore:** Stores prediction data, articles, and user information.
+- **Google Cloud Storage:** Stores the ML model and files uploaded by users.
+
+---
+
+## Usage Instructions
+
+To use this backend API, follow these steps:
+
+### 1. Clone the Repository
+
+Clone the repository to your Cloudshell:
+
+```bash
+git clone https://github.com/raffiMRG/C242-PS362_diabetes_risk_prediction.git
+cd C242-PS362_diabetes_risk_prediction/CC/diabtic-backend
+```
+### 2. Install Dependencies
+
+Install the required Node.js dependencies using npm:
+
+```bash
+npm install
+```
+### 3. Configure `app.yaml`
+
+Ensure that the `app.yaml` configuration file is set up correctly.
+
+```bash
+runtime: nodejs18
+
+instance_class: F2
+
+env_variables:
+  JWT_SECRET_KEY: ""
+  JWT_REFRESH_SECRET_KEY: ""
+  GCS_BUCKET_NAME: ""
+automatic_scaling:
+  target_cpu_utilization: 0.65
+  max_instances: 10
+
+handlers:
+  - url: /.*
+    script: auto
+
+entrypoint: node server.js
+```
+### 4. Deploy to Google App Engine
+
+Deploy this backend API to Google App Engine using the following command:
+
+```bash
+gcloud app deploy
+```
+This will deploy your app and make it available online. Once the deployment is complete, you will be provided with a URL where you can access your backend API.
