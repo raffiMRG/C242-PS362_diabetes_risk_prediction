@@ -1,4 +1,4 @@
-# API Documentation - Diabetic
+# API Documentation - Diabtic
 
 This backend API is designed to support a diabetes prediction application. The API includes various endpoints for user authentication, account management, diabetes risk prediction using machine learning (ML), and access to health articles.
 
