@@ -73,9 +73,46 @@ To use this backend API, follow these steps:
 
 ### 1. Clone the Repository
 
-Clone the repository to your local machine:
+Clone the repository to your Cloudshell:
 
 ```bash
 git clone https://github.com/raffiMRG/C242-PS362_diabetes_risk_prediction.git
 ```
+### 2. Install Dependencies
 
+Install the required Node.js dependencies using npm:
+
+```bash
+npm install
+```
+### 3. Configure `app.yaml`
+
+Ensure that the `app.yaml` configuration file is set up correctly.
+
+```bash
+runtime: nodejs18
+
+instance_class: F2
+
+env_variables:
+  JWT_SECRET_KEY: ""
+  JWT_REFRESH_SECRET_KEY: ""
+  GCS_BUCKET_NAME: ""
+automatic_scaling:
+  target_cpu_utilization: 0.65
+  max_instances: 10
+
+handlers:
+  - url: /.*
+    script: auto
+
+entrypoint: node server.js
+```
+### 4. Deploy to Google App Engine
+
+Deploy this backend API to Google App Engine using the following command:
+
+```bash
+gcloud app deploy
+```
+This will deploy your app and make it available online. Once the deployment is complete, you will be provided with a URL where you can access your backend API.
