@@ -9,9 +9,6 @@ const logoutHandler = require("./logoutHandler");
 const getAccountHandler = require("./getAccountHandler");
 const addPredictionHandler = require("./addPredictionHandler");
 const getPredictionHandler = require("./getPredictionHandler");
-const uploadProfilePictureHandler = require("./uploadProfilePictureHandler");
-const editProfilePictureHandler = require("./editProfilePictureHandler");
-const deleteProfilePictureHandler = require("./deleteProfilePictureHandler");
 const editAccountHandler = require("./editAccountHandler");
 
 // Artikel
@@ -19,32 +16,37 @@ const getArticleHandler = require('./getArticleHandler');
 const addArticleHandler = require('./addArticleHandler');
 const editArticleHandler = require('./editArticleHandler');
 
+// Profile Picture
+const { uploadProfilePictureHandler, editProfilePictureHandler, deleteProfilePictureHandler } = require('./profilePictureHandler');
+
 const app = express();
 
 // Middleware untuk parsing JSON body
 app.use(express.json());
 
-// Setup multer untuk menyimpan file dalam memory (jika Anda ingin menangani upload file)
-const storage = multer.memoryStorage(); 
+// Setup multer untuk menyimpan file dalam memory
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // Middleware untuk parsing request body
 app.use(cors());
 
 // Route Handlers
-app.post("/login", loginHandler);
-app.post("/register", registerHandler);
-app.post("/logout", logoutHandler);
-app.post("/refresh-token", refreshTokenHandler);
-app.get("/account", getAccountHandler);
-app.post("/account/predictions", addPredictionHandler);
-app.get("/account/predictions", getPredictionHandler);
-app.patch("/account/edit", editAccountHandler);
+app.post("/auth/login", loginHandler);
+app.post("/auth/register", registerHandler);
+app.post("/auth/logout", logoutHandler);
+app.post("/auth/refresh-token", refreshTokenHandler);
+
+app.get("/users/profile", getAccountHandler);
+app.patch("/users/profile", editAccountHandler);
+
+app.post("/users/predictions", addPredictionHandler);
+app.get("/users/predictions", getPredictionHandler);
 
 // Upload dan manipulasi foto profil
-app.post("/account/upload-profile-picture", upload.single('profilePicture'), uploadProfilePictureHandler);
-app.post("/account/edit-profile-picture", upload.single('profilePicture'), editProfilePictureHandler);
-app.delete("/account/delete-profile-picture", deleteProfilePictureHandler);
+app.post("/users/profile/profile-picture", upload.single('profilePicture'), uploadProfilePictureHandler);
+app.put("/users/profile/profile-picture", upload.single('profilePicture'), editProfilePictureHandler);
+app.delete("/users/profile/profile-picture", deleteProfilePictureHandler);
 
 // Route artikel
 app.get("/articles/:id?", getArticleHandler);
@@ -53,7 +55,7 @@ app.patch("/articles/:id", editArticleHandler);
 
 // Default route
 app.get("/", (req, res) => {
-  res.send("Welcome to the diabtic authentication API!");
+  res.send("Welcome to the diabetic authentication API!");
 });
 
 // Global error handling middleware
