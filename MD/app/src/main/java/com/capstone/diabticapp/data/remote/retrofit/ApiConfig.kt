@@ -32,7 +32,7 @@ class ApiConfig(private val userPreference: UserPreference) {
 
             val response = chain.proceed(requestWithToken)
 
-            if (response.code == 500) {
+            if (response.code == 500 || response.code == 401) {
                 response.close()
                 val newAccessToken = runBlocking {
                     val refreshToken = userPreference.getSession().first().refreshToken
