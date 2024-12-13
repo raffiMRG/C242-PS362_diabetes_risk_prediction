@@ -90,7 +90,9 @@ class AuthRepository private constructor(
         val response = apiService.logout(LogoutRequest(username, password))
         return response
     }
-
+    suspend fun logoutClearUserSession(){
+        userPreference.logout()
+    }
     suspend fun getAccountData(): GetAccResponse {
         return apiService.getAccount()
     }

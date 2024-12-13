@@ -50,4 +50,10 @@ class SettingsViewModel (private val authRepository: AuthRepository) : ViewModel
             }
         }
     }
+
+    fun logoutClearUserSession() {
+        viewModelScope.launch {
+            authRepository.logoutClearUserSession()
+        }
+    }
 }

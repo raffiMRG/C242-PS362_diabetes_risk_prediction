@@ -86,13 +86,8 @@ class SettingsFragment : Fragment() {
     }
 
     private fun navigateToLogout() {
-        viewModel.logout(username, password){ status ->
-            if (status){
-                Toast.makeText(requireContext(), "Logged out successfully", Toast.LENGTH_SHORT).show()
-            }else{
-                Log.e("LogoutFailed", "failed to logout" )
-            }
-        }
+        viewModel.logoutClearUserSession()
+        Toast.makeText(requireContext(), "Logged out successfully", Toast.LENGTH_SHORT).show()
 
         requireActivity().finishAffinity()
     }
